@@ -410,7 +410,7 @@
     function sendUpdate(){
       var input = document.getElementById('email-input');
       var email = input.value.trim();
-      if (!email || email.indexOf('@') === -1) {
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         input.focus();
         input.style.borderColor = '#C44';
         setTimeout(function(){ input.style.borderColor = ''; }, 2000);
@@ -437,6 +437,9 @@
         btn.textContent = 'Copied!';
         btn.classList.add('copied');
         setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      }, function(){
+        btn.textContent = 'Failed';
+        setTimeout(function(){ btn.textContent = 'Copy'; }, 2000);
       });
     }
 

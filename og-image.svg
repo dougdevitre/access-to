@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1A1A1A"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#2D5A7B"/>
+  <rect x="0" y="6" width="240" height="3" fill="#2D5A7B"/>
+  <rect x="240" y="6" width="240" height="3" fill="#5B7A3A"/>
+  <rect x="480" y="6" width="240" height="3" fill="#8B5E3C"/>
+  <rect x="720" y="6" width="240" height="3" fill="#6B4C8A"/>
+  <rect x="960" y="6" width="240" height="3" fill="#3A7A7A"/>
+  <text x="100" y="240" font-family="Georgia, serif" font-size="72" font-weight="bold" fill="#FAFAF7">Access Projects</text>
+  <text x="100" y="320" font-family="system-ui, sans-serif" font-size="32" fill="#9B9B93">Open-source, AI-powered tools closing the</text>
+  <text x="100" y="365" font-family="system-ui, sans-serif" font-size="32" fill="#9B9B93">access gaps that matter most.</text>
+  <g transform="translate(100, 430)">
+    <rect x="0" y="0" width="12" height="12" rx="2" fill="#2D5A7B"/>
+    <text x="22" y="11" font-family="system-ui, sans-serif" font-size="16" fill="#6B6B6B">Justice</text>
+    <rect x="120" y="0" width="12" height="12" rx="2" fill="#5B7A3A"/>
+    <text x="142" y="11" font-family="system-ui, sans-serif" font-size="16" fill="#6B6B6B">Education</text>
+    <rect x="260" y="0" width="12" height="12" rx="2" fill="#8B5E3C"/>
+    <text x="282" y="11" font-family="system-ui, sans-serif" font-size="16" fill="#6B6B6B">Housing</text>
+    <rect x="390" y="0" width="12" height="12" rx="2" fill="#6B4C8A"/>
+    <text x="412" y="11" font-family="system-ui, sans-serif" font-size="16" fill="#6B6B6B">Services</text>
+    <rect x="520" y="0" width="12" height="12" rx="2" fill="#3A7A7A"/>
+    <text x="542" y="11" font-family="system-ui, sans-serif" font-size="16" fill="#6B6B6B">Peace</text>
+  </g>
+  <text x="100" y="540" font-family="system-ui, sans-serif" font-size="18" fill="#4A4A4A">9 projects  |  5 pillars  |  Open source  |  Built in Missouri</text>
+</svg>

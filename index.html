@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access Projects — Open Tools for Human Rights</title>
+  <meta name="description" content="Open-source AI-powered tools expanding access to justice, education, housing, services, and peace. Built in Missouri, serving nationwide.">
+  <meta property="og:title" content="Access Projects — Open Tools for Human Rights">
+  <meta property="og:description" content="9 open-source projects across 5 pillars — closing the access gaps that matter most.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dougdevitre.github.io/access-projects/">
+  <meta property="og:image" content="https://dougdevitre.github.io/access-projects/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Access Projects — Open Tools for Human Rights">
+  <meta name="twitter:description" content="9 open-source projects across 5 pillars — closing the access gaps that matter most.">
+  <meta name="twitter:image" content="https://dougdevitre.github.io/access-projects/og-image.png">
+  <link rel="canonical" href="https://dougdevitre.github.io/access-projects/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231A1A1A'/><text x='50' y='68' text-anchor='middle' font-size='52' font-family='Georgia,serif' fill='%23FAFAF7'>A</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1A1A1A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="styles.css">
+  <noscript><style>.stat-number{opacity:1!important}.pillar-card{opacity:1!important;transform:none!important;animation:none!important}.back-to-top{display:none!important}</style></noscript>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Access Projects",
+    "url": "https://dougdevitre.github.io/access-projects/",
+    "description": "Open-source AI-powered tools expanding access to justice, education, housing, services, and peace.",
+    "founder": {
+      "@type": "Person",
+      "name": "Doug Devitre",
+      "url": "https://linkedin.com/in/dougdevitre",
+      "jobTitle": "Founder & CEO, CoTrackPro"
+    },
+    "sameAs": [
+      "https://github.com/dougdevitre",
+      "https://linkedin.com/in/dougdevitre"
+    ]
+  }
+  </script>
+
+  <!-- Apply saved theme before paint to prevent flash -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <header>
+    <div class="topbar">
+      <div class="topbar-logo"><a href="#">Access Projects</a></div>
+      <button class="hamburger" aria-label="Toggle menu" onclick="this.classList.toggle('open');document.querySelector('.topbar-links').classList.toggle('open');">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="topbar-links">
+        <a href="#pillars" onclick="closeMobileNav()">Pillars</a>
+        <a href="#how-it-works" onclick="closeMobileNav()">How It Works</a>
+        <a href="#updates" onclick="closeMobileNav()">Updates</a>
+        <a href="#about" onclick="closeMobileNav()">About</a>
+        <a href="https://github.com/dougdevitre" target="_blank" rel="noopener" onclick="closeMobileNav()">GitHub</a>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+          <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>
+        </button>
+        <a href="#donate" class="nav-donate" onclick="closeMobileNav()">Donate</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">Open Source &middot; Missouri &middot; Nationwide</div>
+    <h1>Open tools for the access&nbsp;gaps that matter&nbsp;most</h1>
+    <p>A growing collection of AI-powered, open-source projects organized around five pillars of human access — built for practitioners, advocates, and the people they serve.</p>
+    <div class="hero-actions">
+      <a href="#pillars" class="btn-primary">Browse the Projects &#8595;</a>
+      <a href="#how-it-works" class="btn-secondary">How It Works</a>
+    </div>
+  </section>
+
+  <!-- IMPACT STATS (animated on scroll) -->
+  <div class="impact-stats" id="stats">
+    <div class="stat"><div class="stat-number" data-target="5">0</div><div class="stat-label">Pillars</div></div>
+    <div class="stat"><div class="stat-number" data-target="9">0</div><div class="stat-label">Projects</div></div>
+    <div class="stat"><div class="stat-number" data-target="400" data-suffix="+">0</div><div class="stat-label">Modules</div></div>
+    <div class="stat"><div class="stat-number" data-target="114">0</div><div class="stat-label">MO Counties Served</div></div>
+  </div>
+
+  <!-- SOCIAL PROOF -->
+  <div class="social-proof reveal">
+    <div class="social-proof-label">Built for audiences at</div>
+    <div class="social-proof-logos">
+      <span>AFCC</span>
+      <span>Missouri Bar</span>
+      <span>NASW</span>
+      <span>EAPA</span>
+      <span>Justice Technology Association</span>
+    </div>
+  </div>
+
+  <!-- PILLARS -->
+  <section class="pillars" id="pillars">
+    <div class="pillar-card" data-pillar="justice">
+      <div class="pillar-icon" role="img" aria-label="Scales of justice">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 7l7-4 7 4"/><path d="M5 7l-2 9h4.5L5 7z"/><path d="M19 7l-2 9h4.5L19 7z"/></svg>
+      </div>
+      <h2>Access to Justice</h2>
+      <p class="pillar-desc">Court preparation, co-parenting documentation, expungement navigation, and protection order support — trauma-informed and child-centered.</p>
+      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">MCP Server</span><span class="tag">Missouri</span><span class="tag tag-time">5 min setup</span></div>
+      <a href="justice.html" class="pillar-link">Explore projects &#8594;</a>
+      <ul class="repo-list">
+        <li><a href="https://github.com/dougdevitre/cotrackpro" target="_blank" rel="noopener"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> cotrackpro <span class="repo-arrow">&#8599;</span></a></li>
+        <li><a href="https://github.com/dougdevitre/expunge-skill" target="_blank" rel="noopener"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> expunge-skill <span class="repo-arrow">&#8599;</span></a></li>
+      </ul>
+      <span class="pillar-status">2 projects &middot; Active</span>
+    </div>
+    <div class="pillar-card" data-pillar="education">
+      <div class="pillar-icon" role="img" aria-label="Education">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <h2>Access to Education</h2>
+      <p class="pillar-desc">Missouri K-12 standards alignment, AI-powered lesson planning, teacher growth tools, and curriculum design support for educators statewide.</p>
+      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Missouri K-12</span><span class="tag tag-time">5 min setup</span></div>
+      <a href="education.html" class="pillar-link">Explore projects &#8594;</a>
+      <ul class="repo-list">
+        <li><a href="https://github.com/dougdevitre/doug" target="_blank" rel="noopener"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> doug (AI Education Network) <span class="repo-arrow">&#8599;</span></a></li>
+      </ul>
+      <span class="pillar-status">1 project &middot; Active</span>
+    </div>
+    <div class="pillar-card" data-pillar="housing">
+      <div class="pillar-icon" role="img" aria-label="Housing">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h2>Access to Housing</h2>
+      <p class="pillar-desc">PropTech intelligence for real estate professionals, investors, and researchers — market analysis, climate risk scoring, and Fair Housing-safe tooling.</p>
+      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Nationwide</span><span class="tag">Fair Housing</span><span class="tag tag-time">5 min setup</span></div>
+      <a href="housing.html" class="pillar-link">Explore projects &#8594;</a>
+      <ul class="repo-list">
+        <li><a href="https://github.com/dougdevitre/better-broker" target="_blank" rel="noopener"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> better-broker <span class="repo-arrow">&#8599;</span></a></li>
+      </ul>
+      <span class="pillar-status">1 project &middot; Active</span>
+    </div>
+    <div class="pillar-card" data-pillar="services">
+      <div class="pillar-icon" role="img" aria-label="Services">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      <h2>Access to Services</h2>
+      <p class="pillar-desc">Workforce development, WIOA navigation, job matching, and startup support tools — connecting people to the programs and opportunities they need.</p>
+      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">WIOA</span><span class="tag">Missouri</span><span class="tag tag-time">5 min setup</span></div>
+      <a href="services.html" class="pillar-link">Explore projects &#8594;</a>
+      <ul class="repo-list">
+        <li><a href="https://github.com/dougdevitre/mo-jobs" target="_blank" rel="noopener"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> mo-jobs <span class="repo-arrow">&#8599;</span></a></li>
+        <li><a href="https://github.com/dougdevitre/mostart" target="_blank" rel="noopener"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> mostart <span class="repo-arrow">&#8599;</span></a></li>
+        <li><a href="https://github.com/dougdevitre/jta-platform" target="_blank" rel="noopener"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> jta-platform <span class="repo-arrow">&#8599;</span></a></li>
+      </ul>
+      <span class="pillar-status">3 projects &middot; Active</span>
+    </div>
+    <div class="pillar-card" data-pillar="peace">
+      <div class="pillar-icon" role="img" aria-label="Peace">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 2v20"/><path d="M12 12l7.07 7.07"/><path d="M12 12L4.93 19.07"/></svg>
+      </div>
+      <h2>Access to Peace</h2>
+      <p class="pillar-desc">De-escalation tools, trauma-informed communication, safety planning, and child-centered messaging — helping families move from conflict toward stability.</p>
+      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Nationwide</span><span class="tag">Plugin Arch</span><span class="tag tag-time">5 min setup</span></div>
+      <a href="peace.html" class="pillar-link">Explore projects &#8594;</a>
+      <ul class="repo-list">
+        <li><a href="https://github.com/dougdevitre/cotrackpro-skills" target="_blank" rel="noopener"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> cotrackpro-skills <span class="repo-arrow">&#8599;</span></a></li>
+        <li><a href="https://github.com/dougdevitre/lois247" target="_blank" rel="noopener"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> lois247 <span class="repo-arrow">&#8599;</span></a></li>
+      </ul>
+      <span class="pillar-status">2 projects &middot; Active</span>
+    </div>
+  </section>
+
+  <!-- WHAT ARE CLAUDE SKILLS EXPLAINER -->
+  <section class="explainer reveal" id="how-it-works">
+    <div class="explainer-inner">
+      <div class="explainer-header">
+        <h2>What are Claude Skills?</h2>
+        <p>These projects are structured AI prompt systems that run inside Claude.ai — no coding required.</p>
+      </div>
+      <div class="explainer-step">
+        <div class="step-num">1</div>
+        <h3>Clone the repo</h3>
+        <p>Download the skill from GitHub. The key file is <code>SKILL.md</code> — a structured prompt that teaches Claude a specialized workflow.</p>
+        <div class="copy-block">
+          <code>git clone https://github.com/dougdevitre/&lt;repo-name&gt;</code>
+          <button class="copy-btn" onclick="copyCmd(this,'git clone https://github.com/dougdevitre/')">Copy</button>
+        </div>
+      </div>
+      <div class="explainer-step">
+        <div class="step-num">2</div>
+        <h3>Upload to Claude</h3>
+        <p>Create a new Project in <a href="https://claude.ai" target="_blank" rel="noopener" style="color:var(--color-accent-justice)">Claude.ai</a> and add the <code>SKILL.md</code> file as project knowledge.</p>
+      </div>
+      <div class="explainer-step">
+        <div class="step-num">3</div>
+        <h3>Start a conversation</h3>
+        <p>The skill guides you through its capabilities. Ask it for help — it handles the rest.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EMAIL CAPTURE -->
+  <section class="email-capture reveal" id="updates">
+    <div class="email-capture-inner">
+      <h2>Stay in the loop</h2>
+      <p>Get notified when new tools launch, existing projects hit milestones, or speaking events are announced.</p>
+      <div class="email-form" id="email-form">
+        <input type="email" placeholder="your@email.com" id="email-input" aria-label="Email address">
+        <button onclick="sendUpdate()">Get Updates</button>
+      </div>
+      <div class="email-success" id="email-success">&#10003; Check your email app — a pre-filled message is ready to send.</div>
+      <p class="email-privacy">No spam. Unsubscribe anytime. Updates only.</p>
+    </div>
+  </section>
+
+  <!-- DONATE CTA -->
+  <section class="donate-section reveal" id="donate">
+    <div class="donate-banner">
+      <h2>These tools are free. Building&nbsp;them&nbsp;isn't.</h2>
+      <p>Every dollar funds development time on open-source tools that help families, job seekers, educators, and advocates navigate broken systems.</p>
+      <a href="https://venmo.com/dougdevitre" target="_blank" rel="noopener" class="donate-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.27 3c.76 1.25 1.1 2.54 1.1 4.17 0 5.19-4.43 11.93-8.03 16.63H5.72L3.13 4.08l5.76-.55 1.48 11.92c1.38-2.25 3.08-5.78 3.08-8.2 0-1.54-.26-2.6-.68-3.45L19.27 3z"/></svg>
+        Fund the Mission on Venmo
+      </a>
+      <span class="donate-subtext">100% goes to development &middot; No overhead &middot; Receipt on request</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about reveal" id="about">
+    <div>
+      <h2>Why "Access"?</h2>
+      <p>Every day, people fall through gaps — in courts, classrooms, housing markets, and service systems — not because solutions don't exist, but because the tools to navigate them are scattered, expensive, or built for insiders.</p>
+      <p>These projects exist to close those gaps with practical, AI-powered, open-source tools that meet people where they are.</p>
+    </div>
+    <div>
+      <h2>Built by</h2>
+      <p><strong>Doug Devitre</strong> — product builder, speaker, and founder of <a href="https://cotrackpro.com" target="_blank" rel="noopener">CoTrackPro</a>, based in the St.&nbsp;Louis metro area.</p>
+      <p>Focused on family law technology, workforce development, and civic access tools for Missouri and beyond.</p>
+      <p><a href="https://linkedin.com/in/dougdevitre" target="_blank" rel="noopener">LinkedIn</a> &middot; <a href="https://github.com/dougdevitre" target="_blank" rel="noopener">GitHub</a> &middot; <a href="mailto:dougdevitre@gmail.com">Email</a></p>
+    </div>
+  </section>
+
+  <!-- CHANGELOG -->
+  <section class="changelog reveal" id="changelog">
+    <h2>Latest Updates</h2>
+    <ul class="changelog-list">
+      <li class="changelog-item">
+        <div class="changelog-date">Mar 2026</div>
+        <div class="changelog-text">Access Projects site launched — 9 projects across 5 pillars now publicly documented.</div>
+      </li>
+      <li class="changelog-item">
+        <div class="changelog-date">Mar 2026</div>
+        <div class="changelog-text"><a href="justice.html">CoTrackPro</a> Alexa skill v4.0.0 shipped with 298 passing integration tests on Node.js 22.x.</div>
+      </li>
+      <li class="changelog-item">
+        <div class="changelog-date">Feb 2026</div>
+        <div class="changelog-text"><a href="services.html">JTA Platform</a> skill completed — 25 files covering member ops, WildApricot API, and content pipeline.</div>
+      </li>
+      <li class="changelog-item">
+        <div class="changelog-date">Feb 2026</div>
+        <div class="changelog-text"><a href="services.html">MO Jobs</a> workforce navigator expanded to cover all 114 Missouri counties with 20 WIOA-grounded modules.</div>
+      </li>
+      <li class="changelog-item">
+        <div class="changelog-date">Jan 2026</div>
+        <div class="changelog-text"><a href="housing.html">Better Broker</a> PropTech skill reached 74 modules across 6 analytical pods.</div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- CONTRIBUTOR CTA -->
+  <section class="contributor-cta reveal">
+    <div class="contributor-inner">
+      <div>
+        <h2>Want to contribute or partner?</h2>
+        <p>Whether you're a developer, practitioner, researcher, or organization — there's a way to get involved. Open issues, suggest features, or bring these tools to your community.</p>
+      </div>
+      <div class="contributor-actions">
+        <a href="https://github.com/dougdevitre" target="_blank" rel="noopener" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          View on GitHub
+        </a>
+        <a href="mailto:dougdevitre@gmail.com?subject=Access%20Projects%20—%20Partnership%20Inquiry" class="btn-secondary">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- RICH FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="topbar-logo">Access Projects</div>
+        <p>Open-source, AI-powered tools closing the access gaps that matter most. Built in Missouri, serving nationwide.</p>
+        <div class="footer-social">
+          <a href="https://github.com/dougdevitre" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/dougdevitre" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:dougdevitre@gmail.com">Email</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Pillars</h4>
+        <ul>
+          <li><a href="justice.html">Justice</a></li>
+          <li><a href="education.html">Education</a></li>
+          <li><a href="housing.html">Housing</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="peace.html">Peace</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#changelog">Changelog</a></li>
+          <li><a href="https://github.com/dougdevitre" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://claude.ai" target="_blank" rel="noopener">Claude.ai</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#updates">Get Updates</a></li>
+          <li><a href="#donate">Donate</a></li>
+          <li><a href="https://cotrackpro.com" target="_blank" rel="noopener">CoTrackPro</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Doug Devitre. Open source under MIT unless otherwise noted.</p>
+      <a href="#">Back to top &#8593;</a>
+    </div>
+  </footer>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})" aria-label="Back to top">&#8593;</button>
+
+  <script>
+    // Mobile nav
+    function closeMobileNav(){
+      document.querySelector('.hamburger').classList.remove('open');
+      document.querySelector('.topbar-links').classList.remove('open');
+    }
+
+    // Dark mode toggle
+    function toggleTheme(){
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme','light');
+      } else {
+        document.documentElement.setAttribute('data-theme','dark');
+        localStorage.setItem('theme','dark');
+      }
+    }
+
+    // Back to top visibility
+    var btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', function(){
+      btt.classList.toggle('visible', window.scrollY > 600);
+    }, {passive:true});
+
+    // Animated stat counters
+    var statsObserved = false;
+    var statsObserver = new IntersectionObserver(function(entries){
+      if (entries[0].isIntersecting && !statsObserved) {
+        statsObserved = true;
+        document.querySelectorAll('.stat-number[data-target]').forEach(function(el){
+          var target = parseInt(el.getAttribute('data-target'));
+          var suffix = el.getAttribute('data-suffix') || '';
+          var duration = 1200;
+          var start = performance.now();
+          function tick(now){
+            var elapsed = now - start;
+            var progress = Math.min(elapsed / duration, 1);
+            var ease = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(target * ease) + suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+    }, {threshold: 0.3});
+    statsObserver.observe(document.getElementById('stats'));
+
+    // Email capture — sends mailto with the typed address included
+    function sendUpdate(){
+      var input = document.getElementById('email-input');
+      var email = input.value.trim();
+      if (!email || email.indexOf('@') === -1) {
+        input.focus();
+        input.style.borderColor = '#C44';
+        setTimeout(function(){ input.style.borderColor = ''; }, 2000);
+        return;
+      }
+      window.open(
+        'mailto:dougdevitre@gmail.com?subject=Access%20Projects%20—%20Add%20me%20to%20updates&body=Hi%20Doug,%0A%0APlease%20add%20' +
+        encodeURIComponent(email) +
+        '%20to%20the%20Access%20Projects%20update%20list.%0A%0AThanks!',
+        '_blank'
+      );
+      document.getElementById('email-form').classList.add('hidden');
+      document.getElementById('email-success').classList.add('show');
+    }
+
+    // Enter key submits email
+    document.getElementById('email-input').addEventListener('keydown', function(e){
+      if (e.key === 'Enter') sendUpdate();
+    });
+
+    // Copy to clipboard
+    function copyCmd(btn, text) {
+      navigator.clipboard.writeText(text).then(function(){
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    // Scroll reveal observer
+    var revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){
+      revealObserver.observe(el);
+    });
+  </script>
+
+</body>
+</html>

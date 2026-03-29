@@ -942,6 +942,139 @@ footer a:hover { color: var(--color-text); }
   width: 16px; height: 16px;
 }
 
+/* ── KEY CAPABILITIES GRID ── */
+.capabilities {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+.capabilities h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.capability-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.capability-card .cap-icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 0.75rem;
+  color: var(--color-muted);
+}
+
+.capability-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+
+.capability-card p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+/* ── WHO THIS IS FOR ── */
+.audience {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+.audience h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.audience-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.audience-card .aud-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-top: 0.15rem;
+  color: var(--color-muted);
+}
+
+.audience-card h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.audience-card p {
+  color: var(--color-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* ── PILLAR IMPACT STATS ── */
+.pillar-stats {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pillar-stat {
+  text-align: center;
+  min-width: 100px;
+}
+
+.pillar-stat .ps-number {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.pillar-stat .ps-label {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 700px) {
+  .capabilities-grid { grid-template-columns: 1fr; }
+  .audience-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 500px) {
+  .capabilities { padding: 0 1.25rem 3rem; }
+  .audience { padding: 0 1.25rem 3rem; }
+  .pillar-stats { padding: 0 1.25rem 2rem; }
+}
+
 .how-to-use {
   max-width: var(--max-width);
   margin: 0 auto;

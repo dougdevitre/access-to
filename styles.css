@@ -1521,16 +1521,6 @@ footer a:hover { color: var(--color-text); }
   border-color: var(--color-border);
 }
 
-/* ── EMAIL SUCCESS STATE ── */
-.email-form.success input {
-  border-color: #5B7A3A;
-  background: #EEF3E8;
-}
-.email-form.success button {
-  background: #5B7A3A;
-  pointer-events: none;
-}
-
 /* ── NOSCRIPT ── */
 noscript .stat-number { opacity: 1; }
 
@@ -1602,7 +1592,6 @@ noscript .stat-number { opacity: 1; }
   color: #8BC48B;
 }
 .email-success.show { display: flex; }
-.email-form.hidden { display: none; }
 
 /* ── COPY BUTTON ── */
 .copy-block {

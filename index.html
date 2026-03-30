@@ -29,7 +29,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="stylesheet" href="styles.css">
-  <noscript><style>.stat-number{opacity:1!important}.pillar-card{opacity:1!important;transform:none!important;animation:none!important}.back-to-top{display:none!important}</style></noscript>
+  <noscript><style>.stat-number{opacity:1!important}.pillar-card{opacity:1!important;transform:none!important;animation:none!important}.back-to-top{display:none!important}.hamburger{display:none!important}.topbar-links{display:flex!important;position:static!important;flex-direction:row!important;background:none!important;box-shadow:none!important}</style></noscript>
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -219,7 +219,7 @@
         <p>Download the skill from GitHub. The key file is <code>SKILL.md</code> — a structured prompt that teaches Claude a specialized workflow.</p>
         <div class="copy-block">
           <code>git clone https://github.com/dougdevitre/&lt;repo-name&gt;</code>
-          <button class="copy-btn" onclick="copyCmd(this,'git clone https://github.com/dougdevitre/')">Copy</button>
+          <button class="copy-btn" aria-label="Copy git clone command" onclick="copyCmd(this,'git clone https://github.com/dougdevitre/')">Copy</button>
         </div>
       </div>
       <div class="explainer-step">

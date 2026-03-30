@@ -431,7 +431,7 @@ header {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-border);
+  color: var(--color-muted);
   margin-bottom: 1.25rem;
 }
 
@@ -446,7 +446,7 @@ header {
 .social-proof-logos span {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-border);
+  color: var(--color-muted);
   letter-spacing: 0.03em;
   white-space: nowrap;
   transition: color 0.2s;
@@ -670,7 +670,7 @@ header {
 
 .email-privacy {
   font-size: 0.72rem;
-  color: var(--color-border);
+  color: var(--color-muted);
   margin-top: 0.75rem;
 }
 

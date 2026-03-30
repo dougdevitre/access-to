@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
   <title>Access To — Open Tools for Human Rights</title>
   <meta name="description" content="Open-source AI-powered tools expanding access to justice, education, housing, services, peace, and safety. Built in Missouri, serving nationwide.">
   <meta property="og:title" content="Access To — Open Tools for Human Rights">
@@ -17,7 +18,7 @@
   <meta name="twitter:description" content="10 open-source projects across 6 pillars — closing the access gaps that matter most.">
   <meta name="twitter:image" content="https://dougdevitre.org/og-image.png">
   <link rel="canonical" href="https://dougdevitre.org/">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231A1A1A'/><text x='50' y='68' text-anchor='middle' font-size='52' font-family='Georgia,serif' fill='%23FAFAF7'>A</text></svg>">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
@@ -233,16 +234,18 @@
     </div>
   </section>
 
-  <!-- EMAIL CAPTURE -->
+  <!-- EMAIL CAPTURE (Mailchimp) -->
   <section class="email-capture reveal" id="updates">
     <div class="email-capture-inner">
       <h2>Stay in the loop</h2>
       <p>Get notified when new tools launch, existing projects hit milestones, or speaking events are announced.</p>
-      <div class="email-form" id="email-form">
-        <input type="email" placeholder="your@email.com" id="email-input" aria-label="Email address">
-        <button onclick="sendUpdate()">Get Updates</button>
-      </div>
-      <div class="email-success" id="email-success">&#10003; Check your email app — a pre-filled message is ready to send.</div>
+      <form action="https://us16.list-manage.com/subscribe/post?u=62137ae349&amp;id=090aae7d15" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="email-form" target="_blank" novalidate>
+        <input type="email" name="EMAIL" placeholder="your@email.com" id="mce-EMAIL" aria-label="Email address" required>
+        <!-- Bot honeypot field — do not remove -->
+        <div style="position:absolute;left:-5000px" aria-hidden="true"><input type="text" name="b_62137ae349_090aae7d15" tabindex="-1" value=""></div>
+        <button type="submit" name="subscribe" id="mc-embedded-subscribe">Get Updates</button>
+      </form>
+      <div class="email-success" id="email-success">&#10003; You're subscribed! Check your inbox to confirm.</div>
       <p class="email-privacy">No spam. Unsubscribe anytime. Updates only.</p>
     </div>
   </section>
@@ -424,30 +427,16 @@
     }, {threshold: 0.3});
     statsObserver.observe(document.getElementById('stats'));
 
-    // Email capture — sends mailto with the typed address included
-    function sendUpdate(){
-      var input = document.getElementById('email-input');
-      var email = input.value.trim();
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        input.focus();
-        input.style.borderColor = '#C44';
-        setTimeout(function(){ input.style.borderColor = ''; }, 2000);
-        return;
-      }
-      window.open(
-        'mailto:dougdevitre@gmail.com?subject=Access%20Projects%20—%20Add%20me%20to%20updates&body=Hi%20Doug,%0A%0APlease%20add%20' +
-        encodeURIComponent(email) +
-        '%20to%20the%20Access%20Projects%20update%20list.%0A%0AThanks!',
-        '_blank'
-      );
-      document.getElementById('email-form').classList.add('hidden');
-      document.getElementById('email-success').classList.add('show');
+    // Mailchimp form — show success message after submit
+    var mcForm = document.getElementById('mc-embedded-subscribe-form');
+    if (mcForm) {
+      mcForm.addEventListener('submit', function(){
+        setTimeout(function(){
+          mcForm.style.display = 'none';
+          document.getElementById('email-success').classList.add('show');
+        }, 300);
+      });
     }
-
-    // Enter key submits email
-    document.getElementById('email-input').addEventListener('keydown', function(e){
-      if (e.key === 'Enter') sendUpdate();
-    });
 
     // Copy to clipboard
     function copyCmd(btn, text) {

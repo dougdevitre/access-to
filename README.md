@@ -2,47 +2,47 @@
 
 <!-- HERO BANNER -->
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:1A1A1A,50:2D5A7B,100:5B7A3A&height=220&section=header&text=Access%20Projects&fontSize=48&fontColor=FAFAF7&fontAlignY=36&desc=Open-source%20AI%20tools%20closing%20the%20access%20gaps%20that%20matter%20most&descSize=16&descAlignY=56&descColor=CCCCCC&animation=fadeIn">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:FAFAF7,50:2D5A7B,100:5B7A3A&height=220&section=header&text=Access%20Projects&fontSize=48&fontColor=1A1A1A&fontAlignY=36&desc=Open-source%20AI%20tools%20closing%20the%20access%20gaps%20that%20matter%20most&descSize=16&descAlignY=56&descColor=333333&animation=fadeIn" width="100%" alt="Access Projects banner">
+  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:1A1A1A,50:2D5A7B,100:5B7A3A&height=220&section=header&text=Access%20To&fontSize=48&fontColor=FAFAF7&fontAlignY=36&desc=Open-source%20AI%20tools%20closing%20the%20access%20gaps%20that%20matter%20most&descSize=16&descAlignY=56&descColor=CCCCCC&animation=fadeIn">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:FAFAF7,50:2D5A7B,100:5B7A3A&height=220&section=header&text=Access%20To&fontSize=48&fontColor=1A1A1A&fontAlignY=36&desc=Open-source%20AI%20tools%20closing%20the%20access%20gaps%20that%20matter%20most&descSize=16&descAlignY=56&descColor=333333&animation=fadeIn" width="100%" alt="Access To banner">
 </picture>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-222?style=for-the-badge&logo=github&logoColor=white)](https://dougdevitre.github.io/access-projects/)
-[![Projects](https://img.shields.io/badge/Projects-9-5B7A3A?style=for-the-badge)](https://dougdevitre.github.io/access-projects/#pillars)
-[![Pillars](https://img.shields.io/badge/Pillars-5-2D5A7B?style=for-the-badge)](https://dougdevitre.github.io/access-projects/#pillars)
+[![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-222?style=for-the-badge&logo=github&logoColor=white)](https://dougdevitre.org/)
+[![Projects](https://img.shields.io/badge/Projects-10-5B7A3A?style=for-the-badge)](https://dougdevitre.org/#pillars)
+[![Pillars](https://img.shields.io/badge/Pillars-6-2D5A7B?style=for-the-badge)](https://dougdevitre.org/#pillars)
 
-**A growing collection of open-source projects organized around five pillars of human access — built for practitioners, advocates, and the people they serve.**
+**A growing collection of open-source projects organized around six pillars of human access — built for practitioners, advocates, and the people they serve.**
 
-[**View the Live Site**](https://dougdevitre.github.io/access-projects/) | [**Browse Projects**](https://dougdevitre.github.io/access-projects/#pillars) | [**How It Works**](https://dougdevitre.github.io/access-projects/#how-it-works)
+[**View the Live Site**](https://dougdevitre.org/) | [**Browse Projects**](https://dougdevitre.org/#pillars) | [**How It Works**](https://dougdevitre.org/#how-it-works)
 
 </div>
 
 ---
 
-## The Five Pillars
+## The Six Pillars
 
 <table>
 <tr>
-<td align="center" width="20%">
+<td align="center" width="16%">
 <img src="https://img.shields.io/badge/-%E2%9A%96%EF%B8%8F-C4785B?style=for-the-badge&logoColor=white" alt="Justice"><br>
 <strong>Justice</strong><br>
 <sub>Court prep, co-parenting<br>docs, expungement</sub><br><br>
 <a href="https://github.com/dougdevitre/cotrackpro"><img src="https://img.shields.io/badge/cotrackpro-222?style=flat-square&logo=github" alt="cotrackpro"></a><br>
 <a href="https://github.com/dougdevitre/expunge-skill"><img src="https://img.shields.io/badge/expunge--skill-222?style=flat-square&logo=github" alt="expunge-skill"></a>
 </td>
-<td align="center" width="20%">
+<td align="center" width="16%">
 <img src="https://img.shields.io/badge/-%F0%9F%93%9A-4A7C59?style=for-the-badge&logoColor=white" alt="Education"><br>
 <strong>Education</strong><br>
 <sub>K-12 standards, lesson<br>planning, teacher growth</sub><br><br>
 <a href="https://github.com/dougdevitre/doug"><img src="https://img.shields.io/badge/doug_(AI_Ed_Network)-222?style=flat-square&logo=github" alt="doug"></a>
 </td>
-<td align="center" width="20%">
+<td align="center" width="16%">
 <img src="https://img.shields.io/badge/-%F0%9F%8F%A0-2D5A7B?style=for-the-badge&logoColor=white" alt="Housing"><br>
 <strong>Housing</strong><br>
 <sub>PropTech intelligence,<br>Fair Housing-safe</sub><br><br>
 <a href="https://github.com/dougdevitre/better-broker"><img src="https://img.shields.io/badge/better--broker-222?style=flat-square&logo=github" alt="better-broker"></a>
 </td>
-<td align="center" width="20%">
+<td align="center" width="16%">
 <img src="https://img.shields.io/badge/-%E2%9A%99%EF%B8%8F-6B5B8A?style=for-the-badge&logoColor=white" alt="Services"><br>
 <strong>Services</strong><br>
 <sub>Workforce dev, WIOA,<br>startups</sub><br><br>
@@ -50,12 +50,18 @@
 <a href="https://github.com/dougdevitre/mostart"><img src="https://img.shields.io/badge/mostart-222?style=flat-square&logo=github" alt="mostart"></a><br>
 <a href="https://github.com/dougdevitre/jta-platform"><img src="https://img.shields.io/badge/jta--platform-222?style=flat-square&logo=github" alt="jta-platform"></a>
 </td>
-<td align="center" width="20%">
+<td align="center" width="16%">
 <img src="https://img.shields.io/badge/-%E2%98%AE%EF%B8%8F-7A6F5B?style=for-the-badge&logoColor=white" alt="Peace"><br>
 <strong>Peace</strong><br>
 <sub>De-escalation, safety<br>planning</sub><br><br>
 <a href="https://github.com/dougdevitre/cotrackpro-skills"><img src="https://img.shields.io/badge/cotrackpro--skills-222?style=flat-square&logo=github" alt="cotrackpro-skills"></a><br>
 <a href="https://github.com/dougdevitre/lois247"><img src="https://img.shields.io/badge/lois247-222?style=flat-square&logo=github" alt="lois247"></a>
+</td>
+<td align="center" width="16%">
+<img src="https://img.shields.io/badge/-%F0%9F%9B%A1%EF%B8%8F-B85C38?style=for-the-badge&logoColor=white" alt="Safety"><br>
+<strong>Safety</strong><br>
+<sub>Safety planning, risk<br>assessment, crisis resources</sub><br><br>
+<a href="https://github.com/dougdevitre/access-to-safety"><img src="https://img.shields.io/badge/access--to--safety-222?style=flat-square&logo=github" alt="access-to-safety"></a>
 </td>
 </tr>
 </table>
@@ -116,13 +122,17 @@ mindmap
       lois247
       De-escalation
       Safety Planning
+    Safety
+      access-to-safety
+      Risk Assessment
+      Crisis Resources
 ```
 
 <div align="center">
 
 | | | | |
 |:---:|:---:|:---:|:---:|
-| **5** | **9** | **400+** | **114** |
+| **6** | **10** | **400+** | **114** |
 | Pillars | Projects | Modules | MO Counties Served |
 
 </div>
@@ -140,6 +150,7 @@ graph TD
         H[housing.html]
         S[services.html]
         P[peace.html]
+        SF[safety.html]
         ERR[404.html]
     end
 
@@ -154,8 +165,8 @@ graph TD
         RB[robots.txt]
     end
 
-    IDX --> J & E & H & S & P
-    CSS -.-> IDX & J & E & H & S & P & ERR
+    IDX --> J & E & H & S & P & SF
+    CSS -.-> IDX & J & E & H & S & P & SF & ERR
 
     style IDX fill:#2D5A7B,stroke:#2D5A7B,color:#fff
     style J fill:#C4785B,stroke:#C4785B,color:#fff
@@ -163,6 +174,7 @@ graph TD
     style H fill:#2D5A7B,stroke:#2D5A7B,color:#fff
     style S fill:#6B5B8A,stroke:#6B5B8A,color:#fff
     style P fill:#7A6F5B,stroke:#7A6F5B,color:#fff
+    style SF fill:#B85C38,stroke:#B85C38,color:#fff
     style ERR fill:#888,stroke:#888,color:#fff
     style CSS fill:#333,stroke:#333,color:#fff
     style OG fill:#333,stroke:#333,color:#fff

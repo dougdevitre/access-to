@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dougdevitre.github.io/access-projects/sitemap.xml
+Sitemap: https://dougdevitre.org/sitemap.xml

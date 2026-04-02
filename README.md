@@ -19,41 +19,125 @@
 
 ---
 
+## Ecosystem Overview
+
+`access-to` is the central hub that connects a family of purpose-built AI tools. Each child repository is a standalone Claude Skill targeting a specific domain of human access.
+
+```mermaid
+flowchart TB
+    HUB["<b>access-to</b><br/>Central Hub & Landing Site<br/><i>dougdevitre.org</i>"]
+
+    HUB --> HEALTH["<b>access-to-health</b><br/>Healthcare navigation,<br/>benefits enrollment,<br/>Medicaid/Medicare guidance"]
+    HUB --> EDU["<b>access-to-education</b><br/>K-12 standards alignment,<br/>lesson planning,<br/>teacher growth tools"]
+    HUB --> SAFETY["<b>access-to-safety</b><br/>Safety planning,<br/>risk assessment,<br/>crisis resources"]
+    HUB --> HOUSING["<b>access-to-housing</b><br/>PropTech intelligence,<br/>market analysis,<br/>Fair Housing compliance"]
+    HUB --> SERVICES["<b>access-to-services</b><br/>Social services navigation,<br/>benefits matching,<br/>community resources"]
+    HUB --> JOBS["<b>access-to-jobs</b><br/>Workforce development,<br/>WIOA navigation,<br/>job matching"]
+    HUB --> MOSTART["<b>mo-start</b><br/>Missouri startup guide,<br/>entrepreneur support,<br/>business launch tools"]
+
+    style HUB fill:#2D5A7B,stroke:#1A1A1A,color:#fff,stroke-width:3px
+    style HEALTH fill:#D4585B,stroke:#1A1A1A,color:#fff
+    style EDU fill:#4A7C59,stroke:#1A1A1A,color:#fff
+    style SAFETY fill:#B85C38,stroke:#1A1A1A,color:#fff
+    style HOUSING fill:#2D7A9B,stroke:#1A1A1A,color:#fff
+    style SERVICES fill:#6B5B8A,stroke:#1A1A1A,color:#fff
+    style JOBS fill:#7A6F5B,stroke:#1A1A1A,color:#fff
+    style MOSTART fill:#C4785B,stroke:#1A1A1A,color:#fff
+```
+
+---
+
+## How the Pieces Connect
+
+Each repository is independent but shares a common architecture. The hub site links users to the right tool, and each tool follows the same Claude Skill pattern.
+
+```mermaid
+flowchart LR
+    subgraph USER ["User Journey"]
+        direction LR
+        U1["Visit dougdevitre.org"] --> U2["Choose a pillar"] --> U3["Clone the repo"] --> U4["Upload SKILL.md<br/>to Claude Project"] --> U5["Start a conversation"]
+    end
+
+    subgraph REPOS ["Repository Ecosystem"]
+        direction TB
+        R1["access-to-health"]
+        R2["access-to-education"]
+        R3["access-to-safety"]
+        R4["access-to-housing"]
+        R5["access-to-services"]
+        R6["access-to-jobs"]
+        R7["mo-start"]
+    end
+
+    U2 --> REPOS
+
+    style U1 fill:#2D5A7B,stroke:#2D5A7B,color:#fff
+    style U2 fill:#2D5A7B,stroke:#2D5A7B,color:#fff
+    style U3 fill:#5B7A3A,stroke:#5B7A3A,color:#fff
+    style U4 fill:#5B7A3A,stroke:#5B7A3A,color:#fff
+    style U5 fill:#C4785B,stroke:#C4785B,color:#fff
+    style R1 fill:#D4585B,stroke:#D4585B,color:#fff
+    style R2 fill:#4A7C59,stroke:#4A7C59,color:#fff
+    style R3 fill:#B85C38,stroke:#B85C38,color:#fff
+    style R4 fill:#2D7A9B,stroke:#2D7A9B,color:#fff
+    style R5 fill:#6B5B8A,stroke:#6B5B8A,color:#fff
+    style R6 fill:#7A6F5B,stroke:#7A6F5B,color:#fff
+    style R7 fill:#C4785B,stroke:#C4785B,color:#fff
+```
+
+---
+
 ## The Six Pillars
+
+```mermaid
+mindmap
+  root((Access To))
+    Health
+      access-to-health
+      Healthcare navigation
+      Benefits enrollment
+      Medicaid & Medicare
+    Education
+      access-to-education
+      K-12 Standards
+      Lesson Planning
+      Teacher Growth
+    Safety
+      access-to-safety
+      Risk Assessment
+      Crisis Resources
+      Protection Orders
+    Housing
+      access-to-housing
+      PropTech
+      Market Analysis
+      Fair Housing
+    Services
+      access-to-services
+      Social Services
+      Benefits Matching
+      Community Resources
+    Jobs & Startups
+      access-to-jobs
+      WIOA Navigation
+      Workforce Dev
+      mo-start
+      Entrepreneur Support
+```
 
 <table>
 <tr>
 <td align="center" width="16%">
-<img src="https://img.shields.io/badge/-%E2%9A%96%EF%B8%8F-C4785B?style=for-the-badge&logoColor=white" alt="Justice"><br>
-<strong>Justice</strong><br>
-<sub>Court prep, co-parenting<br>docs</sub><br><br>
-<a href="https://github.com/dougdevitre/cotrackpro"><img src="https://img.shields.io/badge/cotrackpro-222?style=flat-square&logo=github" alt="cotrackpro"></a>
+<img src="https://img.shields.io/badge/-%E2%9D%A4%EF%B8%8F-D4585B?style=for-the-badge&logoColor=white" alt="Health"><br>
+<strong>Health</strong><br>
+<sub>Healthcare navigation,<br>benefits, Medicaid</sub><br><br>
+<a href="https://github.com/dougdevitre/access-to-health"><img src="https://img.shields.io/badge/access--to--health-222?style=flat-square&logo=github" alt="access-to-health"></a>
 </td>
 <td align="center" width="16%">
 <img src="https://img.shields.io/badge/-%F0%9F%93%9A-4A7C59?style=for-the-badge&logoColor=white" alt="Education"><br>
 <strong>Education</strong><br>
 <sub>K-12 standards, lesson<br>planning, teacher growth</sub><br><br>
-<a href="https://github.com/dougdevitre/doug"><img src="https://img.shields.io/badge/doug_(AI_Ed_Network)-222?style=flat-square&logo=github" alt="doug"></a>
-</td>
-<td align="center" width="16%">
-<img src="https://img.shields.io/badge/-%F0%9F%8F%A0-2D5A7B?style=for-the-badge&logoColor=white" alt="Housing"><br>
-<strong>Housing</strong><br>
-<sub>PropTech intelligence,<br>Fair Housing-safe</sub><br><br>
-<a href="https://github.com/dougdevitre/access-to-housing"><img src="https://img.shields.io/badge/access--to--housing-222?style=flat-square&logo=github" alt="access-to-housing"></a>
-</td>
-<td align="center" width="16%">
-<img src="https://img.shields.io/badge/-%E2%9A%99%EF%B8%8F-6B5B8A?style=for-the-badge&logoColor=white" alt="Services"><br>
-<strong>Services</strong><br>
-<sub>Workforce dev, WIOA,<br>startups</sub><br><br>
-<a href="https://github.com/dougdevitre/mo-jobs"><img src="https://img.shields.io/badge/mo--jobs-222?style=flat-square&logo=github" alt="mo-jobs"></a><br>
-<a href="https://github.com/dougdevitre/mostart"><img src="https://img.shields.io/badge/mostart-222?style=flat-square&logo=github" alt="mostart"></a><br>
-<a href="https://github.com/dougdevitre/jta-platform"><img src="https://img.shields.io/badge/jta--platform-222?style=flat-square&logo=github" alt="jta-platform"></a>
-</td>
-<td align="center" width="16%">
-<img src="https://img.shields.io/badge/-%E2%98%AE%EF%B8%8F-7A6F5B?style=for-the-badge&logoColor=white" alt="Peace"><br>
-<strong>Peace</strong><br>
-<sub>De-escalation, safety<br>planning</sub><br><br>
-<a href="https://github.com/dougdevitre/cotrackpro-skills"><img src="https://img.shields.io/badge/cotrackpro--skills-222?style=flat-square&logo=github" alt="cotrackpro-skills"></a>
+<a href="https://github.com/dougdevitre/access-to-education"><img src="https://img.shields.io/badge/access--to--education-222?style=flat-square&logo=github" alt="access-to-education"></a>
 </td>
 <td align="center" width="16%">
 <img src="https://img.shields.io/badge/-%F0%9F%9B%A1%EF%B8%8F-B85C38?style=for-the-badge&logoColor=white" alt="Safety"><br>
@@ -61,12 +145,113 @@
 <sub>Safety planning, risk<br>assessment, crisis resources</sub><br><br>
 <a href="https://github.com/dougdevitre/access-to-safety"><img src="https://img.shields.io/badge/access--to--safety-222?style=flat-square&logo=github" alt="access-to-safety"></a>
 </td>
+<td align="center" width="16%">
+<img src="https://img.shields.io/badge/-%F0%9F%8F%A0-2D7A9B?style=for-the-badge&logoColor=white" alt="Housing"><br>
+<strong>Housing</strong><br>
+<sub>PropTech intelligence,<br>Fair Housing-safe</sub><br><br>
+<a href="https://github.com/dougdevitre/access-to-housing"><img src="https://img.shields.io/badge/access--to--housing-222?style=flat-square&logo=github" alt="access-to-housing"></a>
+</td>
+<td align="center" width="16%">
+<img src="https://img.shields.io/badge/-%E2%9A%99%EF%B8%8F-6B5B8A?style=for-the-badge&logoColor=white" alt="Services"><br>
+<strong>Services</strong><br>
+<sub>Social services,<br>benefits matching</sub><br><br>
+<a href="https://github.com/dougdevitre/access-to-services"><img src="https://img.shields.io/badge/access--to--services-222?style=flat-square&logo=github" alt="access-to-services"></a>
+</td>
+<td align="center" width="16%">
+<img src="https://img.shields.io/badge/-%F0%9F%92%BC-7A6F5B?style=for-the-badge&logoColor=white" alt="Jobs"><br>
+<strong>Jobs</strong><br>
+<sub>Workforce dev, WIOA,<br>job matching</sub><br><br>
+<a href="https://github.com/dougdevitre/access-to-jobs"><img src="https://img.shields.io/badge/access--to--jobs-222?style=flat-square&logo=github" alt="access-to-jobs"></a><br>
+<a href="https://github.com/dougdevitre/mo-start"><img src="https://img.shields.io/badge/mo--start-222?style=flat-square&logo=github" alt="mo-start"></a>
+</td>
 </tr>
 </table>
 
 ---
 
-## How It Works
+## Data Flow Architecture
+
+Each child project follows the same pattern: a `SKILL.md` file teaches Claude a specialized workflow. The hub site serves as the discovery layer.
+
+```mermaid
+flowchart TB
+    subgraph HUB ["access-to (Hub Site)"]
+        direction LR
+        LP["Landing Page<br/><i>index.html</i>"]
+        PP["Pillar Pages<br/><i>health, education, safety,<br/>housing, services, jobs</i>"]
+        LP --> PP
+    end
+
+    subgraph SKILLS ["Claude Skills (Child Repos)"]
+        direction TB
+        S1["access-to-health<br/><code>SKILL.md</code>"]
+        S2["access-to-education<br/><code>SKILL.md</code>"]
+        S3["access-to-safety<br/><code>SKILL.md</code>"]
+        S4["access-to-housing<br/><code>SKILL.md</code>"]
+        S5["access-to-services<br/><code>SKILL.md</code>"]
+        S6["access-to-jobs<br/><code>SKILL.md</code>"]
+        S7["mo-start<br/><code>SKILL.md</code>"]
+    end
+
+    subgraph CLAUDE ["Claude.ai"]
+        direction LR
+        CP["Claude Project"]
+        CONV["Conversation"]
+        CP --> CONV
+    end
+
+    PP -- "links to repos" --> SKILLS
+    SKILLS -- "SKILL.md uploaded as<br/>project knowledge" --> CP
+
+    style LP fill:#2D5A7B,stroke:#1A1A1A,color:#fff
+    style PP fill:#2D5A7B,stroke:#1A1A1A,color:#fff
+    style CP fill:#5B7A3A,stroke:#1A1A1A,color:#fff
+    style CONV fill:#5B7A3A,stroke:#1A1A1A,color:#fff
+    style S1 fill:#D4585B,stroke:#D4585B,color:#fff
+    style S2 fill:#4A7C59,stroke:#4A7C59,color:#fff
+    style S3 fill:#B85C38,stroke:#B85C38,color:#fff
+    style S4 fill:#2D7A9B,stroke:#2D7A9B,color:#fff
+    style S5 fill:#6B5B8A,stroke:#6B5B8A,color:#fff
+    style S6 fill:#7A6F5B,stroke:#7A6F5B,color:#fff
+    style S7 fill:#C4785B,stroke:#C4785B,color:#fff
+```
+
+---
+
+## Cross-Project Relationships
+
+The child projects are independent but complementary. A person navigating one access gap often faces others simultaneously.
+
+```mermaid
+flowchart LR
+    HEALTH["access-to-health<br/>Healthcare"]
+    EDU["access-to-education<br/>Education"]
+    SAFETY["access-to-safety<br/>Safety"]
+    HOUSING["access-to-housing<br/>Housing"]
+    SERVICES["access-to-services<br/>Services"]
+    JOBS["access-to-jobs<br/>Jobs"]
+    MOSTART["mo-start<br/>Startups"]
+
+    SAFETY <-- "Survivors often need<br/>housing support" --> HOUSING
+    SAFETY <-- "Safety plans may<br/>include healthcare" --> HEALTH
+    JOBS <-- "Job seekers may<br/>need services" --> SERVICES
+    JOBS <-- "Workforce readiness<br/>includes education" --> EDU
+    MOSTART <-- "Startups connect<br/>to job creation" --> JOBS
+    HEALTH <-- "Health coverage tied<br/>to benefits navigation" --> SERVICES
+    HOUSING <-- "Stable housing enables<br/>workforce participation" --> JOBS
+
+    style HEALTH fill:#D4585B,stroke:#1A1A1A,color:#fff
+    style EDU fill:#4A7C59,stroke:#1A1A1A,color:#fff
+    style SAFETY fill:#B85C38,stroke:#1A1A1A,color:#fff
+    style HOUSING fill:#2D7A9B,stroke:#1A1A1A,color:#fff
+    style SERVICES fill:#6B5B8A,stroke:#6B5B8A,color:#fff
+    style JOBS fill:#7A6F5B,stroke:#1A1A1A,color:#fff
+    style MOSTART fill:#C4785B,stroke:#1A1A1A,color:#fff
+```
+
+---
+
+## Quick Start
 
 These projects are **Claude Skills** — structured AI prompt systems that run inside [Claude.ai](https://claude.ai). No coding required.
 
@@ -81,57 +266,14 @@ flowchart LR
 
 ```bash
 # 1. Clone any project
-git clone https://github.com/dougdevitre/cotrackpro.git
+git clone https://github.com/dougdevitre/access-to-health.git
+# or: access-to-education, access-to-safety, access-to-housing,
+#     access-to-services, access-to-jobs, mo-start
 
 # 2. Open Claude.ai -> Create a Project -> Upload SKILL.md as project knowledge
 
 # 3. Start a conversation — the skill guides you from there
 ```
-
-Each skill's `SKILL.md` file teaches Claude a specialized workflow — from generating court-ready documents to navigating workforce programs across all 114 Missouri counties.
-
----
-
-## Impact at a Glance
-
-```mermaid
-mindmap
-  root((Access<br/>Projects))
-    Justice
-      cotrackpro
-      Court prep
-    Education
-      doug
-      K-12 Standards
-      Lesson Planning
-    Housing
-      access-to-housing
-      PropTech
-      Fair Housing
-    Services
-      mo-jobs
-      mostart
-      jta-platform
-      Social Services
-      WIOA Navigation
-    Peace
-      cotrackpro-skills
-      De-escalation
-      Safety Planning
-    Safety
-      access-to-safety
-      Risk Assessment
-      Crisis Resources
-```
-
-<div align="center">
-
-| | | | |
-|:---:|:---:|:---:|:---:|
-| **6** | **7** | **400+** | **114** |
-| Pillars | Projects | Modules | MO Counties Served |
-
-</div>
 
 ---
 
@@ -141,12 +283,12 @@ mindmap
 graph TD
     subgraph Pages
         IDX[index.html<br/><i>Landing page</i>]
-        J[justice.html]
+        H[health.html]
         E[education.html]
-        H[housing.html]
-        S[services.html]
-        P[peace.html]
         SF[safety.html]
+        HO[housing.html]
+        S[services.html]
+        J[jobs.html]
         ERR[404.html]
     end
 
@@ -161,16 +303,16 @@ graph TD
         RB[robots.txt]
     end
 
-    IDX --> J & E & H & S & P & SF
-    CSS -.-> IDX & J & E & H & S & P & SF & ERR
+    IDX --> H & E & SF & HO & S & J
+    CSS -.-> IDX & H & E & SF & HO & S & J & ERR
 
     style IDX fill:#2D5A7B,stroke:#2D5A7B,color:#fff
-    style J fill:#C4785B,stroke:#C4785B,color:#fff
+    style H fill:#D4585B,stroke:#D4585B,color:#fff
     style E fill:#4A7C59,stroke:#4A7C59,color:#fff
-    style H fill:#2D5A7B,stroke:#2D5A7B,color:#fff
-    style S fill:#6B5B8A,stroke:#6B5B8A,color:#fff
-    style P fill:#7A6F5B,stroke:#7A6F5B,color:#fff
     style SF fill:#B85C38,stroke:#B85C38,color:#fff
+    style HO fill:#2D7A9B,stroke:#2D7A9B,color:#fff
+    style S fill:#6B5B8A,stroke:#6B5B8A,color:#fff
+    style J fill:#7A6F5B,stroke:#7A6F5B,color:#fff
     style ERR fill:#888,stroke:#888,color:#fff
     style CSS fill:#333,stroke:#333,color:#fff
     style OG fill:#333,stroke:#333,color:#fff
@@ -231,6 +373,19 @@ graph TD
 </td>
 </tr>
 </table>
+
+---
+
+## Impact at a Glance
+
+<div align="center">
+
+| | | | |
+|:---:|:---:|:---:|:---:|
+| **6** | **7** | **400+** | **114** |
+| Pillars | Projects | Modules | MO Counties Served |
+
+</div>
 
 ---
 

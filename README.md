@@ -30,6 +30,7 @@
 - [Cross-Project Relationships](#cross-project-relationships)
 - [Data Flow Architecture](#data-flow-architecture)
 - [FAQ](#faq)
+- [What People Are Saying](#what-people-are-saying)
 - [Impact at a Glance](#impact-at-a-glance)
 - [Contributing](#contributing)
 - [Site Architecture](#site-architecture)
@@ -64,6 +65,8 @@ git clone https://github.com/dougdevitre/access-to-health.git
 ```
 
 Each skill's `SKILL.md` file teaches Claude a specialized workflow — from navigating healthcare benefits to matching job seekers with WIOA programs across all 114 Missouri counties.
+
+> **Want to see it in action?** A short video walkthrough is coming soon. [Watch this space](https://dougdevitre.org) or [subscribe for updates](mailto:dougdevitre@gmail.com?subject=Access%20To%20Updates).
 
 ---
 
@@ -305,6 +308,49 @@ They're independent but complementary. A person navigating one access gap often 
 
 ---
 
+## What People Are Saying
+
+<table>
+<tr>
+<td width="50%">
+
+> "I used to spend an entire afternoon matching clients to WIOA programs. With access-to-jobs, I can do it in one conversation."
+>
+> — **Workforce development specialist**, Missouri Job Center
+
+</td>
+<td width="50%">
+
+> "The safety planning tool helped me walk a client through every step — shelter contacts, protective orders, tech safety — without missing anything."
+>
+> — **Domestic violence advocate**, nonprofit shelter
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+> "I aligned a full semester of science lessons to Missouri standards in under an hour. It would have taken me a week."
+>
+> — **K-8 curriculum director**, Missouri public school
+
+</td>
+<td width="50%">
+
+> "Finally — a real estate tool that understands Fair Housing compliance isn't optional. It's built into every response."
+>
+> — **Real estate broker**, St. Louis metro area
+
+</td>
+</tr>
+</table>
+
+<div align="center">
+<sub>Have a story to share? <a href="mailto:dougdevitre@gmail.com?subject=Access%20To%20Testimonial">We'd love to hear it.</a></sub>
+</div>
+
+---
+
 ## Impact at a Glance
 
 <div align="center">
@@ -455,11 +501,43 @@ graph TD
 
 <div align="center">
 
-**These tools are free. Building them isn't.**
+**These tools are free and open source. Building them isn't.**
 
-[![Fund the Mission](https://img.shields.io/badge/Fund_the_Mission-Venmo-008CFF?style=for-the-badge&logo=venmo&logoColor=white)](https://venmo.com/dougdevitre)
+[![Donate Any Amount](https://img.shields.io/badge/Donate_Any_Amount-Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/14AcN5gBJ6rRfm07Kz2cg0c)
+[![Fund via Venmo](https://img.shields.io/badge/Venmo-008CFF?style=for-the-badge&logo=venmo&logoColor=white)](https://venmo.com/dougdevitre)
 
-100% goes to development. No overhead. Receipt on request.
+</div>
+
+Your support funds infrastructure, development, and keeping core tools free for families and advocates.
+
+### How funds are used
+
+| Area | What it covers |
+|:-----|:---------------|
+| **Infrastructure** | Hosting, CI/CD, domains, and services |
+| **Development** | New features, security patches, platform stability |
+| **Access** | Keeping core tools free for families and advocates |
+| **Open Source** | Maintaining the Access To civic tech initiative |
+
+### Sponsor tiers
+
+| Tier | Amount | What you get | |
+|:-----|:-------|:-------------|:--|
+| **Seed** | $49 | Name in [`SPONSORS.md`](./SPONSORS.md) | [**Sponsor**](https://buy.stripe.com/7sYbJ1719eYngq4d4T2cg03) |
+| **Sprout** | $99 | Seed + quarterly project update | [**Sponsor**](https://buy.stripe.com/28EeVdgBJ17x7Ty4yn2cg05) |
+| **Supporter** | $149 | Sprout + logo in README | [**Sponsor**](https://buy.stripe.com/bJe5kDbhp3fF2zed4T2cg04) |
+| **Advocate** | $250 | Supporter + logo on docs site | [**Sponsor**](https://buy.stripe.com/00wbJ1719cQf7Ty2qf2cg06) |
+| **Champion** | $500 | Advocate + early feature access | [**Sponsor**](https://buy.stripe.com/fZu9AT4T1g2rddS7Kz2cg07) |
+| **Builder** | $750 | Champion + advisory input | [**Sponsor**](https://buy.stripe.com/28EdR94T19E36Pu9SH2cg08) |
+| **Partner** | $1,000 | Builder + dedicated support channel | [**Sponsor**](https://buy.stripe.com/14AeVdfxF8zZfm03uj2cg09) |
+| **Sustainer** | $2,500 | Partner + co-branded case study | [**Sponsor**](https://buy.stripe.com/fZu28radleYn3Difd12cg0a) |
+| **Visionary** | $5,000 | Sustainer + founding sponsor recognition | [**Sponsor**](https://buy.stripe.com/4gM00jetBeYnddS6Gv2cg0b) |
+
+<div align="center">
+
+*Want to sponsor via invoice, grant, or partnership? Contact [dougdevitre@gmail.com](mailto:dougdevitre@gmail.com).*
+
+See our [current sponsors](./SPONSORS.md).
 
 </div>
 

@@ -169,6 +169,20 @@ mindmap
 
 ---
 
+## Project Directory
+
+| Repository | Pillar | Scope | Description | Type |
+|:-----------|:-------|:------|:------------|:-----|
+| [access-to-health](https://github.com/dougdevitre/access-to-health) | Health | Nationwide | Healthcare navigation, benefits enrollment, Medicaid/Medicare guidance | Claude Skill |
+| [access-to-education](https://github.com/dougdevitre/access-to-education) | Education | Missouri K-12 | Standards alignment, lesson planning, teacher growth tools | Claude Skill |
+| [access-to-safety](https://github.com/dougdevitre/access-to-safety) | Safety | Nationwide | Safety planning, risk assessment, crisis resources, protection orders | Claude Skill |
+| [access-to-housing](https://github.com/dougdevitre/access-to-housing) | Housing | Nationwide | PropTech intelligence, market analysis, Fair Housing compliance | Claude Skill |
+| [access-to-services](https://github.com/dougdevitre/access-to-services) | Services | Nationwide | Social services navigation, benefits matching, community resources | Claude Skill |
+| [access-to-jobs](https://github.com/dougdevitre/access-to-jobs) | Jobs | Missouri | Workforce development, WIOA navigation, job matching across 114 counties | Claude Skill |
+| [mo-start](https://github.com/dougdevitre/mo-start) | Jobs | Missouri | Startup guide, entrepreneur support, business launch tools | Claude Skill |
+
+---
+
 ## Data Flow Architecture
 
 Each child project follows the same pattern: a `SKILL.md` file teaches Claude a specialized workflow. The hub site serves as the discovery layer.
@@ -394,19 +408,23 @@ graph TD
 Issues, PRs, and feature ideas are welcome.
 
 ```mermaid
-gitgraph
-    commit id: "Fork repo"
-    branch feature/your-idea
-    commit id: "Make changes"
-    commit id: "Add tests"
-    checkout main
-    merge feature/your-idea id: "Submit PR"
+flowchart LR
+    F["<b>1. Fork</b><br/>Fork the repo"] --> B["<b>2. Branch</b><br/>Create feature branch"] --> C["<b>3. Code</b><br/>Make your changes"] --> PR["<b>4. PR</b><br/>Submit pull request"]
+
+    style F fill:#2D5A7B,stroke:#2D5A7B,color:#fff
+    style B fill:#5B7A3A,stroke:#5B7A3A,color:#fff
+    style C fill:#5B7A3A,stroke:#5B7A3A,color:#fff
+    style PR fill:#C4785B,stroke:#C4785B,color:#fff
 ```
 
-1. Fork this repository
-2. Create a feature branch (`git checkout -b feature/your-idea`)
-3. Make your changes
-4. Submit a pull request
+```bash
+git clone https://github.com/dougdevitre/access-to.git
+cd access-to
+git checkout -b feature/your-idea
+# make changes, then...
+git push origin feature/your-idea
+# open a pull request on GitHub
+```
 
 For individual project contributions, see each project repo's own guidelines.
 

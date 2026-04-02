@@ -23,6 +23,7 @@
 
 - [Quick Start](#quick-start)
 - [Who Is This For?](#who-is-this-for)
+- [See It In Action](#see-it-in-action)
 - [Ecosystem Overview](#ecosystem-overview)
 - [The Six Pillars](#the-six-pillars)
 - [Project Directory](#project-directory)
@@ -33,6 +34,7 @@
 - [Contributing](#contributing)
 - [Site Architecture](#site-architecture)
 - [Support](#support)
+- [Built With](#built-with)
 - [Contact](#contact)
 
 ---
@@ -79,6 +81,18 @@ Each skill's `SKILL.md` file teaches Claude a specialized workflow — from navi
 
 ---
 
+## See It In Action
+
+> **A caseworker in Greene County** used [access-to-jobs](https://github.com/dougdevitre/access-to-jobs) to match a single mother with WIOA-funded childcare assistance and CDL training — navigating eligibility across three different programs in a single conversation.
+
+> **A K-8 curriculum director** used [access-to-education](https://github.com/dougdevitre/access-to-education) to align an entire semester of science lessons to Missouri Learning Standards in under an hour, with differentiated activities for each grade level.
+
+> **A domestic violence advocate** used [access-to-safety](https://github.com/dougdevitre/access-to-safety) to build a personalized safety plan for a client, including local shelter contacts, protective order steps, and a technology safety checklist — all generated in one session.
+
+Each scenario follows the same pattern: clone the repo, upload `SKILL.md` to a Claude Project, and start a conversation. Claude handles the domain expertise; you bring the context.
+
+---
+
 ## Ecosystem Overview
 
 `access-to` is the central hub that connects a family of purpose-built AI tools. Each child repository is a standalone Claude Skill targeting a specific domain of human access.
@@ -111,40 +125,42 @@ flowchart TB
 
 <table>
 <tr>
-<td align="center" width="16%">
+<td align="center" width="33%">
 <img src="https://img.shields.io/badge/-%E2%9D%A4%EF%B8%8F-D4585B?style=for-the-badge&logoColor=white" alt="Health"><br>
 <strong>Health</strong><br>
-<sub>Healthcare navigation,<br>benefits, Medicaid</sub><br><br>
+<sub>Healthcare navigation, benefits, Medicaid</sub><br><br>
 <a href="https://github.com/dougdevitre/access-to-health"><img src="https://img.shields.io/badge/access--to--health-222?style=flat-square&logo=github" alt="access-to-health"></a>
 </td>
-<td align="center" width="16%">
+<td align="center" width="33%">
 <img src="https://img.shields.io/badge/-%F0%9F%93%9A-4A7C59?style=for-the-badge&logoColor=white" alt="Education"><br>
 <strong>Education</strong><br>
-<sub>K-12 standards, lesson<br>planning, teacher growth</sub><br><br>
+<sub>K-12 standards, lesson planning, teacher growth</sub><br><br>
 <a href="https://github.com/dougdevitre/access-to-education"><img src="https://img.shields.io/badge/access--to--education-222?style=flat-square&logo=github" alt="access-to-education"></a>
 </td>
-<td align="center" width="16%">
+<td align="center" width="33%">
 <img src="https://img.shields.io/badge/-%F0%9F%9B%A1%EF%B8%8F-B85C38?style=for-the-badge&logoColor=white" alt="Safety"><br>
 <strong>Safety</strong><br>
-<sub>Safety planning, risk<br>assessment, crisis resources</sub><br><br>
+<sub>Safety planning, risk assessment, crisis resources</sub><br><br>
 <a href="https://github.com/dougdevitre/access-to-safety"><img src="https://img.shields.io/badge/access--to--safety-222?style=flat-square&logo=github" alt="access-to-safety"></a>
 </td>
-<td align="center" width="16%">
+</tr>
+<tr>
+<td align="center" width="33%">
 <img src="https://img.shields.io/badge/-%F0%9F%8F%A0-2D7A9B?style=for-the-badge&logoColor=white" alt="Housing"><br>
 <strong>Housing</strong><br>
-<sub>PropTech intelligence,<br>Fair Housing-safe</sub><br><br>
+<sub>PropTech intelligence, Fair Housing-safe</sub><br><br>
 <a href="https://github.com/dougdevitre/access-to-housing"><img src="https://img.shields.io/badge/access--to--housing-222?style=flat-square&logo=github" alt="access-to-housing"></a>
 </td>
-<td align="center" width="16%">
+<td align="center" width="33%">
 <img src="https://img.shields.io/badge/-%E2%9A%99%EF%B8%8F-6B5B8A?style=for-the-badge&logoColor=white" alt="Services"><br>
 <strong>Services</strong><br>
-<sub>Social services,<br>benefits matching</sub><br><br>
+<sub>Social services, benefits matching</sub><br><br>
 <a href="https://github.com/dougdevitre/access-to-services"><img src="https://img.shields.io/badge/access--to--services-222?style=flat-square&logo=github" alt="access-to-services"></a>
 </td>
-<td align="center" width="16%">
+<td align="center" width="33%">
 <img src="https://img.shields.io/badge/-%F0%9F%92%BC-7A6F5B?style=for-the-badge&logoColor=white" alt="Jobs"><br>
 <strong>Jobs</strong><br>
-<sub>Workforce dev, WIOA,<br>job matching</sub><br><br>
+<sub>Workforce dev, WIOA, job matching</sub><br><br>
 <a href="https://github.com/dougdevitre/access-to-jobs"><img src="https://img.shields.io/badge/access--to--jobs-222?style=flat-square&logo=github" alt="access-to-jobs"></a><br>
 <a href="https://github.com/dougdevitre/mo-start"><img src="https://img.shields.io/badge/mo--start-222?style=flat-square&logo=github" alt="mo-start"></a>
 </td>
@@ -193,7 +209,7 @@ flowchart LR
     style EDU fill:#4A7C59,stroke:#1A1A1A,color:#fff
     style SAFETY fill:#B85C38,stroke:#1A1A1A,color:#fff
     style HOUSING fill:#2D7A9B,stroke:#1A1A1A,color:#fff
-    style SERVICES fill:#6B5B8A,stroke:#6B5B8A,color:#fff
+    style SERVICES fill:#6B5B8A,stroke:#1A1A1A,color:#fff
     style JOBS fill:#7A6F5B,stroke:#1A1A1A,color:#fff
     style MOSTART fill:#C4785B,stroke:#1A1A1A,color:#fff
 ```
@@ -325,7 +341,9 @@ git push origin feature/your-idea
 # open a pull request on GitHub
 ```
 
-For individual project contributions, see each project repo's own guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines. For individual project contributions, see each child repo's own guidelines.
+
+This project follows our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ---
 
@@ -458,6 +476,19 @@ Based in the St. Louis metro area. Focused on family law technology, workforce d
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/dougdevitre)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/dougdevitre)
 [![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:dougdevitre@gmail.com)
+
+</div>
+
+---
+
+## Built With
+
+<div align="center">
+
+[![Claude](https://img.shields.io/badge/Powered_by-Claude_by_Anthropic-191919?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
+[![GitHub Pages](https://img.shields.io/badge/Hosted_on-GitHub_Pages-222?style=for-the-badge&logo=github&logoColor=white)](https://pages.github.com)
+
+Every Access To project runs as a [Claude Skill](https://claude.ai) — structured AI prompts that turn Claude into a domain-specific assistant. No API keys, no backends, no infrastructure to maintain.
 
 </div>
 

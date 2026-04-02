@@ -1,0 +1,8 @@
+# CoTrackPro — Funding Configuration
+# Place this file in: cotrackpro/.github repository (org-level)
+# Or per-repo at: .github/FUNDING.yml
+#
+# This adds the ❤️ Sponsor button to the top of every repo in the org.
+
+custom:
+  - https://buy.stripe.com/14AcN5gBJ6rRfm07Kz2cg0c

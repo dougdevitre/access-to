@@ -1,0 +1,82 @@
+name: Copilot Issue Triage
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Auto-label by pillar keywords
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          CONTENT="$ISSUE_TITLE $ISSUE_BODY"
+          CONTENT_LOWER=$(echo "$CONTENT" | tr '[:upper:]' '[:lower:]')
+
+          LABELS_TO_ADD=()
+
+          # Detect pillar keywords
+          if echo "$CONTENT_LOWER" | grep -qiE 'housing|rent|tenant|landlord|fair housing|proptech'; then
+            LABELS_TO_ADD+=("pillar:housing")
+          fi
+          if echo "$CONTENT_LOWER" | grep -qiE 'job|workforce|wioa|employment|career'; then
+            LABELS_TO_ADD+=("pillar:jobs")
+          fi
+          if echo "$CONTENT_LOWER" | grep -qiE 'health|medical|medicaid|medicare|healthcare'; then
+            LABELS_TO_ADD+=("pillar:health")
+          fi
+          if echo "$CONTENT_LOWER" | grep -qiE 'education|teacher|lesson|curriculum|k-12'; then
+            LABELS_TO_ADD+=("pillar:education")
+          fi
+          if echo "$CONTENT_LOWER" | grep -qiE 'service|benefits|social work|case management'; then
+            LABELS_TO_ADD+=("pillar:services")
+          fi
+          if echo "$CONTENT_LOWER" | grep -qiE 'safety|crisis|protective order|domestic|violence|risk assessment'; then
+            LABELS_TO_ADD+=("pillar:safety")
+          fi
+          if echo "$CONTENT_LOWER" | grep -qiE 'business|startup|entrepreneur'; then
+            LABELS_TO_ADD+=("pillar:business")
+          fi
+
+          # Detect type keywords
+          if echo "$CONTENT_LOWER" | grep -qiE 'bug|broken|error|fix|not working'; then
+            LABELS_TO_ADD+=("type:bug")
+          fi
+          if echo "$CONTENT_LOWER" | grep -qiE 'skill\.md|skill file|prompt|module'; then
+            LABELS_TO_ADD+=("type:skill")
+          fi
+          if echo "$CONTENT_LOWER" | grep -qiE 'doc|readme|guide|instruction'; then
+            LABELS_TO_ADD+=("type:docs")
+          fi
+          if echo "$CONTENT_LOWER" | grep -qiE 'workflow|ci|action|deploy|infra'; then
+            LABELS_TO_ADD+=("type:infra")
+          fi
+
+          # Detect cross-repo
+          REPO_MENTIONS=0
+          for REPO in housing jobs health education services safety business; do
+            if echo "$CONTENT_LOWER" | grep -qiE "access.to.$REPO"; then
+              ((REPO_MENTIONS++)) || true
+            fi
+          done
+          if [ "$REPO_MENTIONS" -ge 2 ]; then
+            LABELS_TO_ADD+=("cross-repo")
+          fi
+
+          # Always add triage label
+          LABELS_TO_ADD+=("status:triage")
+
+          # Apply labels
+          if [ ${#LABELS_TO_ADD[@]} -gt 0 ]; then
+            LABEL_CSV=$(IFS=,; echo "${LABELS_TO_ADD[*]}")
+            gh issue edit "$ISSUE_NUMBER" --add-label "$LABEL_CSV" 2>/dev/null || true
+            echo "Applied labels: $LABEL_CSV"
+          fi

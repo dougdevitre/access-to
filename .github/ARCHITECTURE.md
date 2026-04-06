@@ -251,6 +251,81 @@ graph TD
 | health-check | Cron / Manual | Monday 8 AM UTC | Dashboard: issues, PRs, staleness, connections |
 | validate-config | PR / Push / Manual | On config/schema change | Validates repos.json and labels.json |
 | reusable-skill-check | Called by children | On child repo events | Validates SKILL.md structure |
+| copilot-triage | Issue opened | On new issue | Auto-labels by pillar/type keywords |
+
+## AI Tooling Integration
+
+The ecosystem uses two AI systems — Claude for end users, and Copilot + Claude Code for developers.
+
+```mermaid
+flowchart TB
+  subgraph Users["End Users"]
+    U1["Practitioner / Advocate"]
+  end
+
+  subgraph Claude["Claude.ai"]
+    CP["Claude Project"]
+    SK["SKILL.md\n(knowledge file)"]
+    CP --- SK
+  end
+
+  subgraph Developers["Developer Tooling"]
+    CC["Claude Code\n(CLAUDE.md)"]
+    GC["GitHub Copilot\n(copilot-instructions.md)"]
+    DB["Dependabot\n(dependabot.yml)"]
+  end
+
+  subgraph Automation["CI / CD"]
+    TR["copilot-triage.yml\n(auto-label issues)"]
+    VC["validate-config.yml\n(schema checks)"]
+    SC["reusable-skill-check.yml\n(SKILL.md validation)"]
+  end
+
+  subgraph Repo["Hub Repository"]
+    SG["SKILL-GUIDE.md"]
+    CF["Config + Schemas"]
+  end
+
+  U1 -->|uses| CP
+  SK -->|uploaded from| Repo
+  CC -->|reads| Repo
+  GC -->|reads| Repo
+  DB -->|updates| Repo
+  TR -->|triages| Repo
+  VC -->|validates| CF
+  SC -->|validates| SK
+  SG -->|guides creation of| SK
+```
+
+### How each AI tool contributes
+
+```mermaid
+graph LR
+  subgraph "Claude.ai (End Users)"
+    A1["SKILL.md → Domain expertise"]
+    A2["Claude Projects → Persistent context"]
+    A3["Guardrails → Safe, bounded answers"]
+  end
+
+  subgraph "Claude Code (Developers)"
+    B1["CLAUDE.md → Repo conventions"]
+    B2["Config awareness → repos.json, labels.json"]
+    B3["Script standards → lib-log.sh, exit codes"]
+  end
+
+  subgraph "GitHub Copilot (IDE + PRs)"
+    C1["copilot-instructions.md → Code style"]
+    C2["PR review → Accessibility, dark mode"]
+    C3["Autocomplete → Schema-aware suggestions"]
+  end
+
+  subgraph "Automated (CI)"
+    D1["copilot-triage → Issue labeling"]
+    D2["Dependabot → Actions version updates"]
+    D3["validate-config → Schema enforcement"]
+    D4["skill-check → SKILL.md quality gate"]
+  end
+```
 
 ## Logging Protocol
 

@@ -1,0 +1,22 @@
+name: Ecosystem Health Dashboard
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run every Monday at 8 AM UTC
+    - cron: '0 8 * * 1'
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate health dashboard
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          chmod +x .github/scripts/health-check.sh
+          .github/scripts/health-check.sh \
+            .github/config/repos.json

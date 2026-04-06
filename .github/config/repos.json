@@ -2,13 +2,68 @@
   "owner": "dougdevitre",
   "project_number": 1,
   "repos": [
-    "access-to",
-    "access-to-housing",
-    "access-to-jobs",
-    "access-to-health",
-    "access-to-business",
-    "access-to-services",
-    "access-to-education",
-    "access-to-safety"
+    {
+      "name": "access-to",
+      "pillar": "hub",
+      "description": "Central hub and landing site for the Access To ecosystem",
+      "scope": "nationwide",
+      "role": "hub"
+    },
+    {
+      "name": "access-to-housing",
+      "pillar": "housing",
+      "description": "PropTech intelligence, market analysis, Fair Housing compliance",
+      "scope": "nationwide",
+      "role": "pillar",
+      "connects_to": ["access-to-safety", "access-to-jobs", "access-to-services"]
+    },
+    {
+      "name": "access-to-jobs",
+      "pillar": "services",
+      "description": "WIOA navigation, job matching across 114 Missouri counties",
+      "scope": "missouri",
+      "role": "pillar",
+      "connects_to": ["access-to-education", "access-to-services", "access-to-housing"]
+    },
+    {
+      "name": "access-to-health",
+      "pillar": "health",
+      "description": "Healthcare navigation, benefits enrollment, Medicaid/Medicare",
+      "scope": "nationwide",
+      "role": "pillar",
+      "connects_to": ["access-to-safety", "access-to-services"]
+    },
+    {
+      "name": "access-to-business",
+      "pillar": "services",
+      "description": "Startup guide, entrepreneur support, business launch",
+      "scope": "missouri",
+      "role": "pillar",
+      "connects_to": ["access-to-jobs", "access-to-services"]
+    },
+    {
+      "name": "access-to-services",
+      "pillar": "services",
+      "description": "Social services navigation, benefits matching, workforce dev",
+      "scope": "nationwide",
+      "role": "pillar",
+      "connects_to": ["access-to-jobs", "access-to-health", "access-to-housing"]
+    },
+    {
+      "name": "access-to-education",
+      "pillar": "education",
+      "description": "Standards alignment, lesson planning, teacher growth for Missouri K-12",
+      "scope": "missouri",
+      "role": "pillar",
+      "connects_to": ["access-to-jobs", "access-to-services"]
+    },
+    {
+      "name": "access-to-safety",
+      "pillar": "safety",
+      "description": "Safety planning, risk assessment, protective orders, crisis resources",
+      "scope": "nationwide",
+      "role": "pillar",
+      "connects_to": ["access-to-health", "access-to-housing", "access-to-services"]
+    }
   ]
 }

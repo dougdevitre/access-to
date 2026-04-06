@@ -19,7 +19,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
 fi
 
 # Read repo list from config
-mapfile -t REPOS < <(jq -r '.repos[]' "$CONFIG_FILE")
+mapfile -t REPOS < <(jq -r '.repos[] | if type == "object" then .name else . end' "$CONFIG_FILE")
 
 if [ ${#REPOS[@]} -eq 0 ]; then
   echo "::error::No repos found in $CONFIG_FILE"

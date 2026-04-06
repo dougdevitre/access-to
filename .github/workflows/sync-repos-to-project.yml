@@ -1,14 +1,19 @@
 name: Sync Access To Repos to Project
 
-# Trigger manually or on schedule
 on:
   workflow_dispatch:
+    inputs:
+      project_number:
+        description: 'GitHub Project number'
+        required: true
+        default: '1'
+      owner:
+        description: 'GitHub owner/org'
+        required: true
+        default: 'dougdevitre'
   schedule:
     # Run daily at 9 AM UTC
     - cron: '0 9 * * *'
-
-permissions:
-  contents: read
 
 jobs:
   sync-repos:
@@ -16,11 +21,10 @@ jobs:
     steps:
       - name: Add repos to project
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PROJECT_NUMBER: 1
-          OWNER: dougdevitre
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+          PROJECT_NUMBER: ${{ inputs.project_number || '1' }}
+          OWNER: ${{ inputs.owner || 'dougdevitre' }}
         run: |
-          # Array of Access To repositories
           declare -a REPOS=(
             "access-to"
             "access-to-housing"
@@ -33,28 +37,55 @@ jobs:
           )
 
           # Get project ID from project number
-          PROJECT_ID=$(gh project list --owner $OWNER --format json | \
-            jq --arg num "$PROJECT_NUMBER" '.[] | select(.number == ($num | tonumber)) | .id' | \
+          PROJECT_ID=$(gh project list --owner "$OWNER" --format json | \
+            jq -r --arg num "$PROJECT_NUMBER" '.[] | select(.number == ($num | tonumber)) | .id' | \
             head -1)
 
           if [ -z "$PROJECT_ID" ]; then
-            echo "❌ Project $PROJECT_NUMBER not found"
+            echo "::error::Project $PROJECT_NUMBER not found for owner $OWNER"
             exit 1
           fi
 
-          echo "📋 Found project ID: $PROJECT_ID"
+          echo "Found project ID: $PROJECT_ID"
 
-          # Add each repository to the project
+          ADDED=0
+          SKIPPED=0
+          FAILED=0
+
           for REPO in "${REPOS[@]}"; do
             REPO_URL="https://github.com/$OWNER/$REPO"
-            echo "🔗 Adding $REPO..."
+            echo "Adding $REPO..."
 
-            # Add item to project
-            gh project item-add $PROJECT_NUMBER \
-              --owner $OWNER \
-              --url "$REPO_URL" 2>/dev/null && \
-              echo "✅ Added $REPO" || \
-              echo "⚠️  $REPO already in project or error occurred"
+            if OUTPUT=$(gh project item-add "$PROJECT_NUMBER" \
+              --owner "$OWNER" \
+              --url "$REPO_URL" 2>&1); then
+              echo "  Added $REPO"
+              ((ADDED++))
+            else
+              if echo "$OUTPUT" | grep -qi "already exists"; then
+                echo "  Skipped $REPO (already in project)"
+                ((SKIPPED++))
+              else
+                echo "::warning::Failed to add $REPO: $OUTPUT"
+                ((FAILED++))
+              fi
+            fi
           done
 
-          echo "✨ Sync complete!"
+          # Write job summary
+          {
+            echo "## Repo Sync Results"
+            echo ""
+            echo "| Metric | Count |"
+            echo "|--------|-------|"
+            echo "| Added | $ADDED |"
+            echo "| Skipped (already in project) | $SKIPPED |"
+            echo "| Failed | $FAILED |"
+            echo ""
+            echo "**Total repos:** ${#REPOS[@]}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$FAILED" -gt 0 ]; then
+            echo "::error::$FAILED repo(s) failed to sync"
+            exit 1
+          fi

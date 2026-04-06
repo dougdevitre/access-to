@@ -5,48 +5,67 @@ set -euo pipefail
 #
 # Usage: ./sync-labels.sh <labels-file> <repos-file>
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/lib-log.sh"
+
 LABELS_FILE="${1:?Usage: sync-labels.sh <labels-file> <repos-file>}"
 REPOS_FILE="${2:?Usage: sync-labels.sh <labels-file> <repos-file>}"
 
 if [ ! -f "$LABELS_FILE" ] || [ ! -f "$REPOS_FILE" ]; then
-  echo "::error::Config files not found"
+  log_error "Config files not found"
   exit 1
 fi
 
+log_init "sync-labels"
+
 OWNER=$(jq -r '.owner' "$REPOS_FILE")
-mapfile -t REPOS < <(jq -r '.repos[].name' "$REPOS_FILE")
+mapfile -t REPOS < <(jq -r '.repos[] | if type == "object" then .name else . end' "$REPOS_FILE")
 LABEL_COUNT=$(jq length "$LABELS_FILE")
 
-echo "Syncing $LABEL_COUNT labels to ${#REPOS[@]} repos under $OWNER"
+log_info "Syncing $LABEL_COUNT labels to ${#REPOS[@]} repos under $OWNER"
 
+SYNCED=0
 ERRORS=0
 
 for REPO in "${REPOS[@]}"; do
-  echo ""
-  echo "--- $REPO ---"
+  log_info "--- $REPO ---"
 
   for i in $(seq 0 $((LABEL_COUNT - 1))); do
     NAME=$(jq -r ".[$i].name" "$LABELS_FILE")
     COLOR=$(jq -r ".[$i].color" "$LABELS_FILE")
     DESC=$(jq -r ".[$i].description" "$LABELS_FILE")
 
-    # Try to create; if it exists, update it
     if gh label create "$NAME" \
       --repo "$OWNER/$REPO" \
       --color "$COLOR" \
       --description "$DESC" \
       --force 2>/dev/null; then
-      echo "  $NAME"
+      log_action "sync-label" "$REPO/$NAME" "success"
+      ((SYNCED++))
     else
-      echo "::warning::Failed to sync label '$NAME' to $REPO"
+      log_action "sync-label" "$REPO/$NAME" "failed"
       ((ERRORS++))
     fi
   done
 done
 
-echo ""
-echo "Label sync complete."
+# Write job summary
+if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
+  {
+    echo "## Label Sync Results"
+    echo ""
+    echo "| Metric | Count |"
+    echo "|--------|-------|"
+    echo "| Synced | $SYNCED |"
+    echo "| Failed | $ERRORS |"
+    echo "| Labels | $LABEL_COUNT |"
+    echo "| Repos | ${#REPOS[@]} |"
+  } >> "$GITHUB_STEP_SUMMARY"
+fi
+
+log_summary
 
 if [ "$ERRORS" -gt 0 ]; then
-  echo "::warning::$ERRORS label(s) failed to sync"
+  log_error "$ERRORS label(s) failed to sync"
+  exit 1
 fi

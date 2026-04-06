@@ -7,16 +7,23 @@ set -euo pipefail
 #
 # Outputs a markdown summary to GITHUB_STEP_SUMMARY (or stdout if not in CI).
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/lib-log.sh"
+
 REPOS_FILE="${1:?Usage: health-check.sh <repos-file>}"
 OUTPUT="${GITHUB_STEP_SUMMARY:-/dev/stdout}"
 
 if [ ! -f "$REPOS_FILE" ]; then
-  echo "::error::Repos config not found: $REPOS_FILE"
+  log_error "Repos config not found: $REPOS_FILE"
   exit 1
 fi
 
+log_init "health-check"
+
 OWNER=$(jq -r '.owner' "$REPOS_FILE")
-mapfile -t REPOS < <(jq -r '.repos[].name' "$REPOS_FILE")
+mapfile -t REPOS < <(jq -r '.repos[] | if type == "object" then .name else . end' "$REPOS_FILE")
+
+log_info "Checking ${#REPOS[@]} repos under $OWNER"
 
 {
   echo "## Access To Ecosystem Health Dashboard"
@@ -32,15 +39,23 @@ mapfile -t REPOS < <(jq -r '.repos[].name' "$REPOS_FILE")
 
   TOTAL_ISSUES=0
   TOTAL_PRS=0
+  FETCH_ERRORS=0
 
   for REPO in "${REPOS[@]}"; do
     FULL="$OWNER/$REPO"
     PILLAR=$(jq -r --arg name "$REPO" '.repos[] | select(.name == $name) | .pillar // "—"' "$REPOS_FILE")
 
     # Fetch repo data
-    REPO_DATA=$(gh repo view "$FULL" --json openIssues,pullRequests,pushedAt 2>/dev/null || echo '{}')
-    ISSUES=$(echo "$REPO_DATA" | jq -r '.openIssues // 0' 2>/dev/null || echo "?")
-    PUSHED=$(echo "$REPO_DATA" | jq -r '.pushedAt // "unknown"' 2>/dev/null || echo "?")
+    if REPO_DATA=$(gh repo view "$FULL" --json openIssues,pullRequests,pushedAt 2>&1); then
+      ISSUES=$(echo "$REPO_DATA" | jq -r '.openIssues // 0' 2>/dev/null || echo "?")
+      PUSHED=$(echo "$REPO_DATA" | jq -r '.pushedAt // "unknown"' 2>/dev/null || echo "?")
+      log_action "fetch-repo" "$REPO" "success"
+    else
+      ISSUES="?"
+      PUSHED="?"
+      log_action "fetch-repo" "$REPO" "failed" "$REPO_DATA"
+      ((FETCH_ERRORS++))
+    fi
 
     # Count open PRs
     PR_COUNT=$(gh pr list --repo "$FULL" --state open --json number 2>/dev/null | jq length 2>/dev/null || echo "?")
@@ -73,6 +88,7 @@ mapfile -t REPOS < <(jq -r '.repos[].name' "$REPOS_FILE")
       PUSHED=$(gh repo view "$FULL" --json pushedAt --jq '.pushedAt' 2>/dev/null | cut -c1-10 || echo "")
       if [ -n "$PUSHED" ] && [[ "$PUSHED" < "$THIRTY_DAYS_AGO" ]]; then
         echo "- **$REPO** — last push: $PUSHED"
+        log_action "stale-check" "$REPO" "stale" "last push $PUSHED"
         ((STALE_COUNT++))
       fi
     done
@@ -119,6 +135,29 @@ mapfile -t REPOS < <(jq -r '.repos[].name' "$REPOS_FILE")
   done
   echo '```'
 
+  echo ""
+
+  # --- Ecosystem metrics ---
+  echo "### Ecosystem Metrics"
+  echo ""
+  REPO_COUNT=${#REPOS[@]}
+  PILLAR_COUNT=$(jq '[.repos[].pillar] | unique | length' "$REPOS_FILE")
+  CONNECTION_COUNT=$(jq '[.repos[].connects_to // [] | .[]] | length' "$REPOS_FILE")
+  echo "| Metric | Value |"
+  echo "|--------|-------|"
+  echo "| Total repos | $REPO_COUNT |"
+  echo "| Pillars | $PILLAR_COUNT |"
+  echo "| Cross-connections | $CONNECTION_COUNT |"
+  echo "| Total open issues | $TOTAL_ISSUES |"
+  echo "| Total open PRs | $TOTAL_PRS |"
+  echo "| Stale repos (30d) | $STALE_COUNT |"
+  echo "| Cross-repo issues | $CROSS_COUNT |"
+  echo "| API fetch errors | $FETCH_ERRORS |"
+
 } >> "$OUTPUT"
 
-echo "Health check complete."
+log_summary
+
+if [ "$FETCH_ERRORS" -gt 0 ]; then
+  log_warn "$FETCH_ERRORS repo(s) could not be fetched"
+fi

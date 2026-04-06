@@ -7,6 +7,9 @@ set -euo pipefail
 #
 # Arguments override values from the config file.
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/lib-log.sh"
+
 CONFIG_FILE="${1:?Usage: sync-repos.sh <config-file> [project_number] [owner]}"
 PROJECT_NUMBER="${2:-$(jq -r '.project_number' "$CONFIG_FILE")}"
 OWNER="${3:-$(jq -r '.owner' "$CONFIG_FILE")}"
@@ -14,15 +17,17 @@ MAX_RETRIES="${MAX_RETRIES:-3}"
 RETRY_DELAY="${RETRY_DELAY:-2}"
 
 if [ ! -f "$CONFIG_FILE" ]; then
-  echo "::error::Config file not found: $CONFIG_FILE"
+  log_error "Config file not found: $CONFIG_FILE"
   exit 1
 fi
+
+log_init "sync-repos"
 
 # Read repo list from config
 mapfile -t REPOS < <(jq -r '.repos[] | if type == "object" then .name else . end' "$CONFIG_FILE")
 
 if [ ${#REPOS[@]} -eq 0 ]; then
-  echo "::error::No repos found in $CONFIG_FILE"
+  log_error "No repos found in $CONFIG_FILE"
   exit 1
 fi
 
@@ -37,7 +42,7 @@ gh_retry() {
     fi
     if [ $attempt -lt "$MAX_RETRIES" ]; then
       local wait=$((RETRY_DELAY ** attempt))
-      echo "  Retry $attempt/$MAX_RETRIES in ${wait}s..." >&2
+      log_info "Retry $attempt/$MAX_RETRIES in ${wait}s..."
       sleep "$wait"
     fi
     ((attempt++))
@@ -52,11 +57,11 @@ PROJECT_ID=$(gh_retry project list --owner "$OWNER" --format json | \
   head -1)
 
 if [ -z "$PROJECT_ID" ]; then
-  echo "::error::Project $PROJECT_NUMBER not found for owner $OWNER"
+  log_error "Project $PROJECT_NUMBER not found for owner $OWNER"
   exit 1
 fi
 
-echo "Found project ID: $PROJECT_ID"
+log_info "Found project ID: $PROJECT_ID"
 
 ADDED=0
 SKIPPED=0
@@ -65,21 +70,20 @@ DETAILS=""
 
 for REPO in "${REPOS[@]}"; do
   REPO_URL="https://github.com/$OWNER/$REPO"
-  echo "Adding $REPO..."
 
   if OUTPUT=$(gh_retry project item-add "$PROJECT_NUMBER" \
     --owner "$OWNER" \
     --url "$REPO_URL" 2>&1); then
-    echo "  Added $REPO"
+    log_action "sync-repo" "$REPO" "added"
     DETAILS+="| $REPO | Added |"$'\n'
     ((ADDED++))
   else
     if echo "$OUTPUT" | grep -qi "already exists"; then
-      echo "  Skipped $REPO (already in project)"
+      log_action "sync-repo" "$REPO" "skipped" "already in project"
       DETAILS+="| $REPO | Skipped |"$'\n'
       ((SKIPPED++))
     else
-      echo "::warning::Failed to add $REPO: $OUTPUT"
+      log_action "sync-repo" "$REPO" "failed" "$OUTPUT"
       DETAILS+="| $REPO | **Failed**: $OUTPUT |"$'\n'
       ((FAILED++))
     fi
@@ -107,7 +111,9 @@ if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
   } >> "$GITHUB_STEP_SUMMARY"
 fi
 
+log_summary
+
 if [ "$FAILED" -gt 0 ]; then
-  echo "::error::$FAILED repo(s) failed to sync"
+  log_error "$FAILED repo(s) failed to sync"
   exit 1
 fi

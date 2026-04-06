@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dougdevitre/access-to/schemas/labels.schema.json",
+  "title": "Access To Shared Label Definitions",
+  "description": "Defines the shared label taxonomy synced across all Access To repositories.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": ["name", "color", "description"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "pattern": "^[a-z0-9:_ -]+$",
+        "description": "Label name using namespace:value convention"
+      },
+      "color": {
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{6}$",
+        "description": "Six-character hex color code (no # prefix)"
+      },
+      "description": {
+        "type": "string",
+        "maxLength": 100,
+        "description": "Human-readable label description"
+      }
+    },
+    "additionalProperties": false
+  }
+}

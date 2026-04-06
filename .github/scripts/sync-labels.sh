@@ -24,6 +24,23 @@ LABEL_COUNT=$(jq length "$LABELS_FILE")
 
 log_info "Syncing $LABEL_COUNT labels to ${#REPOS[@]} repos under $OWNER"
 
+# Pre-validate: check all repos are reachable before modifying any
+log_info "Pre-validating repo access..."
+UNREACHABLE=()
+for REPO in "${REPOS[@]}"; do
+  if ! gh repo view "$OWNER/$REPO" --json name >/dev/null 2>&1; then
+    UNREACHABLE+=("$REPO")
+  fi
+done
+
+if [ ${#UNREACHABLE[@]} -gt 0 ]; then
+  log_error "Aborting: ${#UNREACHABLE[@]} repo(s) unreachable: ${UNREACHABLE[*]}"
+  log_error "Fix access issues before syncing to prevent partial state"
+  exit 1
+fi
+
+log_info "All ${#REPOS[@]} repos reachable"
+
 SYNCED=0
 ERRORS=0
 
@@ -35,15 +52,15 @@ for REPO in "${REPOS[@]}"; do
     COLOR=$(jq -r ".[$i].color" "$LABELS_FILE")
     DESC=$(jq -r ".[$i].description" "$LABELS_FILE")
 
-    if gh label create "$NAME" \
+    if OUTPUT=$(gh label create "$NAME" \
       --repo "$OWNER/$REPO" \
       --color "$COLOR" \
       --description "$DESC" \
-      --force 2>/dev/null; then
+      --force 2>&1); then
       log_action "sync-label" "$REPO/$NAME" "success"
       ((SYNCED++))
     else
-      log_action "sync-label" "$REPO/$NAME" "failed"
+      log_action "sync-label" "$REPO/$NAME" "failed" "$OUTPUT"
       ((ERRORS++))
     fi
   done

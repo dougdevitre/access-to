@@ -25,6 +25,25 @@ mapfile -t REPOS < <(jq -r '.repos[] | if type == "object" then .name else . end
 
 log_info "Checking ${#REPOS[@]} repos under $OWNER"
 
+# Fetch all repo data once and cache it
+declare -A REPO_CACHE
+FETCH_ERRORS=0
+
+for REPO in "${REPOS[@]}"; do
+  FULL="$OWNER/$REPO"
+  if DATA=$(gh repo view "$FULL" --json openIssues,pushedAt 2>&1); then
+    REPO_CACHE["$REPO"]="$DATA"
+    log_action "fetch-repo" "$REPO" "success"
+  else
+    REPO_CACHE["$REPO"]="{}"
+    log_action "fetch-repo" "$REPO" "failed" "$DATA"
+    ((FETCH_ERRORS++))
+  fi
+done
+
+# Calculate stale threshold
+THIRTY_DAYS_AGO=$(date -u -d '30 days ago' '+%Y-%m-%d' 2>/dev/null || date -u -v-30d '+%Y-%m-%d' 2>/dev/null || echo "")
+
 {
   echo "## Access To Ecosystem Health Dashboard"
   echo ""
@@ -39,35 +58,30 @@ log_info "Checking ${#REPOS[@]} repos under $OWNER"
 
   TOTAL_ISSUES=0
   TOTAL_PRS=0
-  FETCH_ERRORS=0
+  STALE_REPOS=()
 
   for REPO in "${REPOS[@]}"; do
     FULL="$OWNER/$REPO"
+    DATA="${REPO_CACHE[$REPO]}"
     PILLAR=$(jq -r --arg name "$REPO" '.repos[] | select(.name == $name) | .pillar // "—"' "$REPOS_FILE")
 
-    # Fetch repo data
-    if REPO_DATA=$(gh repo view "$FULL" --json openIssues,pullRequests,pushedAt 2>&1); then
-      ISSUES=$(echo "$REPO_DATA" | jq -r '.openIssues // 0' 2>/dev/null || echo "?")
-      PUSHED=$(echo "$REPO_DATA" | jq -r '.pushedAt // "unknown"' 2>/dev/null || echo "?")
-      log_action "fetch-repo" "$REPO" "success"
-    else
-      ISSUES="?"
-      PUSHED="?"
-      log_action "fetch-repo" "$REPO" "failed" "$REPO_DATA"
-      ((FETCH_ERRORS++))
+    ISSUES=$(echo "$DATA" | jq -r '.openIssues // 0' 2>/dev/null || echo "?")
+    PUSHED_RAW=$(echo "$DATA" | jq -r '.pushedAt // ""' 2>/dev/null || echo "")
+
+    # Validate date format before using
+    PUSHED_SHORT="—"
+    if [[ "$PUSHED_RAW" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2} ]]; then
+      PUSHED_SHORT="${PUSHED_RAW:0:10}"
+      # Check staleness using the same cached data
+      if [ -n "$THIRTY_DAYS_AGO" ] && [[ "$PUSHED_SHORT" < "$THIRTY_DAYS_AGO" ]]; then
+        STALE_REPOS+=("$REPO|$PUSHED_SHORT")
+      fi
     fi
 
     # Count open PRs
     PR_COUNT=$(gh pr list --repo "$FULL" --state open --json number 2>/dev/null | jq length 2>/dev/null || echo "?")
 
-    # Format date
-    if [ "$PUSHED" != "unknown" ] && [ "$PUSHED" != "?" ]; then
-      PUSHED_SHORT=$(echo "$PUSHED" | cut -c1-10)
-    else
-      PUSHED_SHORT="—"
-    fi
-
-    echo "| [$REPO](https://github.com/$FULL) | $ISSUES | $PR_COUNT | $PUSHED_SHORT | $PILLAR |"
+    echo "| [$(escape_md "$REPO")](https://github.com/$FULL) | $ISSUES | $PR_COUNT | $PUSHED_SHORT | $PILLAR |"
 
     if [[ "$ISSUES" =~ ^[0-9]+$ ]]; then ((TOTAL_ISSUES += ISSUES)) || true; fi
     if [[ "$PR_COUNT" =~ ^[0-9]+$ ]]; then ((TOTAL_PRS += PR_COUNT)) || true; fi
@@ -76,27 +90,18 @@ log_info "Checking ${#REPOS[@]} repos under $OWNER"
   echo "| **Total** | **$TOTAL_ISSUES** | **$TOTAL_PRS** | | |"
   echo ""
 
-  # --- Stale repos (no push in 30+ days) ---
+  # --- Stale repos ---
   echo "### Repos with No Activity (30+ days)"
   echo ""
-  STALE_COUNT=0
-  THIRTY_DAYS_AGO=$(date -u -d '30 days ago' '+%Y-%m-%d' 2>/dev/null || date -u -v-30d '+%Y-%m-%d' 2>/dev/null || echo "")
-
-  if [ -n "$THIRTY_DAYS_AGO" ]; then
-    for REPO in "${REPOS[@]}"; do
-      FULL="$OWNER/$REPO"
-      PUSHED=$(gh repo view "$FULL" --json pushedAt --jq '.pushedAt' 2>/dev/null | cut -c1-10 || echo "")
-      if [ -n "$PUSHED" ] && [[ "$PUSHED" < "$THIRTY_DAYS_AGO" ]]; then
-        echo "- **$REPO** — last push: $PUSHED"
-        log_action "stale-check" "$REPO" "stale" "last push $PUSHED"
-        ((STALE_COUNT++))
-      fi
+  if [ ${#STALE_REPOS[@]} -gt 0 ]; then
+    for ENTRY in "${STALE_REPOS[@]}"; do
+      REPO="${ENTRY%%|*}"
+      PUSHED="${ENTRY##*|}"
+      echo "- **$(escape_md "$REPO")** — last push: $PUSHED"
+      log_action "stale-check" "$REPO" "stale" "last push $PUSHED"
     done
-    if [ "$STALE_COUNT" -eq 0 ]; then
-      echo "_All repos have recent activity._"
-    fi
   else
-    echo "_Could not determine date threshold._"
+    echo "_All repos have recent activity._"
   fi
 
   echo ""
@@ -110,7 +115,8 @@ log_info "Checking ${#REPOS[@]} repos under $OWNER"
     CROSS_ISSUES=$(gh issue list --repo "$FULL" --label "cross-repo" --state open --json number,title 2>/dev/null || echo '[]')
     COUNT=$(echo "$CROSS_ISSUES" | jq length 2>/dev/null || echo 0)
     if [ "$COUNT" -gt 0 ]; then
-      echo "$CROSS_ISSUES" | jq -r --arg repo "$REPO" '.[] | "- **\($repo)#\(.number)**: \(.title)"'
+      # Escape issue titles before writing to summary
+      echo "$CROSS_ISSUES" | jq -r --arg repo "$REPO" '.[] | "- **\($repo)#\(.number)**: \(.title | gsub("[*_\\[\\]`\\\\|]"; "\\\\\\(.)"))"'
       ((CROSS_COUNT += COUNT))
     fi
   done
@@ -150,7 +156,7 @@ log_info "Checking ${#REPOS[@]} repos under $OWNER"
   echo "| Cross-connections | $CONNECTION_COUNT |"
   echo "| Total open issues | $TOTAL_ISSUES |"
   echo "| Total open PRs | $TOTAL_PRS |"
-  echo "| Stale repos (30d) | $STALE_COUNT |"
+  echo "| Stale repos (30d) | ${#STALE_REPOS[@]} |"
   echo "| Cross-repo issues | $CROSS_COUNT |"
   echo "| API fetch errors | $FETCH_ERRORS |"
 

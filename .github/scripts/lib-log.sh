@@ -12,6 +12,8 @@
 #   log_success <message>      — Success message
 #   log_action <verb> <target> [status] [detail] — Structured action log
 #   log_summary                — Print session summary
+#   sanitize <string>          — Strip secrets and control characters
+#   escape_md <string>         — Escape markdown special characters
 #   audit_append <entry>       — Append to audit log file
 #
 # Environment:
@@ -30,6 +32,32 @@ _LOG_ACTION_COUNT=0
 _LOG_WARN_COUNT=0
 _LOG_ERROR_COUNT=0
 
+# Sanitize a string by removing potential secrets and control characters.
+# Safe for logging and audit trails.
+sanitize() {
+  local input="$1"
+  printf '%s' "$input" | \
+    sed -E 's/[Tt]oken[=: ]+[A-Za-z0-9_\-]+/token=***REDACTED***/g' | \
+    sed -E 's/[Bb]earer [A-Za-z0-9_\-]+/Bearer ***REDACTED***/g' | \
+    sed -E 's/ghp_[A-Za-z0-9]+/ghp_***REDACTED***/g' | \
+    sed -E 's/gho_[A-Za-z0-9]+/gho_***REDACTED***/g' | \
+    sed -E 's/github_pat_[A-Za-z0-9_]+/github_pat_***REDACTED***/g' | \
+    tr -d '\000-\010\013\014\016-\037' | \
+    head -c 500
+}
+
+# Escape markdown special characters for safe inclusion in step summaries.
+escape_md() {
+  local input="$1"
+  printf '%s' "$input" | sed 's/[*_\[\]`\\|]/\\&/g' | head -c 500
+}
+
+# Escape a string for safe inclusion in JSON values.
+_json_escape() {
+  local input="$1"
+  printf '%s' "$input" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g' | tr -d '\n\r' | head -c 500
+}
+
 log_init() {
   _LOG_SCRIPT="${1:?log_init requires script name}"
   _LOG_RUN_ID="$(date -u '+%Y%m%d%H%M%S')-$$"
@@ -45,7 +73,9 @@ _log_json() {
   local level="$1" message="$2" extra="${3:-}"
   local ts
   ts=$(_log_timestamp)
-  local json="{\"ts\":\"$ts\",\"level\":\"$level\",\"script\":\"$_LOG_SCRIPT\",\"run\":\"$_LOG_RUN_ID\",\"msg\":\"$message\""
+  local safe_msg
+  safe_msg=$(_json_escape "$(sanitize "$message")")
+  local json="{\"ts\":\"$ts\",\"level\":\"$level\",\"script\":\"$_LOG_SCRIPT\",\"run\":\"$_LOG_RUN_ID\",\"msg\":\"$safe_msg\""
   if [ -n "$extra" ]; then
     json+=",$extra"
   fi
@@ -57,7 +87,7 @@ _log_text() {
   local level="$1" message="$2"
   local ts
   ts=$(_log_timestamp)
-  echo "[$ts] [$level] $_LOG_SCRIPT: $message"
+  echo "[$ts] [$level] $_LOG_SCRIPT: $(sanitize "$message")"
 }
 
 _should_log() {
@@ -87,7 +117,7 @@ log_warn() {
   else
     _log_text "WARN" "$1"
   fi
-  echo "::warning::$1"
+  echo "::warning::$(sanitize "$1")"
 }
 
 log_error() {
@@ -97,7 +127,7 @@ log_error() {
   else
     _log_text "ERROR" "$1"
   fi
-  echo "::error::$1"
+  echo "::error::$(sanitize "$1")"
 }
 
 log_success() {
@@ -115,19 +145,27 @@ log_action() {
   local verb="$1" target="$2" status="${3:-ok}" detail="${4:-}"
   ((_LOG_ACTION_COUNT++)) || true
 
+  # Sanitize detail field (may contain API error output)
+  local safe_detail
+  safe_detail=$(_json_escape "$(sanitize "$detail")")
+  local safe_target
+  safe_target=$(_json_escape "$(sanitize "$target")")
+
   if [ "$LOG_FORMAT" = "json" ]; then
-    local extra="\"action\":\"$verb\",\"target\":\"$target\",\"status\":\"$status\""
-    [ -n "$detail" ] && extra+=",\"detail\":\"$detail\""
+    local extra="\"action\":\"$verb\",\"target\":\"$safe_target\",\"status\":\"$status\""
+    [ -n "$safe_detail" ] && extra+=",\"detail\":\"$safe_detail\""
     _log_json "info" "$verb $target: $status" "$extra"
   else
     local msg="$verb $target -> $status"
-    [ -n "$detail" ] && msg+=" ($detail)"
+    [ -n "$detail" ] && msg+=" ($(sanitize "$detail"))"
     _log_text "ACTION" "$msg"
   fi
 
   # Append to audit log if configured
   if [ -n "$AUDIT_LOG" ]; then
-    audit_append "$(_log_json "audit" "$verb $target" "\"action\":\"$verb\",\"target\":\"$target\",\"status\":\"$status\",\"detail\":\"$detail\"")"
+    local audit_extra="\"action\":\"$verb\",\"target\":\"$safe_target\",\"status\":\"$status\""
+    [ -n "$safe_detail" ] && audit_extra+=",\"detail\":\"$safe_detail\""
+    audit_append "$(_log_json "audit" "$verb $target" "$audit_extra")"
   fi
 }
 

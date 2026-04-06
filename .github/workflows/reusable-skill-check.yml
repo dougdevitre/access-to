@@ -1,7 +1,6 @@
 name: Skill Validation (Reusable)
 
-# Child repos call this workflow to validate their SKILL.md files
-# and optionally notify the hub of changes.
+# Child repos call this workflow to validate their SKILL.md files.
 #
 # Usage in child repo:
 #   jobs:
@@ -28,6 +27,9 @@ on:
         type: string
         default: 'SKILL.md'
 
+permissions:
+  contents: read
+
 jobs:
   validate-skill:
     runs-on: ubuntu-latest
@@ -36,15 +38,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate SKILL.md structure
+        env:
+          SKILL_FILE: ${{ inputs.skill_path }}
+          REPO_NAME: ${{ inputs.repo_name }}
+          PILLAR: ${{ inputs.pillar }}
         run: |
-          SKILL_FILE="${{ inputs.skill_path }}"
-
           if [ ! -f "$SKILL_FILE" ]; then
             echo "::error::$SKILL_FILE not found"
             exit 1
           fi
 
-          echo "Validating $SKILL_FILE for ${{ inputs.repo_name }} (${{ inputs.pillar }} pillar)..."
+          echo "Validating $SKILL_FILE for $REPO_NAME ($PILLAR pillar)..."
 
           ERRORS=0
 
@@ -54,14 +58,14 @@ jobs:
             ((ERRORS++))
           fi
 
-          # Check for required sections (flexible — just warn if missing)
+          # Check for required sections
           for SECTION in "# " "## "; do
             if ! grep -q "^${SECTION}" "$SKILL_FILE"; then
               echo "::warning::No '${SECTION}' heading found in $SKILL_FILE"
             fi
           done
 
-          # Check file size (warn if very small or very large)
+          # Check file size
           SIZE=$(wc -c < "$SKILL_FILE")
           if [ "$SIZE" -lt 500 ]; then
             echo "::warning::$SKILL_FILE is only $SIZE bytes — may be incomplete"
@@ -70,15 +74,22 @@ jobs:
             echo "::warning::$SKILL_FILE is $SIZE bytes — consider splitting into modules"
           fi
 
+          # Validate pillar value
+          VALID_PILLARS="hub housing jobs health business services education safety"
+          if ! echo "$VALID_PILLARS" | grep -qw "$PILLAR"; then
+            echo "::error::Invalid pillar '$PILLAR'. Must be one of: $VALID_PILLARS"
+            ((ERRORS++))
+          fi
+
           # Report
           LINES=$(wc -l < "$SKILL_FILE")
           WORDS=$(wc -w < "$SKILL_FILE")
           {
-            echo "## Skill Validation: ${{ inputs.repo_name }}"
+            echo "## Skill Validation: $REPO_NAME"
             echo ""
             echo "| Metric | Value |"
             echo "|--------|-------|"
-            echo "| Pillar | ${{ inputs.pillar }} |"
+            echo "| Pillar | $PILLAR |"
             echo "| File | $SKILL_FILE |"
             echo "| Lines | $LINES |"
             echo "| Words | $WORDS |"

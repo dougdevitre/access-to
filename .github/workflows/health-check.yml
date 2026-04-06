@@ -3,8 +3,14 @@ name: Ecosystem Health Dashboard
 on:
   workflow_dispatch:
   schedule:
-    # Run every Monday at 8 AM UTC
     - cron: '0 8 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ecosystem-health
+  cancel-in-progress: true
 
 jobs:
   health-check:

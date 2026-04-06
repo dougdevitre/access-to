@@ -84,7 +84,7 @@ for REPO in "${REPOS[@]}"; do
       ((SKIPPED++))
     else
       log_action "sync-repo" "$REPO" "failed" "$OUTPUT"
-      DETAILS+="| $REPO | **Failed**: $OUTPUT |"$'\n'
+      DETAILS+="| $(escape_md "$REPO") | **Failed**: $(escape_md "$OUTPUT") |"$'\n'
       ((FAILED++))
     fi
   fi

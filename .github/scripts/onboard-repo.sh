@@ -18,6 +18,30 @@ SCOPE="${3:-nationwide}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="$SCRIPT_DIR/../config"
+
+# Validate pillar
+VALID_PILLARS=("hub" "housing" "jobs" "health" "business" "services" "education" "safety")
+PILLAR_VALID=false
+for P in "${VALID_PILLARS[@]}"; do [ "$P" = "$PILLAR" ] && PILLAR_VALID=true; done
+if [ "$PILLAR_VALID" = false ]; then
+  echo "::error::Invalid pillar '$PILLAR'. Must be one of: ${VALID_PILLARS[*]}"
+  exit 1
+fi
+
+# Validate scope
+VALID_SCOPES=("missouri" "nationwide" "global")
+SCOPE_VALID=false
+for S in "${VALID_SCOPES[@]}"; do [ "$S" = "$SCOPE" ] && SCOPE_VALID=true; done
+if [ "$SCOPE_VALID" = false ]; then
+  echo "::error::Invalid scope '$SCOPE'. Must be one of: ${VALID_SCOPES[*]}"
+  exit 1
+fi
+
+# Validate repo name format
+if ! echo "$REPO_NAME" | grep -qE '^[a-z0-9-]+$'; then
+  echo "::error::Invalid repo name '$REPO_NAME'. Must be lowercase with hyphens only."
+  exit 1
+fi
 LABELS_FILE="$CONFIG_DIR/labels.json"
 REPOS_FILE="$CONFIG_DIR/repos.json"
 

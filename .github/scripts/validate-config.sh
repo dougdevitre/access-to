@@ -40,7 +40,7 @@ fi
 for FIELD in owner project_number repos; do
   if [ "$(jq "has(\"$FIELD\")" "$REPOS_FILE")" != "true" ]; then
     log_error "repos.json missing required field: $FIELD"
-    ((ERRORS++))
+    ((ERRORS++)) || true
   fi
 done
 
@@ -60,7 +60,7 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
     VAL=$(jq -r ".repos[$i].$FIELD // empty" "$REPOS_FILE")
     if [ -z "$VAL" ]; then
       log_error "repos[$i] ($NAME): missing required field '$FIELD'"
-      ((ERRORS++))
+      ((ERRORS++)) || true
     fi
   done
 
@@ -71,7 +71,7 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
     for P in "${VALID_PILLARS[@]}"; do [ "$P" = "$PILLAR" ] && FOUND=true; done
     if [ "$FOUND" = false ]; then
       log_error "repos[$i] ($NAME): invalid pillar '$PILLAR' — expected one of: ${VALID_PILLARS[*]}"
-      ((ERRORS++))
+      ((ERRORS++)) || true
     fi
   fi
 
@@ -82,7 +82,7 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
     for S in "${VALID_SCOPES[@]}"; do [ "$S" = "$SCOPE" ] && FOUND=true; done
     if [ "$FOUND" = false ]; then
       log_error "repos[$i] ($NAME): invalid scope '$SCOPE' — expected one of: ${VALID_SCOPES[*]}"
-      ((ERRORS++))
+      ((ERRORS++)) || true
     fi
   fi
 
@@ -93,7 +93,7 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
     for R in "${VALID_ROLES[@]}"; do [ "$R" = "$ROLE" ] && FOUND=true; done
     if [ "$FOUND" = false ]; then
       log_error "repos[$i] ($NAME): invalid role '$ROLE' — expected one of: ${VALID_ROLES[*]}"
-      ((ERRORS++))
+      ((ERRORS++)) || true
     fi
   fi
 
@@ -104,11 +104,11 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
     for RN in "${REPO_NAMES[@]}"; do [ "$RN" = "$CONN" ] && FOUND=true; done
     if [ "$FOUND" = false ]; then
       log_error "repos[$i] ($NAME): connects_to references unknown repo '$CONN'"
-      ((ERRORS++))
+      ((ERRORS++)) || true
     fi
     if [ "$CONN" = "$NAME" ]; then
       log_warn "repos[$i] ($NAME): connects_to references itself"
-      ((WARNINGS++))
+      ((WARNINGS++)) || true
     fi
   done
 
@@ -119,14 +119,14 @@ done
 DUPES=$(jq -r '.repos[].name' "$REPOS_FILE" | sort | uniq -d)
 if [ -n "$DUPES" ]; then
   log_error "Duplicate repo names found: $DUPES"
-  ((ERRORS++))
+  ((ERRORS++)) || true
 fi
 
 # Exactly one hub
 HUB_COUNT=$(jq '[.repos[] | select(.role == "hub")] | length' "$REPOS_FILE")
 if [ "$HUB_COUNT" -ne 1 ]; then
   log_warn "Expected exactly 1 hub repo, found $HUB_COUNT"
-  ((WARNINGS++))
+  ((WARNINGS++)) || true
 fi
 
 # --- labels.json ---
@@ -151,18 +151,18 @@ for i in $(seq 0 $((LABEL_COUNT - 1))); do
 
   if [ -z "$LNAME" ]; then
     log_error "labels[$i]: missing 'name'"
-    ((ERRORS++))
+    ((ERRORS++)) || true
   fi
   if [ -z "$COLOR" ]; then
     log_error "labels[$i] ($LNAME): missing 'color'"
-    ((ERRORS++))
+    ((ERRORS++)) || true
   elif ! echo "$COLOR" | grep -qE '^[0-9a-fA-F]{6}$'; then
     log_error "labels[$i] ($LNAME): invalid color '$COLOR' — must be 6-char hex"
-    ((ERRORS++))
+    ((ERRORS++)) || true
   fi
   if [ -z "$DESC" ]; then
     log_warn "labels[$i] ($LNAME): missing 'description'"
-    ((WARNINGS++))
+    ((WARNINGS++)) || true
   fi
 done
 
@@ -170,7 +170,50 @@ done
 LABEL_DUPES=$(jq -r '.[].name' "$LABELS_FILE" | sort | uniq -d)
 if [ -n "$LABEL_DUPES" ]; then
   log_error "Duplicate label names: $LABEL_DUPES"
-  ((ERRORS++))
+  ((ERRORS++)) || true
+fi
+
+# --- Circular dependency detection ---
+log_info "Checking for circular dependencies..."
+
+# Cycle detection: find cycles of length 3+ (A→B→C→A).
+# Bidirectional pairs (A↔B) are intentional and allowed.
+# Runs in a subshell to isolate from set -e.
+CYCLE_RESULTS=$(set +e; for START in $(jq -r '.repos[].name' "$REPOS_FILE"); do
+  QUEUE="$START|0|$START"
+  FOUND=false
+  while [ -n "$QUEUE" ]; do
+    ITEM="${QUEUE%%$'\n'*}"
+    QUEUE="${QUEUE#"$ITEM"}"
+    QUEUE="${QUEUE#$'\n'}"
+    CURRENT="${ITEM%%|*}"
+    REST="${ITEM#*|}"
+    DEPTH="${REST%%|*}"
+    VISITED="${REST#*|}"
+    if [ "$DEPTH" -ge 6 ]; then continue; fi
+    NEIGHBORS=$(jq -r --arg name "$CURRENT" '.repos[] | select(.name == $name) | .connects_to // [] | .[]' "$REPOS_FILE" 2>/dev/null)
+    for NEIGHBOR in $NEIGHBORS; do
+      if [ "$NEIGHBOR" = "$START" ] && [ "$DEPTH" -ge 2 ]; then
+        FOUND=true
+        break 2
+      fi
+      case " $VISITED " in *" $NEIGHBOR "*) continue ;; esac
+      QUEUE="${QUEUE:+${QUEUE}$'\n'}$NEIGHBOR|$((DEPTH + 1))|$VISITED $NEIGHBOR"
+    done
+  done
+  if [ "$FOUND" = true ]; then echo "$START"; fi
+done)
+
+CYCLES_FOUND=0
+if [ -n "$CYCLE_RESULTS" ]; then
+  while IFS= read -r CYCLE_REPO; do
+    log_warn "Circular dependency (3+ hops) detected involving '$CYCLE_REPO'"
+    ((WARNINGS++)) || true
+    ((CYCLES_FOUND++)) || true
+  done <<< "$CYCLE_RESULTS"
+fi
+if [ "$CYCLES_FOUND" -eq 0 ]; then
+  log_info "No circular dependencies found (bidirectional pairs are allowed)"
 fi
 
 # --- Cross-file checks ---
@@ -182,8 +225,8 @@ for P in "${PILLARS[@]}"; do
   if [ "$P" = "hub" ]; then continue; fi
   LABEL_EXISTS=$(jq --arg p "pillar:$P" '[.[] | select(.name == $p)] | length' "$LABELS_FILE")
   if [ "$LABEL_EXISTS" -eq 0 ]; then
-    log_warn "Pillar '$P' in repos.json has no matching 'pillar:$P' label"
-    ((WARNINGS++))
+    log_error "Pillar '$P' in repos.json has no matching 'pillar:$P' label"
+    ((ERRORS++)) || true
   fi
 done
 

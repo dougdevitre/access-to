@@ -7,6 +7,13 @@ on:
     paths:
       - '.github/config/labels.json'
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ecosystem-sync
+  cancel-in-progress: false
+
 jobs:
   sync-labels:
     runs-on: ubuntu-latest

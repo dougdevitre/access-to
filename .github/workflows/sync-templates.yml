@@ -14,6 +14,13 @@ on:
       - '.github/ISSUE_TEMPLATE/cross_repo.md'
       - '.github/ISSUE_TEMPLATE/bug_report.md'
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ecosystem-sync
+  cancel-in-progress: false
+
 jobs:
   sync-templates:
     runs-on: ubuntu-latest

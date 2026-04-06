@@ -1,0 +1,93 @@
+name: Skill Validation (Reusable)
+
+# Child repos call this workflow to validate their SKILL.md files
+# and optionally notify the hub of changes.
+#
+# Usage in child repo:
+#   jobs:
+#     validate:
+#       uses: dougdevitre/access-to/.github/workflows/reusable-skill-check.yml@main
+#       with:
+#         repo_name: access-to-safety
+#         pillar: safety
+
+on:
+  workflow_call:
+    inputs:
+      repo_name:
+        description: 'Name of the calling repo'
+        required: true
+        type: string
+      pillar:
+        description: 'Pillar this repo belongs to'
+        required: true
+        type: string
+      skill_path:
+        description: 'Path to SKILL.md file'
+        required: false
+        type: string
+        default: 'SKILL.md'
+
+jobs:
+  validate-skill:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout calling repo
+        uses: actions/checkout@v4
+
+      - name: Validate SKILL.md structure
+        run: |
+          SKILL_FILE="${{ inputs.skill_path }}"
+
+          if [ ! -f "$SKILL_FILE" ]; then
+            echo "::error::$SKILL_FILE not found"
+            exit 1
+          fi
+
+          echo "Validating $SKILL_FILE for ${{ inputs.repo_name }} (${{ inputs.pillar }} pillar)..."
+
+          ERRORS=0
+
+          # Check file is not empty
+          if [ ! -s "$SKILL_FILE" ]; then
+            echo "::error::$SKILL_FILE is empty"
+            ((ERRORS++))
+          fi
+
+          # Check for required sections (flexible — just warn if missing)
+          for SECTION in "# " "## "; do
+            if ! grep -q "^${SECTION}" "$SKILL_FILE"; then
+              echo "::warning::No '${SECTION}' heading found in $SKILL_FILE"
+            fi
+          done
+
+          # Check file size (warn if very small or very large)
+          SIZE=$(wc -c < "$SKILL_FILE")
+          if [ "$SIZE" -lt 500 ]; then
+            echo "::warning::$SKILL_FILE is only $SIZE bytes — may be incomplete"
+          fi
+          if [ "$SIZE" -gt 100000 ]; then
+            echo "::warning::$SKILL_FILE is $SIZE bytes — consider splitting into modules"
+          fi
+
+          # Report
+          LINES=$(wc -l < "$SKILL_FILE")
+          WORDS=$(wc -w < "$SKILL_FILE")
+          {
+            echo "## Skill Validation: ${{ inputs.repo_name }}"
+            echo ""
+            echo "| Metric | Value |"
+            echo "|--------|-------|"
+            echo "| Pillar | ${{ inputs.pillar }} |"
+            echo "| File | $SKILL_FILE |"
+            echo "| Lines | $LINES |"
+            echo "| Words | $WORDS |"
+            echo "| Size | ${SIZE} bytes |"
+            echo "| Errors | $ERRORS |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$ERRORS" -gt 0 ]; then
+            exit 1
+          fi
+
+          echo "Validation passed."

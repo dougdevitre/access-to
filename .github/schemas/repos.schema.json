@@ -55,6 +55,39 @@
             },
             "uniqueItems": true,
             "description": "Other repos this one has cross-pillar dependencies with"
+          },
+          "tagline": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "One-sentence pitch for this pillar"
+          },
+          "color": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{6}$",
+            "description": "Brand hex color for this pillar (no # prefix)"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon identifier for this pillar"
+          },
+          "audience": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Target user roles for this pillar"
+          },
+          "key_stats": {
+            "type": "object",
+            "additionalProperties": { "type": ["integer", "string"] },
+            "description": "Notable metrics for this pillar"
+          },
+          "use_cases": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "2-3 example scenarios showing the skill in action"
+          },
+          "cta": {
+            "type": "string",
+            "description": "Call to action text for this pillar"
           }
         },
         "additionalProperties": false

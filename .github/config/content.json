@@ -1,0 +1,105 @@
+{
+  "brand": {
+    "name": "Access To",
+    "parent": "CoTrackPro",
+    "founder": "Doug Devitre",
+    "mission": "Open-source AI tools closing the access gaps that matter most",
+    "vision": "Every practitioner, advocate, and family can access specialized AI expertise — no code, no cost, no barriers",
+    "tagline": "AI-powered access to justice, education, housing, health, jobs, safety, and services",
+    "url": "https://dougdevitre.org",
+    "github": "https://github.com/dougdevitre",
+    "email": "dougdevitre@gmail.com",
+    "colors": {
+      "primary": "1a1a2e",
+      "accent": "e94560",
+      "housing": "2D7A9B",
+      "jobs": "7A6F5B",
+      "health": "D4585B",
+      "business": "006b75",
+      "services": "6B5B8A",
+      "education": "4A7C59",
+      "safety": "B85C38"
+    },
+    "fonts": {
+      "heading": "DM Serif Display",
+      "body": "DM Sans"
+    },
+    "stats": {
+      "pillars": 6,
+      "projects": 7,
+      "modules": 400,
+      "counties": 114
+    },
+    "social_proof": [
+      "AFCC",
+      "Missouri Bar",
+      "NASW",
+      "EAPA",
+      "Justice Technology Association"
+    ]
+  },
+  "formats": {
+    "slide_deck": {
+      "description": "Presentation slides for conferences, pitches, and workshops",
+      "template": "templates/slide-deck.md",
+      "output_per": "pillar",
+      "audience": "conference attendees, funders, partners"
+    },
+    "video_script": {
+      "description": "Explainer video script for each pillar (2-3 min)",
+      "template": "templates/video-script.md",
+      "output_per": "pillar",
+      "audience": "general public, potential users"
+    },
+    "podcast_outline": {
+      "description": "Podcast episode outline per pillar (20-30 min)",
+      "template": "templates/podcast-outline.md",
+      "output_per": "pillar",
+      "audience": "practitioners, advocates, civic tech community"
+    },
+    "infographic_data": {
+      "description": "Structured data for infographic design",
+      "template": "templates/infographic-data.md",
+      "output_per": "pillar",
+      "audience": "social media, print, presentations"
+    },
+    "character_persona": {
+      "description": "Character AI persona definition per pillar",
+      "template": "templates/character-persona.md",
+      "output_per": "pillar",
+      "audience": "Character AI users, interactive demos"
+    },
+    "social_media": {
+      "description": "Social media copy blocks (Twitter, LinkedIn, etc.)",
+      "template": "templates/social-media.md",
+      "output_per": "pillar",
+      "audience": "social media followers, general public"
+    }
+  },
+  "cross_pillar_stories": [
+    {
+      "name": "Survivor's Path",
+      "flow": ["safety", "health", "housing", "services"],
+      "persona": "A domestic violence survivor rebuilding after leaving an unsafe situation",
+      "narrative": "Start with a safety plan, connect to healthcare, find stable housing, and access ongoing support services."
+    },
+    {
+      "name": "Career Builder",
+      "flow": ["education", "jobs", "services", "business"],
+      "persona": "A displaced worker retraining for a new career",
+      "narrative": "Align skills to standards, match to WIOA-funded training, navigate benefits during transition, and explore entrepreneurship."
+    },
+    {
+      "name": "Family Stabilizer",
+      "flow": ["housing", "health", "services", "jobs"],
+      "persona": "A single parent securing stable foundations for their family",
+      "narrative": "Find affordable housing, enroll in health coverage, connect to social services, and build toward economic self-sufficiency."
+    },
+    {
+      "name": "Community Anchor",
+      "flow": ["business", "jobs", "education", "services"],
+      "persona": "A local entrepreneur creating jobs in an underserved community",
+      "narrative": "Launch a business, create local employment, partner with schools for workforce pipelines, and connect employees to services."
+    }
+  ]
+}

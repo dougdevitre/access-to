@@ -343,3 +343,99 @@ All scripts use `lib-log.sh` for structured logging:
 ```
 
 Set `AUDIT_LOG=/path/to/file.jsonl` to persist an append-only audit trail of all sync operations.
+
+## Content Backbone
+
+The hub's config files serve as the master data source for ALL content across formats — slides, videos, podcasts, infographics, Character AI personas, and social media.
+
+### Data Flow: Config to Content
+
+```mermaid
+flowchart LR
+  subgraph Config["Single Source of Truth"]
+    R["repos.json\n(pillar data, stats,\naudiences, use cases)"]
+    C["content.json\n(brand, formats,\ncross-pillar stories)"]
+  end
+
+  subgraph Templates["Content Templates"]
+    T1["slide-deck.md"]
+    T2["video-script.md"]
+    T3["podcast-outline.md"]
+    T4["infographic-data.md"]
+    T5["character-persona.md"]
+    T6["social-media.md"]
+  end
+
+  subgraph Generator["generate-content.sh"]
+    G["Read config\nApply templates\nWrite output"]
+  end
+
+  subgraph Output["Generated Content"]
+    O1["slide-deck-housing.md"]
+    O2["video-script-safety.md"]
+    O3["podcast-outline-education.md"]
+    O4["character-persona-health.md"]
+    O5["social-media-jobs.md"]
+    O6["... (6 formats x 7 pillars)"]
+  end
+
+  R --> G
+  C --> G
+  Templates --> G
+  G --> Output
+```
+
+### Content Format Matrix
+
+| Format | Per Pillar | Purpose | Audience |
+|:-------|:----------|:--------|:---------|
+| Slide Deck | 7 decks | Conferences, pitches, workshops | Funders, partners |
+| Video Script | 7 scripts | 2-3 min explainer per pillar | General public |
+| Podcast Outline | 7 episodes | 20-30 min deep dives | Practitioners, civic tech |
+| Infographic Data | 7 sheets | Visual data for designers | Social media, print |
+| Character Persona | 7 personas | Character AI definitions | Interactive demo users |
+| Social Media | 7 copy sets | Twitter, LinkedIn, Instagram | Social followers |
+
+### Cross-Pillar Story Arcs
+
+```mermaid
+graph LR
+  subgraph "Survivor's Path"
+    SP1[Safety] --> SP2[Health] --> SP3[Housing] --> SP4[Services]
+  end
+
+  subgraph "Career Builder"
+    CB1[Education] --> CB2[Jobs] --> CB3[Services] --> CB4[Business]
+  end
+
+  subgraph "Family Stabilizer"
+    FS1[Housing] --> FS2[Health] --> FS3[Services] --> FS4[Jobs]
+  end
+
+  subgraph "Community Anchor"
+    CA1[Business] --> CA2[Jobs] --> CA3[Education] --> CA4[Services]
+  end
+```
+
+Each story represents a real user journey that spans multiple pillars. Content generators use these stories to create cohesive narratives across formats.
+
+### Content File Structure
+
+```
+.github/content/
+├── templates/
+│   ├── slide-deck.md
+│   ├── video-script.md
+│   ├── podcast-outline.md
+│   ├── infographic-data.md
+│   ├── character-persona.md
+│   └── social-media.md
+└── generated/
+    ├── slide-deck-housing.md
+    ├── slide-deck-jobs.md
+    ├── video-script-safety.md
+    ├── podcast-outline-education.md
+    ├── character-persona-health.md
+    ├── social-media-services.md
+    └── ... (42 files total: 6 formats x 7 pillars)
+```

@@ -19,7 +19,7 @@
     },
     {
       "name": "access-to-jobs",
-      "pillar": "services",
+      "pillar": "jobs",
       "description": "WIOA navigation, job matching across 114 Missouri counties",
       "scope": "missouri",
       "role": "pillar",
@@ -35,7 +35,7 @@
     },
     {
       "name": "access-to-business",
-      "pillar": "services",
+      "pillar": "business",
       "description": "Startup guide, entrepreneur support, business launch",
       "scope": "missouri",
       "role": "pillar",

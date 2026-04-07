@@ -55,7 +55,7 @@ jobs:
           # Check file is not empty
           if [ ! -s "$SKILL_FILE" ]; then
             echo "::error::$SKILL_FILE is empty"
-            ((ERRORS++))
+            ((ERRORS++)) || true
           fi
 
           # Check for required sections
@@ -78,7 +78,7 @@ jobs:
           VALID_PILLARS="hub housing jobs health business services education safety"
           if ! echo "$VALID_PILLARS" | grep -qw "$PILLAR"; then
             echo "::error::Invalid pillar '$PILLAR'. Must be one of: $VALID_PILLARS"
-            ((ERRORS++))
+            ((ERRORS++)) || true
           fi
 
           # Report

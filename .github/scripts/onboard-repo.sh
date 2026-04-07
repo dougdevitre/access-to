@@ -75,7 +75,7 @@ for i in $(seq 0 $((LABEL_COUNT - 1))); do
   COLOR=$(jq -r ".[$i].color" "$LABELS_FILE")
   DESC=$(jq -r ".[$i].description" "$LABELS_FILE")
   if gh label create "$NAME" --repo "$FULL_REPO" --color "$COLOR" --description "$DESC" --force 2>/dev/null; then
-    ((SYNCED++))
+    ((SYNCED++)) || true
   fi
 done
 echo "  Synced $SYNCED/$LABEL_COUNT labels"

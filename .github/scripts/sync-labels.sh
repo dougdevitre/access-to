@@ -58,10 +58,10 @@ for REPO in "${REPOS[@]}"; do
       --description "$DESC" \
       --force 2>&1); then
       log_action "sync-label" "$REPO/$NAME" "success"
-      ((SYNCED++))
+      ((SYNCED++)) || true
     else
       log_action "sync-label" "$REPO/$NAME" "failed" "$OUTPUT"
-      ((ERRORS++))
+      ((ERRORS++)) || true
     fi
   done
 done

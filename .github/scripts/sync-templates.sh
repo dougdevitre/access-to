@@ -75,10 +75,10 @@ for REPO in "${REPOS[@]}"; do
       RESPONSE_SHA=$(printf '%s' "$OUTPUT" | jq -r '.content.sha // empty' 2>/dev/null || echo "")
       if [ -n "$RESPONSE_SHA" ]; then
         log_action "sync-template" "$REPO/$FILENAME" "success"
-        ((SYNCED++))
+        ((SYNCED++)) || true
       else
         log_action "sync-template" "$REPO/$FILENAME" "unverified" "API returned OK but no content SHA"
-        ((SYNCED++))
+        ((SYNCED++)) || true
       fi
     else
       # Parse the actual error
@@ -100,7 +100,7 @@ for REPO in "${REPOS[@]}"; do
           log_action "sync-template" "$REPO/$FILENAME" "failed" "HTTP $ERROR_STATUS"
           ;;
       esac
-      ((FAILED++))
+      ((FAILED++)) || true
     fi
   done
 done

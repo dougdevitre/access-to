@@ -45,7 +45,7 @@ gh_retry() {
       log_info "Retry $attempt/$MAX_RETRIES in ${wait}s..."
       sleep "$wait"
     fi
-    ((attempt++))
+    ((attempt++)) || true
   done
   echo "$output"
   return 1
@@ -76,16 +76,16 @@ for REPO in "${REPOS[@]}"; do
     --url "$REPO_URL" 2>&1); then
     log_action "sync-repo" "$REPO" "added"
     DETAILS+="| $REPO | Added |"$'\n'
-    ((ADDED++))
+    ((ADDED++)) || true
   else
     if echo "$OUTPUT" | grep -qi "already exists"; then
       log_action "sync-repo" "$REPO" "skipped" "already in project"
       DETAILS+="| $REPO | Skipped |"$'\n'
-      ((SKIPPED++))
+      ((SKIPPED++)) || true
     else
       log_action "sync-repo" "$REPO" "failed" "$OUTPUT"
       DETAILS+="| $(escape_md "$REPO") | **Failed**: $(escape_md "$OUTPUT") |"$'\n'
-      ((FAILED++))
+      ((FAILED++)) || true
     fi
   fi
 done

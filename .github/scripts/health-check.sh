@@ -37,7 +37,7 @@ for REPO in "${REPOS[@]}"; do
   else
     REPO_CACHE["$REPO"]="{}"
     log_action "fetch-repo" "$REPO" "failed" "$DATA"
-    ((FETCH_ERRORS++))
+    ((FETCH_ERRORS++)) || true
   fi
 done
 

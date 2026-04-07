@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dougdevitre/access-to/schemas/content.schema.json",
+  "title": "Access To Content Manifest",
+  "description": "Brand identity, content format definitions, and cross-pillar story arcs for the Access To ecosystem.",
+  "type": "object",
+  "required": ["brand", "formats", "cross_pillar_stories"],
+  "properties": {
+    "brand": {
+      "type": "object",
+      "required": ["name", "mission", "tagline", "url", "colors", "fonts", "stats"],
+      "properties": {
+        "name": { "type": "string" },
+        "parent": { "type": "string" },
+        "founder": { "type": "string" },
+        "mission": { "type": "string" },
+        "vision": { "type": "string" },
+        "tagline": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "github": { "type": "string", "format": "uri" },
+        "email": { "type": "string", "format": "email" },
+        "colors": {
+          "type": "object",
+          "required": ["primary", "accent"],
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{6}$"
+          }
+        },
+        "fonts": {
+          "type": "object",
+          "required": ["heading", "body"],
+          "properties": {
+            "heading": { "type": "string" },
+            "body": { "type": "string" }
+          }
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "pillars": { "type": "integer" },
+            "projects": { "type": "integer" },
+            "modules": { "type": "integer" },
+            "counties": { "type": "integer" }
+          }
+        },
+        "social_proof": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "formats": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["description", "template", "output_per", "audience"],
+        "properties": {
+          "description": { "type": "string" },
+          "template": { "type": "string" },
+          "output_per": { "type": "string", "enum": ["pillar", "ecosystem", "story"] },
+          "audience": { "type": "string" }
+        }
+      }
+    },
+    "cross_pillar_stories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "flow", "persona", "narrative"],
+        "properties": {
+          "name": { "type": "string" },
+          "flow": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2
+          },
+          "persona": { "type": "string" },
+          "narrative": { "type": "string" }
+        }
+      }
+    }
+  }
+}

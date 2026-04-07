@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dougdevitre/access-to/schemas/repos.schema.json",
+  "title": "Access To Ecosystem Repository Registry",
+  "description": "Defines all repositories in the Access To ecosystem, their pillar assignments, and cross-repo connections.",
+  "type": "object",
+  "required": ["owner", "project_number", "repos"],
+  "properties": {
+    "owner": {
+      "type": "string",
+      "description": "GitHub owner/organization"
+    },
+    "project_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "GitHub Project number for tracking"
+    },
+    "repos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "pillar", "description", "scope", "role"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Repository name (lowercase, hyphens only)"
+          },
+          "pillar": {
+            "type": "string",
+            "enum": ["hub", "housing", "jobs", "health", "business", "services", "education", "safety"],
+            "description": "Which pillar this repo belongs to"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Short description of the repo's purpose"
+          },
+          "scope": {
+            "type": "string",
+            "enum": ["missouri", "nationwide", "global"],
+            "description": "Geographic scope of the project"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["hub", "pillar", "tool", "docs"],
+            "description": "Role in the ecosystem"
+          },
+          "connects_to": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$"
+            },
+            "uniqueItems": true,
+            "description": "Other repos this one has cross-pillar dependencies with"
+          },
+          "tagline": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "One-sentence pitch for this pillar"
+          },
+          "color": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{6}$",
+            "description": "Brand hex color for this pillar (no # prefix)"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon identifier for this pillar"
+          },
+          "audience": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Target user roles for this pillar"
+          },
+          "key_stats": {
+            "type": "object",
+            "additionalProperties": { "type": ["integer", "string"] },
+            "description": "Notable metrics for this pillar"
+          },
+          "use_cases": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "2-3 example scenarios showing the skill in action"
+          },
+          "cta": {
+            "type": "string",
+            "description": "Call to action text for this pillar"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

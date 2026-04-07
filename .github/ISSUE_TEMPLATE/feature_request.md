@@ -2,7 +2,7 @@
 name: Feature Request
 about: Suggest an improvement to the hub site or documentation
 title: "[Feature] "
-labels: enhancement
+labels: type:feature, status:triage
 assignees: ''
 ---
 
@@ -14,13 +14,13 @@ Describe what you'd like to see. Be as specific as possible.
 
 **Which project(s) does this affect?**
 - [ ] access-to (hub site)
+- [ ] access-to-housing
+- [ ] access-to-jobs
 - [ ] access-to-health
+- [ ] access-to-business
+- [ ] access-to-services
 - [ ] access-to-education
 - [ ] access-to-safety
-- [ ] access-to-housing
-- [ ] access-to-services
-- [ ] access-to-jobs
-- [ ] mo-start
 
 **Alternatives considered**
 Any other approaches you've thought about.

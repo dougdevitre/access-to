@@ -1,0 +1,43 @@
+name: Sync Issue Templates to Child Repos
+
+on:
+  workflow_dispatch:
+    inputs:
+      sync_all:
+        description: 'Sync all templates (not just shared ones)'
+        required: false
+        default: 'false'
+        type: boolean
+  push:
+    branches: [main]
+    paths:
+      - '.github/ISSUE_TEMPLATE/cross_repo.md'
+      - '.github/ISSUE_TEMPLATE/bug_report.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ecosystem-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-templates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync templates to child repos
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          chmod +x .github/scripts/sync-templates.sh
+          EXTRA_FLAG=""
+          if [ "${{ inputs.sync_all }}" = "true" ]; then
+            EXTRA_FLAG="--all"
+          fi
+          .github/scripts/sync-templates.sh \
+            .github/config/repos.json \
+            .github/ISSUE_TEMPLATE \
+            $EXTRA_FLAG

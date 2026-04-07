@@ -1,0 +1,29 @@
+[
+  { "name": "pillar:housing",    "color": "1d76db", "description": "Housing pillar" },
+  { "name": "pillar:jobs",       "color": "0e8a16", "description": "Jobs pillar" },
+  { "name": "pillar:health",     "color": "d93f0b", "description": "Health pillar" },
+  { "name": "pillar:education",  "color": "fbca04", "description": "Education pillar" },
+  { "name": "pillar:services",   "color": "5319e7", "description": "Services pillar" },
+  { "name": "pillar:safety",     "color": "b60205", "description": "Safety pillar" },
+  { "name": "pillar:business",   "color": "006b75", "description": "Business pillar" },
+
+  { "name": "type:bug",          "color": "d73a4a", "description": "Something isn't working" },
+  { "name": "type:feature",      "color": "a2eeef", "description": "New feature or request" },
+  { "name": "type:docs",         "color": "0075ca", "description": "Documentation improvements" },
+  { "name": "type:skill",        "color": "e4e669", "description": "Claude Skill content or logic" },
+  { "name": "type:infra",        "color": "d4c5f9", "description": "CI/CD, workflows, config" },
+
+  { "name": "priority:critical", "color": "b60205", "description": "Must fix immediately" },
+  { "name": "priority:high",     "color": "d93f0b", "description": "Should fix soon" },
+  { "name": "priority:medium",   "color": "fbca04", "description": "Fix when possible" },
+  { "name": "priority:low",      "color": "0e8a16", "description": "Nice to have" },
+
+  { "name": "status:triage",     "color": "ededed", "description": "Needs review and assignment" },
+  { "name": "status:in-progress","color": "0052cc", "description": "Actively being worked on" },
+  { "name": "status:blocked",    "color": "b60205", "description": "Blocked by dependency or decision" },
+  { "name": "status:ready",      "color": "0e8a16", "description": "Ready for review or merge" },
+
+  { "name": "cross-repo",        "color": "c5def5", "description": "Affects multiple Access To repos" },
+  { "name": "good first issue",  "color": "7057ff", "description": "Good for newcomers" },
+  { "name": "help wanted",       "color": "008672", "description": "Extra attention needed" }
+]

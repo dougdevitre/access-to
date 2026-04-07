@@ -1,0 +1,43 @@
+name: Generate Content
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/config/repos.json'
+      - '.github/config/content.json'
+      - '.github/content/templates/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: content-generation
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate content from config
+        run: |
+          chmod +x .github/scripts/generate-content.sh
+          .github/scripts/generate-content.sh \
+            .github/config \
+            .github/content
+
+      - name: Commit generated content
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/content/generated/
+          if git diff --staged --quiet; then
+            echo "No content changes to commit"
+          else
+            git commit -m "Auto-generate content from config [skip ci]"
+            git push
+          fi

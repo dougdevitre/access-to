@@ -1,0 +1,71 @@
+name: Copilot Issue Triage
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Auto-label by pillar keywords
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const issue = context.payload.issue;
+            const content = `${issue.title} ${issue.body || ''}`.toLowerCase();
+            const labels = new Set();
+
+            // Pillar keyword detection
+            const pillarMap = {
+              'pillar:housing':   /housing|rent|tenant|landlord|fair housing|proptech/,
+              'pillar:jobs':      /\bjob\b|workforce|wioa|employment|career/,
+              'pillar:health':    /health|medical|medicaid|medicare|healthcare/,
+              'pillar:education': /education|teacher|lesson|curriculum|k-12/,
+              'pillar:services':  /\bservice|benefits|social work|case management/,
+              'pillar:safety':    /safety|crisis|protective order|domestic|violence|risk assessment/,
+              'pillar:business':  /business|startup|entrepreneur/
+            };
+
+            for (const [label, pattern] of Object.entries(pillarMap)) {
+              if (pattern.test(content)) labels.add(label);
+            }
+
+            // Type keyword detection
+            const typeMap = {
+              'type:bug':   /bug|broken|error|\bfix\b|not working/,
+              'type:skill': /skill\.md|skill file|prompt|module/,
+              'type:docs':  /\bdoc\b|readme|guide|instruction/,
+              'type:infra': /workflow|ci\b|action|deploy|infra/
+            };
+
+            for (const [label, pattern] of Object.entries(typeMap)) {
+              if (pattern.test(content)) labels.add(label);
+            }
+
+            // Cross-repo detection
+            const pillars = ['housing', 'jobs', 'health', 'education', 'services', 'safety', 'business'];
+            const repoMentions = pillars.filter(p => content.includes(`access-to-${p}`) || content.includes(`access to ${p}`));
+            if (repoMentions.length >= 2) labels.add('cross-repo');
+
+            // Always triage
+            labels.add('status:triage');
+
+            // Apply labels
+            const labelArray = [...labels];
+            if (labelArray.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: labelArray
+              });
+              core.info(`Applied labels: ${labelArray.join(', ')}`);
+            }

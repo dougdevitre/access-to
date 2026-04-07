@@ -1,0 +1,31 @@
+name: Sync Labels Across Repos
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/config/labels.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ecosystem-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync labels to all repos
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          chmod +x .github/scripts/sync-labels.sh
+          .github/scripts/sync-labels.sh \
+            .github/config/labels.json \
+            .github/config/repos.json

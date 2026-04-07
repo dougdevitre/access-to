@@ -1,0 +1,157 @@
+{
+  "owner": "dougdevitre",
+  "project_number": 1,
+  "repos": [
+    {
+      "name": "access-to",
+      "pillar": "hub",
+      "description": "Central hub and landing site for the Access To ecosystem",
+      "scope": "nationwide",
+      "role": "hub",
+      "tagline": "Open-source AI tools closing the access gaps that matter most",
+      "color": "1a1a2e",
+      "icon": "hub",
+      "audience": ["contributors", "sponsors", "media"],
+      "key_stats": { "pillars": 6, "projects": 7, "modules": 400, "counties": 114 },
+      "use_cases": [
+        "Discover which Access To skill fits your practice area",
+        "Contribute new pillar content or improve existing skills",
+        "Track ecosystem health and cross-pillar connections"
+      ],
+      "cta": "Explore the ecosystem"
+    },
+    {
+      "name": "access-to-housing",
+      "pillar": "housing",
+      "description": "PropTech intelligence, market analysis, Fair Housing compliance",
+      "scope": "nationwide",
+      "role": "pillar",
+      "connects_to": ["access-to-safety", "access-to-jobs", "access-to-services"],
+      "tagline": "AI-powered real estate intelligence for informed decisions",
+      "color": "2D7A9B",
+      "icon": "housing",
+      "audience": ["real estate professionals", "investors", "housing counselors"],
+      "key_stats": { "modules": 74, "pods": 6 },
+      "use_cases": [
+        "Run a comparative market analysis with climate risk scoring",
+        "Check Fair Housing compliance before listing a property",
+        "Generate an investment feasibility report for multifamily housing"
+      ],
+      "cta": "Start analyzing properties"
+    },
+    {
+      "name": "access-to-jobs",
+      "pillar": "jobs",
+      "description": "WIOA navigation, job matching across 114 Missouri counties",
+      "scope": "missouri",
+      "role": "pillar",
+      "connects_to": ["access-to-education", "access-to-services", "access-to-housing"],
+      "tagline": "Workforce navigation for every Missouri county",
+      "color": "7A6F5B",
+      "icon": "jobs",
+      "audience": ["workforce development staff", "job seekers", "career counselors"],
+      "key_stats": { "counties": 114 },
+      "use_cases": [
+        "Match a job seeker to WIOA-eligible training programs in their county",
+        "Navigate On-the-Job Training funding requirements",
+        "Build a career pathway from assessment to placement"
+      ],
+      "cta": "Navigate workforce programs"
+    },
+    {
+      "name": "access-to-health",
+      "pillar": "health",
+      "description": "Healthcare navigation, benefits enrollment, Medicaid/Medicare",
+      "scope": "nationwide",
+      "role": "pillar",
+      "connects_to": ["access-to-safety", "access-to-services"],
+      "tagline": "Guiding families through healthcare access and benefits",
+      "color": "D4585B",
+      "icon": "health",
+      "audience": ["healthcare navigators", "social workers", "benefits counselors"],
+      "key_stats": {},
+      "use_cases": [
+        "Determine Medicaid eligibility and walk through the application process",
+        "Compare Medicare Advantage plans for a client's specific needs",
+        "Navigate CHIP enrollment for children in a mixed-status family"
+      ],
+      "cta": "Navigate healthcare access"
+    },
+    {
+      "name": "access-to-business",
+      "pillar": "business",
+      "description": "Startup guide, entrepreneur support, business launch",
+      "scope": "missouri",
+      "role": "pillar",
+      "connects_to": ["access-to-jobs", "access-to-services"],
+      "tagline": "From idea to launch — AI-guided startup support",
+      "color": "006b75",
+      "icon": "business",
+      "audience": ["aspiring entrepreneurs", "small business owners", "startup mentors"],
+      "key_stats": {},
+      "use_cases": [
+        "Build a lean business plan with market validation steps",
+        "Navigate Missouri business registration and licensing",
+        "Identify startup funding sources and grant programs"
+      ],
+      "cta": "Launch your business"
+    },
+    {
+      "name": "access-to-services",
+      "pillar": "services",
+      "description": "Social services navigation, benefits matching, workforce dev",
+      "scope": "nationwide",
+      "role": "pillar",
+      "connects_to": ["access-to-jobs", "access-to-health", "access-to-housing"],
+      "tagline": "Connecting people to the services they need, faster",
+      "color": "6B5B8A",
+      "icon": "services",
+      "audience": ["social workers", "caseworkers", "benefits counselors"],
+      "key_stats": {},
+      "use_cases": [
+        "Screen a client for eligibility across multiple benefit programs",
+        "Build a coordinated service plan spanning housing, health, and employment",
+        "Navigate TANF recertification requirements step by step"
+      ],
+      "cta": "Match clients to services"
+    },
+    {
+      "name": "access-to-education",
+      "pillar": "education",
+      "description": "Standards alignment, lesson planning, teacher growth for Missouri K-12",
+      "scope": "missouri",
+      "role": "pillar",
+      "connects_to": ["access-to-jobs", "access-to-services"],
+      "tagline": "Standards-aligned AI tools for Missouri educators",
+      "color": "4A7C59",
+      "icon": "education",
+      "audience": ["educators", "curriculum directors", "instructional coaches"],
+      "key_stats": {},
+      "use_cases": [
+        "Align a lesson plan to Missouri Learning Standards with differentiation",
+        "Generate a professional growth plan tied to student outcomes",
+        "Design a cross-curricular unit connecting ELA and social studies"
+      ],
+      "cta": "Plan standards-aligned lessons"
+    },
+    {
+      "name": "access-to-safety",
+      "pillar": "safety",
+      "description": "Safety planning, risk assessment, protective orders, crisis resources",
+      "scope": "nationwide",
+      "role": "pillar",
+      "connects_to": ["access-to-health", "access-to-housing", "access-to-services"],
+      "tagline": "Trauma-informed AI for safety planning and crisis response",
+      "color": "B85C38",
+      "icon": "safety",
+      "audience": ["DV advocates", "crisis counselors", "legal aid attorneys"],
+      "key_stats": {},
+      "use_cases": [
+        "Build a personalized safety plan addressing housing, health, and legal needs",
+        "Walk through the protective order filing process step by step",
+        "Identify local crisis resources and warm handoff protocols"
+      ],
+      "cta": "Create a safety plan"
+    }
+  ]
+}

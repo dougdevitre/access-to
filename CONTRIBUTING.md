@@ -28,6 +28,7 @@ git checkout -b feature/your-idea
 - **Hub site changes** — Edit HTML, CSS, or JS files in the root directory
 - **README or docs** — Edit markdown files directly
 - **Individual project contributions** — See the contributing guidelines in each child repo
+- **Cross-repo work** — See [Working Across Repos](#working-across-repos) below
 
 ### 4. Test Locally
 
@@ -57,6 +58,45 @@ Then open a pull request on GitHub. Include:
 | **New pillar pages** | This repo | Adding a new `.html` pillar page |
 | **Skill improvements** | Child repos | Enhancing SKILL.md prompts, adding modules |
 | **Documentation** | Any repo | README improvements, guides, FAQs |
+
+## Working Across Repos
+
+The Access To ecosystem spans multiple repositories. Some features, bug fixes, or content changes touch more than one repo.
+
+### When does work become cross-repo?
+
+- A user flow starts in one pillar and depends on another (e.g., safety planning that references housing resources)
+- A shared data format or label convention changes
+- A SKILL.md module references content from another pillar
+- A hub site change needs matching updates in child repos
+
+### How to coordinate
+
+1. **Open a cross-repo issue** in the hub repo using the [Cross-Repo Coordination](https://github.com/dougdevitre/access-to/issues/new?template=cross_repo.md) template
+2. **Apply the `cross-repo` label** to related issues in each child repo — the weekly health check tracks these
+3. **List dependencies** in the coordination issue so reviewers know the merge order
+4. **Reference the hub issue** from each child repo PR (e.g., "Part of dougdevitre/access-to#42")
+
+### Shared infrastructure
+
+All repos share a consistent set of labels, issue templates, and project tracking managed from the hub:
+
+| Config | Location | Synced by |
+|:-------|:---------|:----------|
+| Labels | `.github/config/labels.json` | `sync-labels.yml` |
+| Repo registry | `.github/config/repos.json` | `sync-repos-to-project.yml` |
+| Issue templates | `.github/ISSUE_TEMPLATE/` | `sync-templates.yml` |
+| SKILL.md validation | Reusable workflow | `reusable-skill-check.yml` |
+
+### Adding a new repo to the ecosystem
+
+Run the onboarding script from the hub repo:
+
+```bash
+.github/scripts/onboard-repo.sh <repo-name> <pillar> [scope]
+```
+
+This syncs labels, adds the repo to the GitHub Project, and creates a setup checklist issue. See the generated issue for remaining manual steps.
 
 ## Style Guide
 

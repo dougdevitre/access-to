@@ -1,0 +1,191 @@
+/* ══════════════════════════════════════════════
+   ACCESS TO — Shared Design Tokens
+   ══════════════════════════════════════════════
+
+   Include this file in any Access To child repo
+   for consistent styling across the ecosystem.
+
+   Usage:
+     <link rel="stylesheet" href="https://dougdevitre.org/design-tokens.css">
+
+   Or copy into your project.
+   ══════════════════════════════════════════════ */
+
+/* ── Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Serif+Display&display=swap');
+
+:root {
+  /* ── Typography ── */
+  --at-font-display: 'DM Serif Display', Georgia, serif;
+  --at-font-body: 'DM Sans', system-ui, sans-serif;
+  --at-font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
+  /* ── Base Colors (Light) ── */
+  --at-color-bg: #FAFAF7;
+  --at-color-text: #1A1A1A;
+  --at-color-muted: #6B6B6B;
+  --at-color-border: #E0DDD6;
+  --at-color-card-bg: #FFFFFF;
+  --at-color-accent: #e94560;
+
+  /* ── Pillar Colors ── */
+  --at-color-housing: #2D7A9B;
+  --at-color-jobs: #7A6F5B;
+  --at-color-health: #D4585B;
+  --at-color-business: #006b75;
+  --at-color-services: #6B5B8A;
+  --at-color-education: #4A7C59;
+  --at-color-safety: #B85C38;
+
+  /* ── Spacing ── */
+  --at-spacing-xs: 0.25rem;
+  --at-spacing-sm: 0.5rem;
+  --at-spacing-md: 1rem;
+  --at-spacing-lg: 2rem;
+  --at-spacing-xl: 4rem;
+
+  /* ── Layout ── */
+  --at-max-width: 1120px;
+  --at-radius: 10px;
+  --at-radius-sm: 6px;
+  --at-radius-pill: 100px;
+
+  /* ── Shadows ── */
+  --at-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --at-shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --at-shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+
+  /* ── Transitions ── */
+  --at-transition-fast: 0.15s ease;
+  --at-transition-base: 0.2s ease;
+  --at-transition-slow: 0.3s ease;
+}
+
+/* ── Dark Mode Tokens ── */
+[data-theme="dark"] {
+  --at-color-bg: #141413;
+  --at-color-text: #E8E8E4;
+  --at-color-muted: #9B9B93;
+  --at-color-border: #2E2E2A;
+  --at-color-card-bg: #1C1C1A;
+  --at-color-accent: #ff6b81;
+
+  --at-color-housing: #5AAAC8;
+  --at-color-jobs: #A89F8B;
+  --at-color-health: #E88A8C;
+  --at-color-business: #33A8A8;
+  --at-color-services: #A07CC4;
+  --at-color-education: #7AAF82;
+  --at-color-safety: #D4845A;
+
+  --at-shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --at-shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --at-shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+}
+
+/* ── Shared Component: Card ── */
+.at-card {
+  background: var(--at-color-card-bg);
+  border: 1px solid var(--at-color-border);
+  border-radius: var(--at-radius);
+  padding: var(--at-spacing-lg);
+  transition: transform var(--at-transition-base), box-shadow var(--at-transition-base);
+}
+.at-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--at-shadow-md);
+}
+
+/* ── Shared Component: Button ── */
+.at-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--at-spacing-sm);
+  padding: 0.8rem 1.75rem;
+  border-radius: 8px;
+  font-family: var(--at-font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all var(--at-transition-base);
+}
+.at-btn-primary {
+  background: var(--at-color-text);
+  color: var(--at-color-bg);
+}
+.at-btn-primary:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+.at-btn-secondary {
+  background: transparent;
+  color: var(--at-color-text);
+  border: 1.5px solid var(--at-color-border);
+}
+.at-btn-secondary:hover {
+  border-color: var(--at-color-muted);
+  background: var(--at-color-card-bg);
+}
+
+/* ── Shared Component: Tag ── */
+.at-tag {
+  display: inline-block;
+  font-family: var(--at-font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--at-radius-pill);
+  border: 1px solid var(--at-color-border);
+  color: var(--at-color-muted);
+}
+
+/* ── Shared Component: Container ── */
+.at-container {
+  max-width: var(--at-max-width);
+  margin: 0 auto;
+  padding: 0 var(--at-spacing-lg);
+}
+
+/* ── Shared Component: Grid ── */
+.at-grid {
+  display: grid;
+  gap: var(--at-spacing-lg);
+}
+.at-grid-2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.at-grid-3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+
+/* ── Accessibility ── */
+.at-skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--at-spacing-md);
+  background: var(--at-color-text);
+  color: var(--at-color-bg);
+  padding: var(--at-spacing-sm) var(--at-spacing-md);
+  border-radius: var(--at-radius-sm);
+  z-index: 200;
+  font-family: var(--at-font-body);
+}
+.at-skip-link:focus { top: var(--at-spacing-md); }
+
+*:focus-visible {
+  outline: 2px solid var(--at-color-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .at-grid-2, .at-grid-3 { grid-template-columns: 1fr; }
+}

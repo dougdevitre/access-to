@@ -2,7 +2,7 @@
 name: New Pillar Proposal
 about: Propose a new access pillar or project area
 title: "[Pillar] Access to ___"
-labels: pillar-proposal
+labels: type:feature, status:triage
 assignees: ''
 ---
 

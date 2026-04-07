@@ -2,7 +2,7 @@
 name: Bug Report
 about: Report a broken link, layout issue, or other problem
 title: "[Bug] "
-labels: bug
+labels: type:bug, status:triage
 assignees: ''
 ---
 

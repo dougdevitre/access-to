@@ -224,6 +224,7 @@ graph TD
       W4["health-check.yml\n(weekly Monday 8 AM)"]
       W5["validate-config.yml\n(on PR/push)"]
       W6["reusable-skill-check.yml\n(called by children)"]
+      W7["copilot-triage.yml\n(on new issue)"]
     end
 
     subgraph templates["ISSUE_TEMPLATE/"]

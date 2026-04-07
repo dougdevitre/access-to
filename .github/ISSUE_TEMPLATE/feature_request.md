@@ -2,7 +2,7 @@
 name: Feature Request
 about: Suggest an improvement to the hub site or documentation
 title: "[Feature] "
-labels: enhancement
+labels: type:feature, status:triage
 assignees: ''
 ---
 

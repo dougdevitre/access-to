@@ -3,21 +3,39 @@
    ══════════════════════════════════════ */
 
 :root {
+  /* ── Base tokens ── */
   --color-bg: #FAFAF7;
   --color-text: #1A1A1A;
   --color-muted: #6B6B6B;
   --color-border: #E0DDD6;
   --color-card-bg: #FFFFFF;
-  --color-accent-justice: #2D5A7B;
-  --color-accent-education: #5B7A3A;
-  --color-accent-housing: #8B5E3C;
-  --color-accent-services: #6B4C8A;
-  --color-accent-peace: #3A7A7A;
+  --color-accent: #e94560;
+
+  /* ── Pillar accent colors ── */
+  --color-accent-housing: #2D7A9B;
+  --color-accent-jobs: #7A6F5B;
+  --color-accent-health: #D4585B;
+  --color-accent-business: #006b75;
+  --color-accent-services: #6B5B8A;
+  --color-accent-education: #4A7C59;
   --color-accent-safety: #B85C38;
+
+  /* ── Legacy aliases (hub site pillar pages) ── */
+  --color-accent-justice: var(--color-accent-housing);
+  --color-accent-peace: var(--color-accent-safety);
+
+  /* ── Typography ── */
   --font-display: 'DM Serif Display', Georgia, serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
+
+  /* ── Layout ── */
   --max-width: 1120px;
   --radius: 10px;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 4rem;
 }
 
 /* ── DARK MODE ── */
@@ -27,11 +45,15 @@
   --color-muted: #9B9B93;
   --color-border: #2E2E2A;
   --color-card-bg: #1C1C1A;
-  --color-accent-justice: #5A9CC4;
-  --color-accent-education: #8BB462;
-  --color-accent-housing: #C4906A;
+  --color-accent: #ff6b81;
+
+  /* ── Pillar accent colors (lightened for dark backgrounds) ── */
+  --color-accent-housing: #5AAAC8;
+  --color-accent-jobs: #A89F8B;
+  --color-accent-health: #E88A8C;
+  --color-accent-business: #33A8A8;
   --color-accent-services: #A07CC4;
-  --color-accent-peace: #62B4B4;
+  --color-accent-education: #7AAF82;
   --color-accent-safety: #D4845A;
 }
 

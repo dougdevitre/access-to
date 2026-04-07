@@ -10,15 +10,22 @@
     "github": "https://github.com/dougdevitre",
     "email": "dougdevitre@gmail.com",
     "colors": {
-      "primary": "1a1a2e",
+      "primary": "1A1A1A",
+      "background": "FAFAF7",
       "accent": "e94560",
+      "muted": "6B6B6B",
+      "border": "E0DDD6",
+      "card": "FFFFFF",
       "housing": "2D7A9B",
       "jobs": "7A6F5B",
       "health": "D4585B",
       "business": "006b75",
       "services": "6B5B8A",
       "education": "4A7C59",
-      "safety": "B85C38"
+      "safety": "B85C38",
+      "dark_bg": "141413",
+      "dark_text": "E8E8E4",
+      "dark_card": "1C1C1A"
     },
     "fonts": {
       "heading": "DM Serif Display",

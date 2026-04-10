@@ -1,6 +1,6 @@
 # Jobs — Social Media Copy
 
-> Generated from repos.json + content.json | 2026-04-07
+> Generated from repos.json + content.json | 2026-04-10
 
 ## Twitter/X (280 chars)
 

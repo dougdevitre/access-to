@@ -1,6 +1,6 @@
 # Business — Video Script (2-3 min)
 
-> Generated from repos.json + content.json | 2026-04-07
+> Generated from repos.json + content.json | 2026-04-10
 
 ## HOOK (0:00 - 0:15)
 

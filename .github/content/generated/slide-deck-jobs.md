@@ -1,6 +1,6 @@
 # Jobs — Slide Deck
 
-> Generated from repos.json + content.json | 2026-04-07
+> Generated from repos.json + content.json | 2026-04-10
 
 ---
 

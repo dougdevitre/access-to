@@ -8,12 +8,13 @@ const ROOT = path.join(__dirname, '..');
 
 const ALL_PAGES = [
   'index.html',
-  'justice.html',
+  'health.html',
   'education.html',
+  'safety.html',
   'housing.html',
   'services.html',
-  'peace.html',
-  'safety.html',
+  'jobs.html',
+  'business.html',
   '404.html',
 ];
 
@@ -129,7 +130,7 @@ describe('Accessibility', () => {
   });
 
   describe('heading hierarchy', () => {
-    const pillarPages = ['justice.html', 'education.html', 'housing.html', 'services.html', 'peace.html', 'safety.html'];
+    const pillarPages = ['health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html'];
 
     pillarPages.forEach((page) => {
       test(`${page} has exactly one <h1>`, () => {

@@ -8,12 +8,13 @@ const ROOT = path.join(__dirname, '..');
 
 const HTML_PAGES = [
   'index.html',
-  'justice.html',
+  'health.html',
   'education.html',
+  'safety.html',
   'housing.html',
   'services.html',
-  'peace.html',
-  'safety.html',
+  'jobs.html',
+  'business.html',
   '404.html',
 ];
 
@@ -132,7 +133,7 @@ describe('HTML document structure', () => {
   });
 
   describe('pillar pages (excluding index and 404)', () => {
-    const pillarPages = ['justice.html', 'education.html', 'housing.html', 'services.html', 'peace.html', 'safety.html'];
+    const pillarPages = ['health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html'];
 
     pillarPages.forEach((page) => {
       describe(page, () => {
@@ -161,10 +162,10 @@ describe('HTML document structure', () => {
           expect($('.project-card').length).toBeGreaterThanOrEqual(1);
         });
 
-        test('has cross-links section with all 6 pillar links', () => {
+        test('has cross-links section with all 7 pillar links', () => {
           const crossLinks = $('.cross-links-grid');
           expect(crossLinks.length).toBe(1);
-          expect(crossLinks.find('a').length).toBe(6);
+          expect(crossLinks.find('a').length).toBe(7);
         });
 
         test('has a donate section', () => {

@@ -6,7 +6,7 @@ const cheerio = require('cheerio');
 
 const ROOT = path.join(__dirname, '..');
 
-const PILLARS = ['justice', 'education', 'housing', 'services', 'peace', 'safety'];
+const PILLARS = ['health', 'education', 'safety', 'housing', 'services', 'jobs', 'business'];
 const PILLAR_PAGES = PILLARS.map((p) => `${p}.html`);
 
 function load(file) {
@@ -88,12 +88,13 @@ describe('Navigation', () => {
       expect(link.length).toBe(1);
     });
 
-    test('pillar cards link to correct pillar pages', () => {
-      PILLARS.forEach((pillar) => {
-        const link = $(`.pillar-card[data-pillar="${pillar}"] a.pillar-link`);
-        expect(link.length).toBe(1);
-        expect(link.attr('href')).toBe(`${pillar}.html`);
-      });
+    test('pillar cards section exists and JS renders from repos.json', () => {
+      const pillarsSection = $('#pillars');
+      expect(pillarsSection.length).toBe(1);
+      // Cards are rendered dynamically via fetch from .github/config/repos.json
+      const scripts = $('script').text();
+      expect(scripts).toContain('renderPillars');
+      expect(scripts).toContain('repos.json');
     });
   });
 
@@ -105,9 +106,9 @@ describe('Navigation', () => {
         let $;
         beforeAll(() => { $ = load(page); });
 
-        test('cross-links grid has 6 items (one per pillar)', () => {
+        test('cross-links grid has 7 items (one per pillar)', () => {
           const grid = $('.cross-links-grid');
-          expect(grid.find('a').length).toBe(6);
+          expect(grid.find('a').length).toBe(7);
         });
 
         PILLARS.forEach((pillar) => {

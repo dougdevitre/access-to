@@ -20,9 +20,8 @@
   --color-accent-education: #4A7C59;
   --color-accent-safety: #B85C38;
 
-  /* ── Legacy aliases (hub site pillar pages) ── */
-  --color-accent-justice: var(--color-accent-housing);
-  --color-accent-peace: var(--color-accent-safety);
+  /* ── Primary accent (generic UI elements) ── */
+  --color-accent-primary: #2D5A7B;
 
   /* ── Typography ── */
   --font-display: 'DM Serif Display', Georgia, serif;
@@ -55,6 +54,7 @@
   --color-accent-services: #A07CC4;
   --color-accent-education: #7AAF82;
   --color-accent-safety: #D4845A;
+  --color-accent-primary: #5A8AAB;
 }
 
 [data-theme="dark"] .pillar-icon {
@@ -123,7 +123,7 @@ body {
 
 /* ── FOCUS STYLES ── */
 *:focus-visible {
-  outline: 2px solid var(--color-accent-justice);
+  outline: 2px solid var(--color-accent-primary);
   outline-offset: 2px;
   border-radius: 3px;
 }
@@ -516,13 +516,16 @@ header {
 .pillar-card:nth-child(3) { animation-delay: 0.19s; }
 .pillar-card:nth-child(4) { animation-delay: 0.26s; }
 .pillar-card:nth-child(5) { animation-delay: 0.33s; }
+.pillar-card:nth-child(6) { animation-delay: 0.40s; }
+.pillar-card:nth-child(7) { animation-delay: 0.47s; }
 
-.pillar-card[data-pillar="justice"]::before   { background: var(--color-accent-justice); }
+.pillar-card[data-pillar="health"]::before     { background: var(--color-accent-health); }
 .pillar-card[data-pillar="education"]::before  { background: var(--color-accent-education); }
+.pillar-card[data-pillar="safety"]::before     { background: var(--color-accent-safety); }
 .pillar-card[data-pillar="housing"]::before    { background: var(--color-accent-housing); }
 .pillar-card[data-pillar="services"]::before   { background: var(--color-accent-services); }
-.pillar-card[data-pillar="peace"]::before      { background: var(--color-accent-peace); }
-.pillar-card[data-pillar="safety"]::before    { background: var(--color-accent-safety); }
+.pillar-card[data-pillar="jobs"]::before       { background: var(--color-accent-jobs); }
+.pillar-card[data-pillar="business"]::before   { background: var(--color-accent-business); }
 
 .pillar-icon {
   width: 44px;
@@ -534,12 +537,13 @@ header {
   margin-bottom: 1.25rem;
   font-size: 1.3rem;
 }
-[data-pillar="justice"] .pillar-icon   { background: #E8F0F5; color: var(--color-accent-justice); }
+[data-pillar="health"] .pillar-icon     { background: #F5E8E8; color: var(--color-accent-health); }
 [data-pillar="education"] .pillar-icon  { background: #EEF3E8; color: var(--color-accent-education); }
-[data-pillar="housing"] .pillar-icon    { background: #F3EDE8; color: var(--color-accent-housing); }
+[data-pillar="safety"] .pillar-icon     { background: #F5EDE8; color: var(--color-accent-safety); }
+[data-pillar="housing"] .pillar-icon    { background: #E8F0F5; color: var(--color-accent-housing); }
 [data-pillar="services"] .pillar-icon   { background: #EFEBF3; color: var(--color-accent-services); }
-[data-pillar="peace"] .pillar-icon      { background: #E8F3F3; color: var(--color-accent-peace); }
-[data-pillar="safety"] .pillar-icon    { background: #F5EDE8; color: var(--color-accent-safety); }
+[data-pillar="jobs"] .pillar-icon       { background: #F3EDE8; color: var(--color-accent-jobs); }
+[data-pillar="business"] .pillar-icon   { background: #E8F3F3; color: var(--color-accent-business); }
 
 .pillar-card h2 {
   font-family: var(--font-display);
@@ -565,12 +569,13 @@ header {
   transition: gap 0.2s;
 }
 .pillar-card .pillar-link:hover { gap: 0.65rem; }
-[data-pillar="justice"] .pillar-link   { color: var(--color-accent-justice); }
+[data-pillar="health"] .pillar-link     { color: var(--color-accent-health); }
 [data-pillar="education"] .pillar-link  { color: var(--color-accent-education); }
+[data-pillar="safety"] .pillar-link     { color: var(--color-accent-safety); }
 [data-pillar="housing"] .pillar-link    { color: var(--color-accent-housing); }
 [data-pillar="services"] .pillar-link   { color: var(--color-accent-services); }
-[data-pillar="peace"] .pillar-link      { color: var(--color-accent-peace); }
-[data-pillar="safety"] .pillar-link    { color: var(--color-accent-safety); }
+[data-pillar="jobs"] .pillar-link       { color: var(--color-accent-jobs); }
+[data-pillar="business"] .pillar-link   { color: var(--color-accent-business); }
 
 .repo-list {
   list-style: none;
@@ -802,7 +807,7 @@ header {
 }
 
 .about a {
-  color: var(--color-accent-justice);
+  color: var(--color-accent-primary);
   text-decoration: none;
   font-weight: 500;
 }
@@ -1309,7 +1314,7 @@ footer a:hover { color: var(--color-text); }
   border: 2px solid var(--color-bg);
 }
 .changelog-item:first-child::before {
-  background: var(--color-accent-justice);
+  background: var(--color-accent-primary);
 }
 
 .changelog-date {
@@ -1327,7 +1332,7 @@ footer a:hover { color: var(--color-text); }
 }
 
 .changelog-text a {
-  color: var(--color-accent-justice);
+  color: var(--color-accent-primary);
   text-decoration: none;
   font-weight: 500;
 }
@@ -1421,12 +1426,13 @@ footer a:hover { color: var(--color-text); }
   opacity: 0.45;
   pointer-events: none;
 }
-.cross-link-card[data-pillar="justice"]::before   { background: var(--color-accent-justice); }
+.cross-link-card[data-pillar="health"]::before     { background: var(--color-accent-health); }
 .cross-link-card[data-pillar="education"]::before  { background: var(--color-accent-education); }
+.cross-link-card[data-pillar="safety"]::before     { background: var(--color-accent-safety); }
 .cross-link-card[data-pillar="housing"]::before    { background: var(--color-accent-housing); }
 .cross-link-card[data-pillar="services"]::before   { background: var(--color-accent-services); }
-.cross-link-card[data-pillar="peace"]::before      { background: var(--color-accent-peace); }
-.cross-link-card[data-pillar="safety"]::before    { background: var(--color-accent-safety); }
+.cross-link-card[data-pillar="jobs"]::before       { background: var(--color-accent-jobs); }
+.cross-link-card[data-pillar="business"]::before   { background: var(--color-accent-business); }
 
 .cross-link-card .cl-arrow {
   margin-left: auto;

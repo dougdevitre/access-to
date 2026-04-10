@@ -82,7 +82,7 @@ describe('PWA Web App Manifest (manifest.json)', () => {
 
   test('manifest is referenced by all main HTML pages', () => {
     const cheerio = require('cheerio');
-    const mainPages = ['index.html', 'justice.html', 'education.html', 'housing.html', 'services.html', 'peace.html', 'safety.html'];
+    const mainPages = ['index.html', 'health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html'];
     mainPages.forEach((page) => {
       const html = fs.readFileSync(path.join(ROOT, page), 'utf-8');
       const $ = cheerio.load(html);

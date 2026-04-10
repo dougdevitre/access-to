@@ -24,12 +24,14 @@ describe('CSS (styles.css)', () => {
       '--color-muted',
       '--color-border',
       '--color-card-bg',
-      '--color-accent-justice',
+      '--color-accent-health',
       '--color-accent-education',
+      '--color-accent-safety',
       '--color-accent-housing',
       '--color-accent-services',
-      '--color-accent-peace',
-      '--color-accent-safety',
+      '--color-accent-jobs',
+      '--color-accent-business',
+      '--color-accent-primary',
       '--font-display',
       '--font-body',
       '--max-width',
@@ -116,7 +118,7 @@ describe('CSS (styles.css)', () => {
   });
 
   describe('pillar color accent usage', () => {
-    const pillars = ['justice', 'education', 'housing', 'services', 'peace', 'safety'];
+    const pillars = ['health', 'education', 'safety', 'housing', 'services', 'jobs', 'business'];
 
     pillars.forEach((pillar) => {
       test(`references --color-accent-${pillar}`, () => {

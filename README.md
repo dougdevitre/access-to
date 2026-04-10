@@ -9,9 +9,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-222?style=for-the-badge&logo=github&logoColor=white)](https://dougdevitre.org/)
 [![Projects](https://img.shields.io/badge/Projects-7-5B7A3A?style=for-the-badge)](https://dougdevitre.org/#pillars)
-[![Pillars](https://img.shields.io/badge/Pillars-6-2D5A7B?style=for-the-badge)](https://dougdevitre.org/#pillars)
+[![Pillars](https://img.shields.io/badge/Pillars-7-2D5A7B?style=for-the-badge)](https://dougdevitre.org/#pillars)
 
-**A growing collection of open-source projects organized around six pillars of human access — built for practitioners, advocates, and the people they serve.**
+**A growing collection of open-source projects organized around seven pillars of human access — built for practitioners, advocates, and the people they serve.**
 
 [**View the Live Site**](https://dougdevitre.org/) | [**Browse Projects**](https://dougdevitre.org/#pillars) | [**How It Works**](https://dougdevitre.org/#how-it-works)
 
@@ -25,7 +25,7 @@
 - [Who Is This For?](#who-is-this-for)
 - [See It In Action](#see-it-in-action)
 - [Ecosystem Overview](#ecosystem-overview)
-- [The Six Pillars](#the-six-pillars)
+- [The Seven Pillars](#the-seven-pillars)
 - [Project Directory](#project-directory)
 - [Cross-Project Relationships](#cross-project-relationships)
 - [Data Flow Architecture](#data-flow-architecture)
@@ -57,7 +57,7 @@ flowchart LR
 # 1. Clone any project
 git clone https://github.com/dougdevitre/access-to-health.git
 # or: access-to-education, access-to-safety, access-to-housing,
-#     access-to-services, access-to-jobs, mo-start
+#     access-to-services, access-to-jobs, access-to-business
 
 # 2. Open Claude.ai -> Create a Project -> Upload SKILL.md as project knowledge
 
@@ -80,7 +80,7 @@ Each skill's `SKILL.md` file teaches Claude a specialized workflow — from navi
 | **Real estate professional** | [access-to-housing](https://github.com/dougdevitre/access-to-housing) — PropTech intelligence with Fair Housing compliance built in |
 | **Workforce development staff** | [access-to-jobs](https://github.com/dougdevitre/access-to-jobs) — WIOA navigation and job matching across Missouri |
 | **Healthcare navigator** | [access-to-health](https://github.com/dougdevitre/access-to-health) — Medicaid/Medicare guidance and benefits enrollment support |
-| **Aspiring entrepreneur** | [mo-start](https://github.com/dougdevitre/mo-start) — Missouri startup guide with business launch tools |
+| **Aspiring entrepreneur** | [access-to-business](https://github.com/dougdevitre/access-to-business) — Missouri startup guide with business launch tools |
 
 ---
 
@@ -110,7 +110,7 @@ flowchart TB
     HUB --> HOUSING["<b>access-to-housing</b><br/>PropTech intelligence,<br/>market analysis,<br/>Fair Housing compliance"]
     HUB --> SERVICES["<b>access-to-services</b><br/>Social services navigation,<br/>benefits matching,<br/>community resources"]
     HUB --> JOBS["<b>access-to-jobs</b><br/>Workforce development,<br/>WIOA navigation,<br/>job matching"]
-    HUB --> MOSTART["<b>mo-start</b><br/>Missouri startup guide,<br/>entrepreneur support,<br/>business launch tools"]
+    HUB --> BIZ["<b>access-to-business</b><br/>Startup guide,<br/>entrepreneur support,<br/>business launch tools"]
 
     style HUB fill:#2D5A7B,stroke:#1A1A1A,color:#fff,stroke-width:3px
     style HEALTH fill:#D4585B,stroke:#1A1A1A,color:#fff
@@ -119,12 +119,12 @@ flowchart TB
     style HOUSING fill:#2D7A9B,stroke:#1A1A1A,color:#fff
     style SERVICES fill:#6B5B8A,stroke:#1A1A1A,color:#fff
     style JOBS fill:#7A6F5B,stroke:#1A1A1A,color:#fff
-    style MOSTART fill:#C4785B,stroke:#1A1A1A,color:#fff
+    style BIZ fill:#006b75,stroke:#1A1A1A,color:#fff
 ```
 
 ---
 
-## The Six Pillars
+## The Seven Pillars
 
 <table>
 <tr>
@@ -164,9 +164,18 @@ flowchart TB
 <img src="https://img.shields.io/badge/-%F0%9F%92%BC-7A6F5B?style=for-the-badge&logoColor=white" alt="Jobs"><br>
 <strong>Jobs</strong><br>
 <sub>Workforce dev, WIOA, job matching</sub><br><br>
-<a href="https://github.com/dougdevitre/access-to-jobs"><img src="https://img.shields.io/badge/access--to--jobs-222?style=flat-square&logo=github" alt="access-to-jobs"></a><br>
-<a href="https://github.com/dougdevitre/mo-start"><img src="https://img.shields.io/badge/mo--start-222?style=flat-square&logo=github" alt="mo-start"></a>
+<a href="https://github.com/dougdevitre/access-to-jobs"><img src="https://img.shields.io/badge/access--to--jobs-222?style=flat-square&logo=github" alt="access-to-jobs"></a>
 </td>
+</tr>
+<tr>
+<td align="center" width="33%">
+<img src="https://img.shields.io/badge/-%F0%9F%9A%80-006b75?style=for-the-badge&logoColor=white" alt="Business"><br>
+<strong>Business</strong><br>
+<sub>Startup guide, entrepreneur support</sub><br><br>
+<a href="https://github.com/dougdevitre/access-to-business"><img src="https://img.shields.io/badge/access--to--business-222?style=flat-square&logo=github" alt="access-to-business"></a>
+</td>
+<td align="center" width="33%"></td>
+<td align="center" width="33%"></td>
 </tr>
 </table>
 
@@ -182,7 +191,7 @@ flowchart TB
 | [access-to-housing](https://github.com/dougdevitre/access-to-housing) | Housing | Nationwide | PropTech intelligence, market analysis, Fair Housing compliance | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
 | [access-to-services](https://github.com/dougdevitre/access-to-services) | Services | Nationwide | Social services navigation, benefits matching, community resources | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
 | [access-to-jobs](https://github.com/dougdevitre/access-to-jobs) | Jobs | Missouri | Workforce development, WIOA navigation, job matching across 114 counties | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
-| [mo-start](https://github.com/dougdevitre/mo-start) | Jobs | Missouri | Startup guide, entrepreneur support, business launch tools | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-business](https://github.com/dougdevitre/access-to-business) | Business | Missouri | Startup guide, entrepreneur support, business launch tools | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
 
 ---
 
@@ -198,15 +207,16 @@ flowchart LR
     HOUSING["access-to-housing<br/>Housing"]
     SERVICES["access-to-services<br/>Services"]
     JOBS["access-to-jobs<br/>Jobs"]
-    MOSTART["mo-start<br/>Startups"]
+    BIZ["access-to-business<br/>Startups"]
 
     SAFETY <-- "Survivors often need<br/>housing support" --> HOUSING
     SAFETY <-- "Safety plans may<br/>include healthcare" --> HEALTH
     JOBS <-- "Job seekers may<br/>need services" --> SERVICES
     JOBS <-- "Workforce readiness<br/>includes education" --> EDU
-    MOSTART <-- "Startups connect<br/>to job creation" --> JOBS
+    BIZ <-- "Startups connect<br/>to job creation" --> JOBS
     HEALTH <-- "Health coverage tied<br/>to benefits navigation" --> SERVICES
     HOUSING <-- "Stable housing enables<br/>workforce participation" --> JOBS
+    BIZ <-- "Entrepreneurs need<br/>services navigation" --> SERVICES
 
     style HEALTH fill:#D4585B,stroke:#1A1A1A,color:#fff
     style EDU fill:#4A7C59,stroke:#1A1A1A,color:#fff
@@ -214,7 +224,7 @@ flowchart LR
     style HOUSING fill:#2D7A9B,stroke:#1A1A1A,color:#fff
     style SERVICES fill:#6B5B8A,stroke:#1A1A1A,color:#fff
     style JOBS fill:#7A6F5B,stroke:#1A1A1A,color:#fff
-    style MOSTART fill:#C4785B,stroke:#1A1A1A,color:#fff
+    style BIZ fill:#006b75,stroke:#1A1A1A,color:#fff
 ```
 
 ---
@@ -228,7 +238,7 @@ flowchart TB
     subgraph HUB ["access-to (Hub Site)"]
         direction LR
         LP["Landing Page<br/><i>index.html</i>"]
-        PP["Pillar Pages<br/><i>justice, education, housing,<br/>services, peace, safety</i>"]
+        PP["Pillar Pages<br/><i>health, education, safety, housing,<br/>services, jobs, business</i>"]
         LP --> PP
     end
 
@@ -240,7 +250,7 @@ flowchart TB
         S4["access-to-housing<br/><code>SKILL.md</code>"]
         S5["access-to-services<br/><code>SKILL.md</code>"]
         S6["access-to-jobs<br/><code>SKILL.md</code>"]
-        S7["mo-start<br/><code>SKILL.md</code>"]
+        S7["access-to-business<br/><code>SKILL.md</code>"]
     end
 
     subgraph CLAUDE ["Claude.ai"]
@@ -357,7 +367,7 @@ They're independent but complementary. A person navigating one access gap often 
 
 | | | | |
 |:---:|:---:|:---:|:---:|
-| **6** | **7** | **400+** | **114** |
+| **7** | **7** | **400+** | **114** |
 | Pillars | Projects | Modules | MO Counties Served |
 
 </div>
@@ -402,12 +412,13 @@ This project follows our [Code of Conduct](CODE_OF_CONDUCT.md).
 graph TD
     subgraph Pages
         IDX[index.html<br/><i>Landing page</i>]
-        J[justice.html]
+        HE[health.html]
         E[education.html]
+        SF[safety.html]
         HO[housing.html]
         S[services.html]
-        P[peace.html]
-        SF[safety.html]
+        JO[jobs.html]
+        BI[business.html]
         ERR[404.html]
     end
 
@@ -422,16 +433,17 @@ graph TD
         RB[robots.txt]
     end
 
-    IDX --> J & E & HO & S & P & SF
-    CSS -.-> IDX & J & E & HO & S & P & SF & ERR
+    IDX --> HE & E & SF & HO & S & JO & BI
+    CSS -.-> IDX & HE & E & SF & HO & S & JO & BI & ERR
 
     style IDX fill:#2D5A7B,stroke:#2D5A7B,color:#fff
-    style J fill:#C4785B,stroke:#C4785B,color:#fff
+    style HE fill:#D4585B,stroke:#D4585B,color:#fff
     style E fill:#4A7C59,stroke:#4A7C59,color:#fff
+    style SF fill:#B85C38,stroke:#B85C38,color:#fff
     style HO fill:#2D7A9B,stroke:#2D7A9B,color:#fff
     style S fill:#6B5B8A,stroke:#6B5B8A,color:#fff
-    style P fill:#7A6F5B,stroke:#7A6F5B,color:#fff
-    style SF fill:#B85C38,stroke:#B85C38,color:#fff
+    style JO fill:#7A6F5B,stroke:#7A6F5B,color:#fff
+    style BI fill:#006b75,stroke:#006b75,color:#fff
     style ERR fill:#888,stroke:#888,color:#fff
     style CSS fill:#333,stroke:#333,color:#fff
     style OG fill:#333,stroke:#333,color:#fff

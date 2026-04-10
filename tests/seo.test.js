@@ -14,15 +14,21 @@ const SEO_PAGES = [
     hasJsonLd: true,
   },
   {
-    file: 'justice.html',
-    expectedUrl: 'https://dougdevitre.org/justice.html',
-    expectedTitle: 'Access to Justice',
+    file: 'health.html',
+    expectedUrl: 'https://dougdevitre.org/health.html',
+    expectedTitle: 'Access to Health',
     hasJsonLd: true,
   },
   {
     file: 'education.html',
     expectedUrl: 'https://dougdevitre.org/education.html',
     expectedTitle: 'Access to Education',
+    hasJsonLd: true,
+  },
+  {
+    file: 'safety.html',
+    expectedUrl: 'https://dougdevitre.org/safety.html',
+    expectedTitle: 'Access to Safety',
     hasJsonLd: true,
   },
   {
@@ -38,15 +44,15 @@ const SEO_PAGES = [
     hasJsonLd: true,
   },
   {
-    file: 'peace.html',
-    expectedUrl: 'https://dougdevitre.org/peace.html',
-    expectedTitle: 'Access to Peace',
+    file: 'jobs.html',
+    expectedUrl: 'https://dougdevitre.org/jobs.html',
+    expectedTitle: 'Access to Jobs',
     hasJsonLd: true,
   },
   {
-    file: 'safety.html',
-    expectedUrl: 'https://dougdevitre.org/safety.html',
-    expectedTitle: 'Access to Safety',
+    file: 'business.html',
+    expectedUrl: 'https://dougdevitre.org/business.html',
+    expectedTitle: 'Access to Business',
     hasJsonLd: true,
   },
 ];
@@ -151,7 +157,7 @@ describe('SEO meta tags', () => {
   });
 
   describe('robots meta tag', () => {
-    const indexablePages = ['index.html', 'justice.html', 'education.html', 'housing.html', 'services.html', 'peace.html', 'safety.html'];
+    const indexablePages = ['index.html', 'health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html'];
 
     indexablePages.forEach((page) => {
       test(`${page} has robots "index, follow"`, () => {

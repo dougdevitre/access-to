@@ -1678,3 +1678,47 @@ noscript .stat-number { opacity: 1; }
   to { opacity: 1; transform: translateY(0); }
 }
 
+
+/* ── INTEGRATED NETWORK (connection graph, journeys, connections) ── */
+.network-section { padding: 4rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+.network-section > h2 { text-align: center; margin-bottom: 0.5rem; }
+.network-intro { text-align: center; color: var(--color-muted); max-width: 60ch; margin: 0 auto 2.5rem; }
+
+.network-graph-wrap { display: flex; justify-content: center; }
+.network-svg { width: 100%; max-width: 540px; height: auto; }
+.net-edge { stroke: var(--color-border); stroke-width: 2; transition: stroke 0.2s ease, opacity 0.2s ease; }
+.net-edge-on { stroke: var(--color-accent); stroke-width: 3; }
+.net-node { cursor: pointer; outline: none; }
+.net-dot { transition: opacity 0.2s ease, transform 0.2s ease; transform-origin: center; transform-box: fill-box; }
+.net-node:hover .net-dot,
+.net-node:focus-visible .net-dot { transform: scale(1.12); }
+.net-node:focus-visible .net-dot { stroke: var(--color-text); stroke-width: 3; }
+.net-label { fill: #fff; font-size: 0.78rem; font-weight: 600; pointer-events: none; }
+.net-dim { opacity: 0.18; }
+
+.journeys-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 2rem; }
+.journey-card { background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: 12px; padding: 1.5rem; }
+.journey-name { margin: 0 0 0.25rem; font-size: 1.15rem; }
+.journey-persona { color: var(--color-muted); font-size: 0.9rem; margin: 0 0 1rem; }
+.journey-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-bottom: 1rem; }
+.journey-step { display: inline-block; padding: 0.3rem 0.7rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+  color: #fff; background: var(--journey-color, var(--color-accent)); text-decoration: none; }
+.journey-step:hover, .journey-step:focus-visible { filter: brightness(1.1); outline: 2px solid var(--color-text); outline-offset: 2px; }
+.journey-arrow { color: var(--color-muted); }
+.journey-narrative { margin: 0; color: var(--color-text); font-size: 0.92rem; }
+
+.connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1.5rem 0 2.5rem; }
+.connect-card { display: flex; flex-direction: column; gap: 0.35rem; padding: 1.1rem 1.25rem; border-radius: 12px;
+  background: var(--color-card-bg); border: 1px solid var(--color-border); border-left: 4px solid var(--connect-color, var(--color-accent));
+  text-decoration: none; color: var(--color-text); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.connect-card:hover, .connect-card:focus-visible { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); outline: none; }
+.connect-title { font-weight: 700; }
+.connect-desc { color: var(--color-muted); font-size: 0.88rem; }
+.connect-arrow { color: var(--connect-color, var(--color-accent)); font-weight: 700; }
+.connect-intro { color: var(--color-muted); }
+.connect-subhead { margin-top: 1rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .net-dot, .net-edge, .connect-card { transition: none; }
+  .net-node:hover .net-dot, .net-node:focus-visible .net-dot { transform: none; }
+}

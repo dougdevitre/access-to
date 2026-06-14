@@ -127,6 +127,22 @@
     </noscript>
   </section>
 
+  <!-- INTEGRATED NETWORK: pillar connection graph -->
+  <section class="network-section reveal" id="network" aria-labelledby="network-heading">
+    <h2 id="network-heading">How the pillars connect</h2>
+    <p class="network-intro">No one navigates a single system in isolation. These pillars are built to hand off to one another — hover or focus a pillar to see what it connects to.</p>
+    <div class="network-graph-wrap" id="network-graph">
+      <noscript><p style="text-align:center;color:var(--color-muted)">Enable JavaScript to view the interactive connection graph.</p></noscript>
+    </div>
+  </section>
+
+  <!-- INTEGRATED NETWORK: cross-pillar journeys -->
+  <section class="network-section reveal" id="journeys-section" aria-labelledby="journeys-heading">
+    <h2 id="journeys-heading">Journeys across the network</h2>
+    <p class="network-intro">Real people move through several pillars on one path. These are the journeys the ecosystem is designed to support.</p>
+    <div class="journeys-grid" id="journeys"></div>
+  </section>
+
   <!-- WHAT ARE CLAUDE SKILLS EXPLAINER -->
   <section class="explainer reveal" id="how-it-works">
     <div class="explainer-inner">
@@ -433,6 +449,7 @@
       revealObserver.observe(el);
     });
   </script>
+  <script src="network.js"></script>
 
 </body>
 </html>

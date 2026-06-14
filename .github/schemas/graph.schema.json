@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dougdevitre/access-to/schemas/graph.schema.json",
+  "title": "Access To Integrated Network Graph",
+  "description": "Generated join of repos.json + content.json. Do not edit by hand — run .github/scripts/build-graph.sh. Pillar names are the shared vocabulary across repos.json, content.json, and labels.json.",
+  "type": "object",
+  "required": ["generated_from", "nodes", "edges", "journeys"],
+  "additionalProperties": false,
+  "properties": {
+    "generated_from": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["pillar", "title", "color", "description", "scope", "page", "repo", "connects_to"],
+        "additionalProperties": false,
+        "properties": {
+          "pillar": { "type": "string", "enum": ["housing", "jobs", "health", "business", "services", "education", "safety"] },
+          "title": { "type": "string" },
+          "color": { "type": "string", "pattern": "^[0-9a-fA-F]{6}$" },
+          "icon": { "type": "string" },
+          "description": { "type": "string" },
+          "scope": { "type": "string", "enum": ["missouri", "nationwide", "global"] },
+          "page": { "type": "string" },
+          "repo": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "connects_to": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["housing", "jobs", "health", "business", "services", "education", "safety"] }
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to"],
+        "additionalProperties": false,
+        "properties": {
+          "from": { "type": "string", "enum": ["housing", "jobs", "health", "business", "services", "education", "safety"] },
+          "to": { "type": "string", "enum": ["housing", "jobs", "health", "business", "services", "education", "safety"] }
+        }
+      }
+    },
+    "journeys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "flow", "persona", "narrative"],
+        "properties": {
+          "name": { "type": "string" },
+          "flow": {
+            "type": "array",
+            "minItems": 2,
+            "items": { "type": "string", "enum": ["housing", "jobs", "health", "business", "services", "education", "safety"] }
+          },
+          "persona": { "type": "string" },
+          "narrative": { "type": "string" }
+        }
+      }
+    }
+  }
+}

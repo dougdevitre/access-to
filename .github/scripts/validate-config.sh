@@ -17,6 +17,7 @@ source "$SCRIPT_DIR/lib-log.sh"
 CONFIG_DIR="${1:?Usage: validate-config.sh <config-dir>}"
 REPOS_FILE="$CONFIG_DIR/repos.json"
 LABELS_FILE="$CONFIG_DIR/labels.json"
+CONTENT_FILE="$CONFIG_DIR/content.json"
 
 log_init "validate-config"
 ERRORS=0
@@ -229,6 +230,83 @@ for P in "${PILLARS[@]}"; do
     ((ERRORS++)) || true
   fi
 done
+
+# --- Graph integrity (repos.json <-> content.json) ---
+# Treats the pillar dimension as the shared key across the config files and
+# enforces the links that are otherwise implicit (color drift, stat drift,
+# story flows referencing real pillars and real connections).
+if [ ! -f "$CONTENT_FILE" ]; then
+  log_warn "content.json not found at $CONTENT_FILE — skipping graph-integrity checks"
+  ((WARNINGS++)) || true
+elif ! jq empty "$CONTENT_FILE" 2>/dev/null; then
+  log_error "content.json is not valid JSON"
+  ((ERRORS++)) || true
+else
+  log_info "Running graph-integrity checks..."
+
+  # Non-hub pillars are the network's nodes.
+  mapfile -t NONHUB_PILLARS < <(jq -r '.repos[] | select(.role != "hub") | .pillar' "$REPOS_FILE")
+  PILLAR_COUNT_DERIVED=$(jq '[.repos[] | select(.role != "hub") | .pillar] | unique | length' "$REPOS_FILE")
+  PROJECT_COUNT_DERIVED=$(jq '[.repos[] | select(.role != "hub")] | length' "$REPOS_FILE")
+
+  # 1. stats must match what repos.json actually contains (prevents hand-edit drift).
+  STAT_PILLARS=$(jq -r '.brand.stats.pillars // empty' "$CONTENT_FILE")
+  STAT_PROJECTS=$(jq -r '.brand.stats.projects // empty' "$CONTENT_FILE")
+  if [ -n "$STAT_PILLARS" ] && [ "$STAT_PILLARS" != "$PILLAR_COUNT_DERIVED" ]; then
+    log_error "content.json brand.stats.pillars=$STAT_PILLARS but repos.json has $PILLAR_COUNT_DERIVED pillars"
+    ((ERRORS++)) || true
+  fi
+  if [ -n "$STAT_PROJECTS" ] && [ "$STAT_PROJECTS" != "$PROJECT_COUNT_DERIVED" ]; then
+    log_error "content.json brand.stats.projects=$STAT_PROJECTS but repos.json has $PROJECT_COUNT_DERIVED non-hub repos"
+    ((ERRORS++)) || true
+  fi
+
+  # 2. Every pillar must have a color in content.json that matches repos.json.
+  for i in $(seq 0 $((REPO_COUNT - 1))); do
+    ROLE=$(jq -r ".repos[$i].role // empty" "$REPOS_FILE")
+    [ "$ROLE" = "hub" ] && continue
+    PILLAR=$(jq -r ".repos[$i].pillar // empty" "$REPOS_FILE")
+    REPO_COLOR=$(jq -r ".repos[$i].color // empty" "$REPOS_FILE")
+    CONTENT_COLOR=$(jq -r --arg p "$PILLAR" '.brand.colors[$p] // empty' "$CONTENT_FILE")
+    if [ -z "$CONTENT_COLOR" ]; then
+      log_error "Pillar '$PILLAR' has no color in content.json brand.colors"
+      ((ERRORS++)) || true
+    elif [ -n "$REPO_COLOR" ] && [ "${REPO_COLOR,,}" != "${CONTENT_COLOR,,}" ]; then
+      log_error "Pillar '$PILLAR' color drift: repos.json=$REPO_COLOR vs content.json=$CONTENT_COLOR"
+      ((ERRORS++)) || true
+    fi
+  done
+
+  # 3. Cross-pillar story flows must reference real pillars, and each hop should
+  #    correspond to a connects_to edge (either direction). Build the pillar edge set.
+  EDGE_SET=$(jq -r '
+    (.repos | map({ (.name): .pillar }) | add) as $m
+    | .repos[] | select(.role != "hub") | .pillar as $from
+    | (.connects_to // [])[] | "\($from)>\($m[.])"
+  ' "$REPOS_FILE")
+
+  STORY_COUNT=$(jq '.cross_pillar_stories | length' "$CONTENT_FILE")
+  for s in $(seq 0 $((STORY_COUNT - 1))); do
+    SNAME=$(jq -r ".cross_pillar_stories[$s].name" "$CONTENT_FILE")
+    mapfile -t FLOW < <(jq -r ".cross_pillar_stories[$s].flow[]" "$CONTENT_FILE")
+    for step in "${FLOW[@]}"; do
+      FOUND=false
+      for P in "${NONHUB_PILLARS[@]}"; do [ "$P" = "$step" ] && FOUND=true; done
+      if [ "$FOUND" = false ]; then
+        log_error "Story '$SNAME': flow references unknown pillar '$step'"
+        ((ERRORS++)) || true
+      fi
+    done
+    # Check each consecutive hop maps to a real connection (bidirectional ok).
+    for ((j = 0; j < ${#FLOW[@]} - 1; j++)); do
+      A="${FLOW[$j]}"; B="${FLOW[$((j + 1))]}"
+      if ! grep -qx "$A>$B" <<< "$EDGE_SET" && ! grep -qx "$B>$A" <<< "$EDGE_SET"; then
+        log_warn "Story '$SNAME': hop '$A -> $B' is not a connects_to edge in repos.json"
+        ((WARNINGS++)) || true
+      fi
+    done
+  done
+fi
 
 # --- Summary ---
 log_summary

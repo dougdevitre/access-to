@@ -5,11 +5,15 @@ on:
     paths:
       - '.github/config/**'
       - '.github/schemas/**'
+      - '.github/scripts/build-graph.sh'
+      - 'graph.json'
   push:
     branches: [main]
     paths:
       - '.github/config/**'
       - '.github/schemas/**'
+      - '.github/scripts/build-graph.sh'
+      - 'graph.json'
   workflow_dispatch:
 
 permissions:
@@ -26,3 +30,12 @@ jobs:
         run: |
           chmod +x .github/scripts/validate-config.sh
           .github/scripts/validate-config.sh .github/config
+
+      - name: Rebuild network graph and check for drift
+        run: |
+          chmod +x .github/scripts/build-graph.sh
+          .github/scripts/build-graph.sh .github/config
+          if ! git diff --exit-code graph.json; then
+            echo "::error::graph.json is stale — run .github/scripts/build-graph.sh and commit the result"
+            exit 1
+          fi

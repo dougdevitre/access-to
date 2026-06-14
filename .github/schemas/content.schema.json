@@ -72,7 +72,11 @@
           "name": { "type": "string" },
           "flow": {
             "type": "array",
-            "items": { "type": "string" },
+            "items": {
+              "type": "string",
+              "enum": ["housing", "jobs", "health", "business", "services", "education", "safety"],
+              "description": "Pillar name — shares the pillar vocabulary defined in repos.schema.json"
+            },
             "minItems": 2
           },
           "persona": { "type": "string" },

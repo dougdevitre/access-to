@@ -10,19 +10,25 @@ Access To is a hub-and-spokes ecosystem of open-source Claude Skills. This repo 
 .github/
 ├── config/repos.json       # Source of truth for all repos (name, pillar, scope, connections)
 ├── config/labels.json       # Shared label taxonomy synced to all repos
+├── config/content.json      # Brand, stats, and cross-pillar story journeys
 ├── schemas/                 # JSON Schemas for config validation
 ├── scripts/                 # Admin scripts (all source lib-log.sh)
 │   ├── lib-log.sh           # Shared logging library (always use this, never raw echo)
-│   ├── validate-config.sh   # Config integrity checks
+│   ├── validate-config.sh   # Config integrity checks (incl. graph integrity)
+│   ├── build-graph.sh       # Join repos.json + content.json → /graph.json
 │   ├── sync-repos.sh        # Sync repos → GitHub Project
 │   ├── sync-labels.sh       # Push labels → all repos
 │   ├── sync-templates.sh    # Push issue templates → child repos
+│   ├── generate-content.sh  # Render per-pillar marketing content from config
 │   ├── health-check.sh      # Ecosystem dashboard
 │   └── onboard-repo.sh      # New repo setup
 ├── workflows/               # GitHub Actions (thin orchestration calling scripts)
 └── ISSUE_TEMPLATE/          # Shared issue templates
 
 Root files are the static landing site (HTML/CSS, vanilla JS, no build step).
+`graph.json` (repo root) is the GENERATED join of repos.json + content.json — the
+integrated pillar network (nodes/edges/journeys) the site fetches. Never hand-edit it;
+run `build-graph.sh` and commit the result.
 ```
 
 ## Commands
@@ -33,6 +39,9 @@ Root files are the static landing site (HTML/CSS, vanilla JS, no build step).
 
 # Test validation in JSON log mode
 LOG_FORMAT=json .github/scripts/validate-config.sh .github/config
+
+# Rebuild the integrated network graph (after editing repos.json/content.json)
+.github/scripts/build-graph.sh .github/config
 
 # Onboard a new repo
 .github/scripts/onboard-repo.sh <repo-name> <pillar> [scope]

@@ -1,7 +1,7 @@
 {
   "name": "access-to",
   "version": "1.0.0",
-  "description": "<div align=\"center\">",
+  "description": "Access To — a hub-and-spokes ecosystem of open-source Claude Skills closing the access gaps that matter most.",
   "main": "index.js",
   "scripts": {
     "test": "jest"
@@ -16,9 +16,16 @@
     "type": "git",
     "url": "git+https://github.com/dougdevitre/access-to.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "claude",
+    "claude-skills",
+    "ai",
+    "open-source",
+    "civic-tech",
+    "accessibility"
+  ],
+  "author": "Doug Devitre",
+  "license": "MIT",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/dougdevitre/access-to/issues"

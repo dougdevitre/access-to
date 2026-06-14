@@ -1,8 +1,8 @@
-# CoTrackPro Sponsors
+# Access To Sponsors
 
-Thank you to the individuals and organizations investing in child safety, access to justice, and open civic technology.
+Thank you to the individuals and organizations investing in access to justice and open civic technology.
 
-Your support keeps CoTrackPro independent, child-centered, and free for the families and professionals who need it most.
+Your support keeps Access To independent, open-source, and free for the people and communities who need it most.
 
 ---
 

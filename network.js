@@ -23,6 +23,15 @@
     return map;
   }
 
+  function isDark() {
+    return document.documentElement.getAttribute('data-theme') === 'dark';
+  }
+
+  // Theme-aware pillar color: dark-mode palette under [data-theme="dark"].
+  function pillarColor(node) {
+    return '#' + (isDark() && node.color_dark ? node.color_dark : node.color);
+  }
+
   // ── Connection graph (radial SVG node-link diagram) ──
   function renderGraph(graph) {
     var host = document.getElementById('network-graph');
@@ -56,7 +65,7 @@
     // Nodes as focusable links.
     nodes.forEach(function (node) {
       var p = pos[node.pillar];
-      var color = '#' + node.color;
+      var color = pillarColor(node);
       svg += '<a class="net-node" href="' + esc(node.page) + '" data-pillar="' + esc(node.pillar) + '" ' +
         'aria-label="Access to ' + esc(node.title) + ' — connects to ' +
         esc(node.connects_to.join(', ')) + '">' +
@@ -109,7 +118,7 @@
       if (!node) return '';
       var arrow = i < journey.flow.length - 1 ? '<span class="journey-arrow" aria-hidden="true">&#8594;</span>' : '';
       return '<a class="journey-step" href="' + esc(node.page) + '" ' +
-        'style="--journey-color:#' + node.color + '">' + esc(node.title) + '</a>' + arrow;
+        'style="--journey-color:' + pillarColor(node) + '">' + esc(node.title) + '</a>' + arrow;
     }).join('');
     return '<article class="journey-card">' +
       '<h3 class="journey-name">' + esc(journey.name) + '</h3>' +
@@ -137,7 +146,7 @@
     var cards = node.connects_to.map(function (to) {
       var t = nmap[to];
       if (!t) return '';
-      return '<a class="connect-card" href="' + esc(t.page) + '" style="--connect-color:#' + t.color + '">' +
+      return '<a class="connect-card" href="' + esc(t.page) + '" style="--connect-color:' + pillarColor(t) + '">' +
         '<span class="connect-title">Access to ' + esc(t.title) + '</span>' +
         '<span class="connect-desc">' + esc(t.description) + '</span>' +
         '<span class="connect-arrow" aria-hidden="true">&#8594;</span>' +
@@ -158,11 +167,20 @@
       journeysHTML;
   }
 
+  var currentGraph = null;
+
   function init(graph) {
+    currentGraph = graph;
     renderGraph(graph);
     renderJourneys(graph);
     renderPageConnections(graph);
   }
+
+  // Re-render with the dark/light palette when the theme toggles.
+  var themeObserver = new MutationObserver(function () {
+    if (currentGraph) init(currentGraph);
+  });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   // Only fetch if this page actually has a render target.
   if (document.getElementById('network-graph') ||

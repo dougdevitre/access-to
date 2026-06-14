@@ -61,3 +61,4 @@ open index.html
 - **Exit codes matter.** Scripts exit 1 on errors — don't mask failures.
 - When editing `repos.json`, valid pillars are: `hub`, `housing`, `jobs`, `health`, `business`, `services`, `education`, `safety`. Valid scopes: `missouri`, `nationwide`, `global`. Valid roles: `hub`, `pillar`, `tool`, `docs`.
 - `connects_to` entries must reference repo names that exist in the registry.
+- **Pillar colors:** `repos.json` (`color` + optional `color_dark`) is the single source of truth. `content.json` holds brand/semantic colors only. `build-graph.sh` carries pillar colors into `graph.json`; `styles.css` (`--color-accent-<pillar>`) and `design-tokens.css` (`--at-color-<pillar>`) must match repos.json — `validate-config.sh` fails on drift.

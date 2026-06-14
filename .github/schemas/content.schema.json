@@ -21,6 +21,7 @@
         "email": { "type": "string", "format": "email" },
         "colors": {
           "type": "object",
+          "description": "Brand and semantic colors only. Per-pillar colors live in repos.json (color/color_dark) as the single source of truth.",
           "required": ["primary", "accent"],
           "additionalProperties": {
             "type": "string",

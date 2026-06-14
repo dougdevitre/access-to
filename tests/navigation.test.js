@@ -88,13 +88,13 @@ describe('Navigation', () => {
       expect(link.length).toBe(1);
     });
 
-    test('pillar cards section exists and JS renders from repos.json', () => {
+    test('pillar cards section exists and JS renders from graph.json', () => {
       const pillarsSection = $('#pillars');
       expect(pillarsSection.length).toBe(1);
-      // Cards are rendered dynamically via fetch from .github/config/repos.json
+      // Cards are rendered dynamically via fetch from the integrated graph.json
       const scripts = $('script').text();
       expect(scripts).toContain('renderPillars');
-      expect(scripts).toContain('repos.json');
+      expect(scripts).toContain('graph.json');
     });
   });
 

@@ -334,29 +334,29 @@
 
     function renderPillars(data) {
       var container = document.getElementById('pillars');
-      var repos = data.repos.filter(function(r){ return r.role !== 'hub'; });
       var html = '';
-      repos.forEach(function(repo) {
-        var pillar = repo.pillar;
+      // graph.json nodes are already the non-hub pillars, joined with content.json.
+      data.nodes.forEach(function(node) {
+        var pillar = node.pillar;
         var icon = PILLAR_ICONS[pillar] || '';
-        var scope = SCOPE_LABELS[repo.scope] || repo.scope;
-        var title = pillar.charAt(0).toUpperCase() + pillar.slice(1);
-        var pageUrl = pillar + '.html';
-        var repoUrl = 'https://github.com/' + data.owner + '/' + repo.name;
+        var scope = SCOPE_LABELS[node.scope] || node.scope;
+        var title = node.title;
+        var pageUrl = node.page;
+        var repoUrl = 'https://github.com/' + data.owner + '/' + node.repo;
         html += '<div class="pillar-card" data-pillar="' + pillar + '">' +
           '<div class="pillar-icon" role="img" aria-label="' + title + '">' + icon + '</div>' +
           '<h2>Access to ' + title + '</h2>' +
-          '<p class="pillar-desc">' + repo.description + '</p>' +
+          '<p class="pillar-desc">' + node.description + '</p>' +
           '<div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">' + scope + '</span><span class="tag tag-time">5 min setup</span></div>' +
           '<a href="' + pageUrl + '" class="pillar-link">Explore projects &#8594;</a>' +
-          '<ul class="repo-list"><li><a href="' + repoUrl + '" target="_blank" rel="noopener">' + GITHUB_ICON + ' ' + repo.name + ' <span class="repo-arrow">&#8599;</span></a></li></ul>' +
+          '<ul class="repo-list"><li><a href="' + repoUrl + '" target="_blank" rel="noopener">' + GITHUB_ICON + ' ' + node.repo + ' <span class="repo-arrow">&#8599;</span></a></li></ul>' +
           '<span class="pillar-status">Active</span>' +
           '</div>';
       });
       container.innerHTML = html;
     }
 
-    fetch('.github/config/repos.json')
+    fetch('graph.json')
       .then(function(r){ return r.json(); })
       .then(renderPillars)
       .catch(function(){

@@ -50,6 +50,7 @@ GRAPH=$(jq -n \
   | ($r.repos | map({ (.name): .pillar }) | add) as $name2pillar
   | {
       generated_from: ["repos.json", "content.json"],
+      owner: $r.owner,
       nodes: [
         $r.repos[]
         | select(.role != "hub")
@@ -57,6 +58,7 @@ GRAPH=$(jq -n \
             pillar: .pillar,
             title: ((.pillar[0:1] | ascii_upcase) + .pillar[1:]),
             color: .color,
+            color_dark: (.color_dark // .color),
             icon: .icon,
             description: .description,
             scope: .scope,

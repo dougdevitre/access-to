@@ -261,20 +261,40 @@ else
     ((ERRORS++)) || true
   fi
 
-  # 2. Every pillar must have a color in content.json that matches repos.json.
+  # 2. CSS/token drift guard. repos.json color is the single source of truth;
+  #    styles.css (--color-accent-<pillar>) and design-tokens.css (--at-color-<pillar>)
+  #    must match it for light, and color_dark for the [data-theme="dark"] block.
+  #    Each token appears twice (light :root, then dark): first match = light, second = dark.
+  REPO_ROOT="$CONFIG_DIR/../.."
+  _css_hex() {
+    grep -oE -- "$2:[[:space:]]*#[0-9a-fA-F]{6}" "$1" 2>/dev/null \
+      | grep -oE '[0-9a-fA-F]{6}$' | tr '[:upper:]' '[:lower:]'
+  }
   for i in $(seq 0 $((REPO_COUNT - 1))); do
     ROLE=$(jq -r ".repos[$i].role // empty" "$REPOS_FILE")
     [ "$ROLE" = "hub" ] && continue
     PILLAR=$(jq -r ".repos[$i].pillar // empty" "$REPOS_FILE")
-    REPO_COLOR=$(jq -r ".repos[$i].color // empty" "$REPOS_FILE")
-    CONTENT_COLOR=$(jq -r --arg p "$PILLAR" '.brand.colors[$p] // empty' "$CONTENT_FILE")
-    if [ -z "$CONTENT_COLOR" ]; then
-      log_error "Pillar '$PILLAR' has no color in content.json brand.colors"
-      ((ERRORS++)) || true
-    elif [ -n "$REPO_COLOR" ] && [ "${REPO_COLOR,,}" != "${CONTENT_COLOR,,}" ]; then
-      log_error "Pillar '$PILLAR' color drift: repos.json=$REPO_COLOR vs content.json=$CONTENT_COLOR"
-      ((ERRORS++)) || true
-    fi
+    REPO_COLOR=$(jq -r ".repos[$i].color // empty" "$REPOS_FILE" | tr '[:upper:]' '[:lower:]')
+    REPO_COLOR_DARK=$(jq -r ".repos[$i].color_dark // empty" "$REPOS_FILE" | tr '[:upper:]' '[:lower:]')
+    for PAIR in "styles.css:--color-accent-$PILLAR" "design-tokens.css:--at-color-$PILLAR"; do
+      FILE="$REPO_ROOT/${PAIR%%:*}"
+      VAR="${PAIR#*:}"
+      [ -f "$FILE" ] || continue
+      mapfile -t HEXES < <(_css_hex "$FILE" "$VAR")
+      if [ "${#HEXES[@]}" -eq 0 ]; then
+        log_warn "${PAIR%%:*}: token '$VAR' not found for pillar '$PILLAR'"
+        ((WARNINGS++)) || true
+        continue
+      fi
+      if [ -n "$REPO_COLOR" ] && [ "${HEXES[0]}" != "$REPO_COLOR" ]; then
+        log_error "${PAIR%%:*}: $VAR (light)=#${HEXES[0]} but repos.json color=#$REPO_COLOR"
+        ((ERRORS++)) || true
+      fi
+      if [ -n "$REPO_COLOR_DARK" ] && [ "${#HEXES[@]}" -ge 2 ] && [ "${HEXES[1]}" != "$REPO_COLOR_DARK" ]; then
+        log_error "${PAIR%%:*}: $VAR (dark)=#${HEXES[1]} but repos.json color_dark=#$REPO_COLOR_DARK"
+        ((ERRORS++)) || true
+      fi
+    done
   done
 
   # 3. Cross-pillar story flows must reference real pillars, and each hop should

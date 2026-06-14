@@ -64,7 +64,12 @@
           "color": {
             "type": "string",
             "pattern": "^[0-9a-fA-F]{6}$",
-            "description": "Brand hex color for this pillar (no # prefix)"
+            "description": "Canonical brand hex color for this pillar (no # prefix). Single source of truth for CSS tokens and graph.json."
+          },
+          "color_dark": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{6}$",
+            "description": "Dark-mode hex color for this pillar (no # prefix)"
           },
           "icon": {
             "type": "string",

@@ -39,6 +39,18 @@ test('renders per-page connections from the graph', async () => {
   expect(host.querySelectorAll('.connect-card').length).toBe(edu.connects_to.length);
 });
 
+test('uses the dark-mode palette under data-theme="dark"', async () => {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.body.innerHTML = '<div id="journeys"></div>';
+  await loadNetworkJS();
+  const edu = graph.nodes.find((n) => n.pillar === 'education');
+  const eduStep = Array.from(document.querySelectorAll('.journey-step'))
+    .find((el) => el.textContent.trim() === edu.title);
+  expect(eduStep).toBeTruthy();
+  expect(eduStep.getAttribute('style')).toContain('#' + edu.color_dark);
+  document.documentElement.removeAttribute('data-theme');
+});
+
 test('is a no-op (no throw) when the page has no network targets', async () => {
   document.body.innerHTML = '<div id="unrelated"></div>';
   await expect(loadNetworkJS()).resolves.toBeUndefined();

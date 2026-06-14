@@ -44,9 +44,35 @@ describe('Integrated network graph (graph.json)', () => {
     });
   });
 
-  test('node colors match content.json brand.colors (no drift)', () => {
+  test('owner is carried from repos.json', () => {
+    expect(graph.owner).toBe(repos.owner);
+  });
+
+  test('node colors come from repos.json (single source of truth)', () => {
+    const byName = {};
+    repos.repos.forEach((r) => { byName[r.pillar] = r; });
     graph.nodes.forEach((n) => {
-      expect(n.color.toLowerCase()).toBe(content.brand.colors[n.pillar].toLowerCase());
+      const repo = byName[n.pillar];
+      expect(n.color.toLowerCase()).toBe(repo.color.toLowerCase());
+      expect(n.color_dark).toMatch(/^[0-9a-fA-F]{6}$/);
+      if (repo.color_dark) {
+        expect(n.color_dark.toLowerCase()).toBe(repo.color_dark.toLowerCase());
+      }
+    });
+  });
+
+  test('content.json no longer duplicates per-pillar colors', () => {
+    nonHubPillars().forEach((p) => {
+      expect(content.brand.colors[p]).toBeUndefined();
+    });
+  });
+
+  test('styles.css pillar tokens match repos.json colors (no drift)', () => {
+    const css = fs.readFileSync(path.join(ROOT, 'styles.css'), 'utf-8');
+    repos.repos.filter((r) => r.role !== 'hub').forEach((r) => {
+      const m = css.match(new RegExp(`--color-accent-${r.pillar}:\\s*#([0-9a-fA-F]{6})`));
+      expect(m).toBeTruthy();
+      expect(m[1].toLowerCase()).toBe(r.color.toLowerCase());
     });
   });
 

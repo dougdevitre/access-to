@@ -12,6 +12,8 @@ source "$SCRIPT_DIR/lib-log.sh"
 
 REPOS_FILE="${1:?Usage: health-check.sh <repos-file>}"
 OUTPUT="${GITHUB_STEP_SUMMARY:-/dev/stdout}"
+# Generated network graph (repo root) — preferred source for the connection map.
+GRAPH_FILE="$(dirname "$REPOS_FILE")/../../graph.json"
 
 if [ ! -f "$REPOS_FILE" ]; then
   log_error "Repos config not found: $REPOS_FILE"
@@ -131,14 +133,20 @@ THIRTY_DAYS_AGO=$(date -u -d '30 days ago' '+%Y-%m-%d' 2>/dev/null || date -u -v
   echo ""
   echo '```mermaid'
   echo 'graph LR'
-  for REPO in "${REPOS[@]}"; do
-    CONNECTIONS=$(jq -r --arg name "$REPO" '.repos[] | select(.name == $name) | .connects_to // [] | .[]' "$REPOS_FILE" 2>/dev/null)
-    if [ -n "$CONNECTIONS" ]; then
-      while IFS= read -r TARGET; do
-        echo "  $REPO --> $TARGET"
-      done <<< "$CONNECTIONS"
-    fi
-  done
+  if [ -f "$GRAPH_FILE" ]; then
+    # Pillar-level edges from the integrated network graph.
+    jq -r '.edges[] | "  \(.from) --> \(.to)"' "$GRAPH_FILE"
+  else
+    # Fallback: derive repo-name edges directly from repos.json.
+    for REPO in "${REPOS[@]}"; do
+      CONNECTIONS=$(jq -r --arg name "$REPO" '.repos[] | select(.name == $name) | .connects_to // [] | .[]' "$REPOS_FILE" 2>/dev/null)
+      if [ -n "$CONNECTIONS" ]; then
+        while IFS= read -r TARGET; do
+          echo "  $REPO --> $TARGET"
+        done <<< "$CONNECTIONS"
+      fi
+    done
+  fi
   echo '```'
 
   echo ""

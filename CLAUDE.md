@@ -17,7 +17,8 @@ Access To is a hub-and-spokes ecosystem of open-source Claude Skills. This repo 
 │   ├── sync-repos.sh        # Sync repos → GitHub Project
 │   ├── sync-labels.sh       # Push labels → all repos
 │   ├── sync-templates.sh    # Push issue templates → child repos
-│   ├── health-check.sh      # Ecosystem dashboard
+│   ├── health-check.sh      # Ecosystem dashboard (includes the drift report)
+│   ├── ecosystem-drift.sh   # Read-only disclaimer-drift + stale .skill check across all repos
 │   └── onboard-repo.sh      # New repo setup
 ├── workflows/               # GitHub Actions (thin orchestration calling scripts)
 └── ISSUE_TEMPLATE/          # Shared issue templates
@@ -47,6 +48,9 @@ LOG_FORMAT=json .github/scripts/validate-config.sh .github/config
 # Stamp the shared disclaimer into a repo checkout (or --check for drift)
 .github/scripts/sync-disclaimer.sh <repo-name> <path-to-checkout>
 
+# Check every repo (read-only) for disclaimer drift and stale .skill packages; exit 1 on findings
+.github/scripts/ecosystem-drift.sh [--report drift.md]
+
 # Onboard a new repo
 .github/scripts/onboard-repo.sh <repo-name> <pillar> [scope]
 
@@ -73,4 +77,5 @@ open index.html
 - **Narration.** `narration-clips.sh` composes every spoken script from config; the same text is embedded as the on-screen transcript, so they cannot drift. The Generate Narration workflow speaks changed clips in Doug's ElevenLabs voice (`narration.json`) and commits `audio/`. The API key lives only in the `ELEVENLABS_API_KEY` repository secret. Never hand-edit `audio/`.
 - **Every app shows the disclaimer** (educational only, 911/988, verify with official sources, no identifying details, no endorsement or warranty).
 - **The disclaimer wording lives once, in `.github/disclaimer/`.** `sync-disclaimer.sh <repo> <dir>` stamps it into a checkout: `DISCLAIMER.md`, a notice under the README title, and a once-per-conversation notice in `SKILL.md` (between `BEGIN/END DISCLAIMER` markers; repo-specific disclaimers outside the markers stay). To change the wording, edit the templates, then re-run the script for every repo and open a PR in each. Never edit a synced block in a child repo. Every hub page carries a `.footer-notice` (or `#disclaimer` on the homepage); `tests/disclaimer.test.js` enforces both.
+- **Ecosystem drift is checked monthly.** `ecosystem-drift.sh` fetches each repo's disclaimer files through `gh api` and runs `sync-disclaimer.sh --check` on them, and flags any root `*.skill` package whose last commit is older than the newest commit to the paths it contains. It never writes to a child repo. `.github/workflows/ecosystem-drift.yml` (monthly + manual, not on PRs) keeps one issue, "Ecosystem drift (monthly check)", open with the fix command per repo and closes it when clean. To cover private repos it needs the `ECOSYSTEM_READ_TOKEN` secret: a fine-grained token with Contents and Metadata read-only on the Access To repos; without it, private repos are skipped with a warning. When you rebuild a `.skill` package or re-stamp the disclaimer, run the script to confirm. `tests/ecosystem-drift.test.js` uses a fake `gh` (`tests/helpers/fake-gh.js`), so it needs no network.
 - **CI runs Jest** (`.github/workflows/test.yml`) on every PR.

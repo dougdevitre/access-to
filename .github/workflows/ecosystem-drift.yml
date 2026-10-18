@@ -1,0 +1,94 @@
+name: Ecosystem Drift
+
+# Monthly, read-only check of every repo in .github/config/repos.json:
+#   - is the stamped shared disclaimer still in sync with .github/disclaimer/?
+#   - is any packaged skill (*.skill) older than the sources it contains?
+# It keeps ONE issue, "Ecosystem drift (monthly check)", open while anything is
+# drifted or stale (listing the fix command for each) and closes it once clean.
+# It does not run on pull requests: its result depends on other repos.
+#
+# Token. GITHUB_TOKEN can read the public repos but not the private ones
+# (access-to-energy, access-to-care, access-to-freedom). To check those too,
+# add a repository secret named ECOSYSTEM_READ_TOKEN holding a fine-grained
+# personal access token with:
+#   Resource owner: dougdevitre
+#   Repository access: all Access To repos (or "All repositories")
+#   Permissions: Contents: Read-only, Metadata: Read-only (nothing else)
+# Without it, the job warns and skips the private repos instead of failing.
+# The token is only used to read; the issue is written with GITHUB_TOKEN.
+
+on:
+  schedule:
+    - cron: '17 9 3 * *'   # 09:17 UTC on the 3rd of each month
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ecosystem-drift
+  cancel-in-progress: false
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      issues: write
+    env:
+      ISSUE_TITLE: Ecosystem drift (monthly check)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check for a read token
+        env:
+          HAS_READ_TOKEN: ${{ secrets.ECOSYSTEM_READ_TOKEN != '' }}
+        run: |
+          if [ "$HAS_READ_TOKEN" != "true" ]; then
+            echo "::warning title=ECOSYSTEM_READ_TOKEN is not set::Private repos will be skipped. Add a fine-grained, read-only token (Contents + Metadata: Read) as the ECOSYSTEM_READ_TOKEN secret; see the header of .github/workflows/ecosystem-drift.yml."
+          fi
+
+      - name: Check every repo
+        id: drift
+        env:
+          GH_TOKEN: ${{ secrets.ECOSYSTEM_READ_TOKEN || github.token }}
+        run: |
+          set +e
+          .github/scripts/ecosystem-drift.sh --report "$RUNNER_TEMP/drift.md"
+          echo "rc=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Open, update or close the tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RC: ${{ steps.drift.outputs.rc }}
+        run: |
+          REPORT="$RUNNER_TEMP/drift.md"
+          if [ ! -s "$REPORT" ]; then
+            echo "::error::The drift check stopped before writing its report (exit $RC); see the step above."
+            exit 1
+          fi
+          MARK=$(head -1 "$REPORT")
+          FINDINGS=$(sed -nE 's/.*findings=([0-9]+).*/\1/p' <<<"$MARK")
+          ERRORS=$(sed -nE 's/.*errors=([0-9]+).*/\1/p' <<<"$MARK")
+          RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          printf '\n_Run: %s_\n' "$RUN_URL" >> "$REPORT"
+
+          NUMBER=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$ISSUE_TITLE\" in:title" \
+            --json number,title --jq "[.[] | select(.title == \"$ISSUE_TITLE\")][0].number // empty")
+
+          if [ "${FINDINGS:-0}" -gt 0 ]; then
+            if [ -n "$NUMBER" ]; then
+              gh issue edit "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file "$REPORT"
+              echo "Updated issue #$NUMBER"
+            else
+              gh issue create --repo "$GITHUB_REPOSITORY" --title "$ISSUE_TITLE" --body-file "$REPORT"
+            fi
+          elif [ "${ERRORS:-0}" -eq 0 ] && [ -n "$NUMBER" ]; then
+            gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file "$REPORT"
+            gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY" --reason completed
+            echo "Everything is clean; closed issue #$NUMBER"
+          fi
+
+          # The run itself stays red while anything is drifted, stale or unreadable.
+          exit "$RC"

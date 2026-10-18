@@ -43,6 +43,7 @@ body {
   font: 400 1.0625rem/1.6 var(--sans);
   -webkit-font-smoothing: antialiased;
   padding-bottom: env(safe-area-inset-bottom);
+  overflow-wrap: break-word;   /* at 200% text a long word wraps instead of widening the page */
 }
 img, svg { display: block; }
 a { color: inherit; }
@@ -88,7 +89,7 @@ section + section { border-top: 1px solid var(--line); }
 .section-lead { color: var(--muted); margin: 8px 0 20px; max-width: 60ch; }
 
 /* ── The lamp (hero) ── */
-.lamp { position: relative; padding-top: 44px; isolation: isolate; }
+.lamp { position: relative; padding-top: 44px; isolation: isolate; overflow-x: clip; }   /* the beam must not widen the page */
 .lamp h1 { font-size: clamp(2.4rem, 10vw, 3.6rem); max-width: 14ch; letter-spacing: -0.01em; }
 .lamp-lead { margin: 16px 0 24px; max-width: 46ch; font-size: 1.125rem; }
 .beam {

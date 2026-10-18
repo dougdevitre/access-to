@@ -14,6 +14,12 @@ const SEO_PAGES = [
     hasJsonLd: true,
   },
   {
+    file: 'about.html',
+    expectedUrl: 'https://dougdevitre.org/about.html',
+    expectedTitle: 'Access To',
+    hasJsonLd: true,
+  },
+  {
     file: 'health.html',
     expectedUrl: 'https://dougdevitre.org/health.html',
     expectedTitle: 'Access to Health',
@@ -157,7 +163,7 @@ describe('SEO meta tags', () => {
   });
 
   describe('robots meta tag', () => {
-    const indexablePages = ['index.html', 'health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html'];
+    const indexablePages = ['index.html', 'about.html', 'health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html'];
 
     indexablePages.forEach((page) => {
       test(`${page} has robots "index, follow"`, () => {

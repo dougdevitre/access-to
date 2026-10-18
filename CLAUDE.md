@@ -22,7 +22,11 @@ Access To is a hub-and-spokes ecosystem of open-source Claude Skills. This repo 
 ├── workflows/               # GitHub Actions (thin orchestration calling scripts)
 └── ISSUE_TEMPLATE/          # Shared issue templates
 
-Root files are the static landing site (HTML/CSS, vanilla JS, no build step).
+Root files are the static site (HTML/CSS, vanilla JS, no build step):
+index.html + app.css + app.js   # homepage app: doors, Distribute Virtue builder, BEACON, narration
+about.html + styles.css         # the full hub page (project cards, stats, sections)
+<pillar>.html                   # per-pillar pages
+audio/                          # narration MP3s + manifest.json, written by the Generate Narration workflow
 ```
 
 ## Commands
@@ -34,8 +38,11 @@ Root files are the static landing site (HTML/CSS, vanilla JS, no build step).
 # Test validation in JSON log mode
 LOG_FORMAT=json .github/scripts/validate-config.sh .github/config
 
-# Regenerate hub cards/counters from repos.json (or --check for drift)
+# Regenerate generated blocks in about.html, index.html and README.md (or --check for drift)
 .github/scripts/render-hub.sh
+
+# Preview narration: which clips would be (re)generated and how many characters
+.github/scripts/generate-narration.sh --dry-run
 
 # Onboard a new repo
 .github/scripts/onboard-repo.sh <repo-name> <pillar> [scope]
@@ -54,8 +61,11 @@ open index.html
 - **Idempotent.** All sync scripts must be safe to re-run.
 - **Exit codes matter.** Scripts exit 1 on errors — don't mask failures.
 - When editing `repos.json`, valid pillars are: `hub`, `housing`, `jobs`, `health`, `business`, `services`, `education`, `safety`, `justice`, `peace`, `civics`, `community`, `food`, `energy`, `care`, `mobility`. Valid scopes: `missouri`, `nationwide`, `global`. Valid roles: `hub`, `pillar`, `tool`, `docs`. Optional site fields: `title`, `status` (`live`, `beta`, `skill`, `pre-pilot`, `spec`), `visibility` (`public`, `private`), `listed` (default `true`), `live_url`, `page`.
-- **Project listings are generated, not hand-written.** After any `repos.json` change, run `.github/scripts/render-hub.sh` and commit the updated `index.html` and `README.md` (badges, ecosystem diagram, pillars, project directory, impact numbers). CI runs `render-hub.sh --check` and fails if they drift. Never hand-edit between `<!-- BEGIN GENERATED:* -->` markers.
+- **Project listings are generated, not hand-written.** After any `repos.json` or `journey.json` change, run `.github/scripts/render-hub.sh` and commit the updated `about.html`, `index.html` and `README.md` (badges, ecosystem diagram, pillars, project directory, impact numbers). CI runs `render-hub.sh --check` and fails if they drift. Never hand-edit between `<!-- BEGIN GENERATED:* -->` markers.
 - **Root `node_modules/` is not committed.** Run `npm ci` before `npx jest`.
 - A new pillar needs: an enum value in `repos.schema.json` and `validate-config.sh`, a `pillar:<name>` label in `labels.json`, and an icon in `.github/config/icons.json`.
 - Private repos stay `listed` with a "Coming soon" card and no repo link; set `"listed": false` to hide one entirely.
 - `connects_to` entries must reference repo names that exist in the registry.
+- **Homepage app content is config.** `journey.json` holds the welcome, the Distributed Virtue framework (BEACON, nine virtues, four gates; canonical in `dougdevitre/distributed-virtue` `lib/beacon/`) and one `adoption` entry (adopter + first pilot) per listed project. A new project needs an `adoption` entry or `tests/app.test.js` fails.
+- **Narration.** `narration-clips.sh` composes every spoken script from config; the same text is embedded as the on-screen transcript, so they cannot drift. The Generate Narration workflow speaks changed clips in Doug's ElevenLabs voice (`narration.json`) and commits `audio/`. The API key lives only in the `ELEVENLABS_API_KEY` repository secret. Never hand-edit `audio/`.
+- **Every app shows the disclaimer** (educational only, 911/988, verify with official sources, no identifying details, no endorsement or warranty).

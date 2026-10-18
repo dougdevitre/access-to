@@ -8,6 +8,7 @@ const ROOT = path.join(__dirname, '..');
 
 const ALL_PAGES = [
   'index.html',
+  'about.html',
   'health.html',
   'education.html',
   'safety.html',
@@ -19,6 +20,9 @@ const ALL_PAGES = [
 ];
 
 const MAIN_PAGES = ALL_PAGES.filter((p) => p !== '404.html');
+// Pages built on the hub layout (top bar with hamburger nav, reveal animations).
+// index.html is the homepage app with its own layout; tests/app.test.js covers it.
+const HUB_LAYOUT_PAGES = MAIN_PAGES.filter((p) => p !== 'index.html');
 
 function load(file) {
   const html = fs.readFileSync(path.join(ROOT, file), 'utf-8');
@@ -49,7 +53,7 @@ describe('Accessibility', () => {
   });
 
   describe('interactive elements have accessible labels', () => {
-    MAIN_PAGES.forEach((page) => {
+    HUB_LAYOUT_PAGES.forEach((page) => {
       describe(page, () => {
         let $;
         beforeAll(() => { $ = load(page); });
@@ -108,7 +112,7 @@ describe('Accessibility', () => {
   });
 
   describe('navigation landmark', () => {
-    MAIN_PAGES.forEach((page) => {
+    HUB_LAYOUT_PAGES.forEach((page) => {
       test(`${page} has <nav> element inside header`, () => {
         const $ = load(page);
         const nav = $('header nav');
@@ -146,7 +150,7 @@ describe('Accessibility', () => {
   });
 
   describe('noscript fallback', () => {
-    MAIN_PAGES.forEach((page) => {
+    HUB_LAYOUT_PAGES.forEach((page) => {
       test(`${page} has <noscript> block in <head>`, () => {
         const $ = load(page);
         const noscript = $('head noscript');

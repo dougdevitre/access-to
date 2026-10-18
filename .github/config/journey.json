@@ -1,0 +1,59 @@
+{
+  "_readme": [
+    "Content for the homepage app (index.html). render-hub.sh embeds it with repos.json; narration-clips.sh composes the spoken scripts from it.",
+    "beacon, virtues and gates are Distributed Virtue's canonical wording (dougdevitre/distributed-virtue, lib/beacon/). Change them there first, then here.",
+    "adoption: one entry per listed project in repos.json — who adopts it and the smallest useful pilot."
+  ],
+  "catalyst": {
+    "name": "Doug Devitre",
+    "title": "Community Development Catalyst",
+    "welcome": "I'm Doug Devitre. I build free, open tools for the places people fall through the cracks: courts, safety, housing, health, food and work. Then I help communities put them to use. Every project here starts the same way, with a person who is struggling, not with technology.",
+    "distribute": "Distributed virtue means character can spread the way information does. One person's skill becomes a whole community's capacity. Leaders start small: choose a virtue, choose a part of your community, and take one mindful step this week.",
+    "blend": "These pillars blend into one another. A family in crisis rarely needs just one door, so every project points to the ones it works beside."
+  },
+  "beacon": [
+    { "letter": "B", "title": "Begin with humanity", "prompt": "Who is hurting, confused, excluded, or overwhelmed?" },
+    { "letter": "E", "title": "Examine the system", "prompt": "What are the institutions, resources, barriers, and information flows?" },
+    { "letter": "A", "title": "Augment people", "prompt": "Whose capacity does this increase, and how?" },
+    { "letter": "C", "title": "Create shared capacity", "prompt": "What reusable thing comes out of this — a guide, template, or workshop?" },
+    { "letter": "O", "title": "Open doors", "prompt": "Who cannot access this because of cost, literacy, language, disability, or distrust?" },
+    { "letter": "N", "title": "Never surrender judgment", "prompt": "Which decisions here stay with a named, accountable human?" }
+  ],
+  "virtues": [
+    { "name": "Wisdom", "question": "What should we do?", "practice": "Before you decide, ask two people closest to the problem what they would do." },
+    { "name": "Courage", "question": "What am I standing for?", "practice": "Name one access gap out loud at your next meeting." },
+    { "name": "Justice", "question": "Who is being overlooked?", "practice": "Notice who is missing from the room, then invite one of them." },
+    { "name": "Compassion", "question": "Who needs to be heard?", "practice": "Spend ten minutes listening to someone you serve, without trying to fix anything." },
+    { "name": "Humility", "question": "What do I still need to learn?", "practice": "Ask a frontline worker what your organization gets wrong." },
+    { "name": "Temperance", "question": "Is this worth amplifying?", "practice": "Run your next public post through the Four Gates before you share it." },
+    { "name": "Honesty", "question": "Am I being transparent?", "practice": "Share one number your team is still working to improve." },
+    { "name": "Stewardship", "question": "What will I do with this power?", "practice": "Turn one thing you know into a guide someone else can use." },
+    { "name": "Hope", "question": "What better future can we build?", "practice": "Pick one tool on this page and try it this week." }
+  ],
+  "gates": [
+    "Is it true?",
+    "Is it necessary?",
+    "Is it constructive?",
+    "Is it proportionate?"
+  ],
+  "adoption": {
+    "access-to-justice": { "adopter": "circuit court administration", "pilot": "three transparency metrics in one circuit for one quarter" },
+    "access-to-peace": { "adopter": "mediators, parenting coordinators and family court services", "pilot": "one program's co-parenting referrals for sixty days" },
+    "access-to-safety": { "adopter": "domestic violence advocacy programs", "pilot": "advocates preparing for safety-planning conversations in one office" },
+    "access-to-services": { "adopter": "social service agencies and health clinics", "pilot": "screening and referral at one intake desk" },
+    "access-to-jobs": { "adopter": "job centers and workforce boards", "pilot": "one center's WIOA eligibility screening" },
+    "access-to-health": { "adopter": "health navigators and community health centers", "pilot": "benefits-enrollment support at one site" },
+    "access-to-education": { "adopter": "school districts", "pilot": "standards alignment for one grade band" },
+    "access-to-housing": { "adopter": "brokerages and housing counselors", "pilot": "Fair Housing-safe market analysis in one office" },
+    "access-to-business": { "adopter": "small business development centers", "pilot": "one cohort of new founders" },
+    "access-for-seniors": { "adopter": "area agencies on aging", "pilot": "isolation check-ins for one caseload" },
+    "access-to-food": { "adopter": "food pantries and food networks", "pilot": "the pantry map and events for one network" },
+    "access-to-civics": { "adopter": "teachers and libraries", "pilot": "one unit in one classroom" },
+    "access-to-crew": { "adopter": "neighborhood associations and city services", "pilot": "two cleanup sessions drawn from 311 reports" },
+    "access-to-energy": { "adopter": "community action agencies", "pilot": "utility-assistance routing in one county" },
+    "access-to-care": { "adopter": "family caregivers and care managers", "pilot": "one family's first living care plan" },
+    "access-to-freedom": { "adopter": "relocation advocates", "pilot": "one family's twelve-month plan" },
+    "access-to-experts": { "adopter": "practitioner networks", "pilot": "one practitioner's methodology as a guided playbook" },
+    "access-to-hr": { "adopter": "small employers", "pilot": "one workplace's policy questions" }
+  }
+}

@@ -19,6 +19,13 @@
   --color-accent-services: #6B5B8A;
   --color-accent-education: #4A7C59;
   --color-accent-safety: #B85C38;
+  /* Health's accent is 3.9:1 on white: fine for bars and icons, too light for
+     text. Text uses this darker shade: 5.57:1 on --color-card-bg. */
+  --color-accent-health-text: #B5403F;
+
+  /* ── Dark buttons (background: var(--color-text)) hover shade ──
+     Text on these buttons is var(--color-bg): 12.1:1 on this shade, 11.1:1 in dark mode. */
+  --color-btn-hover: #333333;
 
   /* ── Primary accent (generic UI elements) ── */
   --color-accent-primary: #2D5A7B;
@@ -54,7 +61,9 @@
   --color-accent-services: #A07CC4;
   --color-accent-education: #7AAF82;
   --color-accent-safety: #D4845A;
+  --color-accent-health-text: #E88A8C;   /* 6.86:1 on --color-card-bg */
   --color-accent-primary: #5A8AAB;
+  --color-btn-hover: #C9C9C4;
 }
 
 [data-theme="dark"] .pillar-icon {
@@ -116,6 +125,9 @@ body {
   font-weight: 600;
   text-decoration: none;
   transition: top 0.2s;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 .skip-link:focus {
   top: 0;
@@ -134,6 +146,9 @@ body {
   border: 1px solid var(--color-border);
   border-radius: 100px;
   padding: 0.35rem 0.65rem;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
   cursor: pointer;
   font-size: 0.85rem;
   line-height: 1;
@@ -173,13 +188,15 @@ html:not([data-theme="dark"]) .theme-toggle .icon-moon { display: inline; }
   justify-content: center;
   font-size: 1.1rem;
   opacity: 0;
+  visibility: hidden;          /* out of the tab order until it is shown */
   pointer-events: none;
-  transition: opacity 0.3s, transform 0.3s;
+  transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
   z-index: 50;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 .back-to-top.visible {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 .back-to-top:hover {
@@ -294,7 +311,7 @@ header {
   text-transform: uppercase;
   color: var(--color-muted);
 }
-.topbar-logo a { color: inherit; text-decoration: none; }
+.topbar-logo a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
 
 .topbar-links {
   display: flex;
@@ -312,7 +329,7 @@ header {
 .topbar-links a:hover { color: var(--color-text); }
 
 .topbar-links .nav-donate {
-  color: #FFFFFF;
+  color: var(--color-bg);
   background: var(--color-text);
   padding: 0.4rem 1rem;
   border-radius: 100px;
@@ -321,7 +338,7 @@ header {
   transition: background 0.2s, transform 0.2s;
 }
 .topbar-links .nav-donate:hover {
-  background: #333;
+  background: var(--color-btn-hover);
   transform: translateY(-1px);
 }
 
@@ -332,7 +349,11 @@ header {
   border: none;
   cursor: pointer;
   padding: 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
 }
 .hamburger span {
@@ -577,11 +598,12 @@ header {
   font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
-  margin-bottom: 1rem;
+  min-height: 44px;
+  margin-bottom: 0.5rem;
   transition: gap 0.2s;
 }
 .pillar-card .pillar-link:hover { gap: 0.65rem; }
-[data-pillar="health"] .pillar-link     { color: var(--color-accent-health); }
+[data-pillar="health"] .pillar-link     { color: var(--color-accent-health-text); }
 [data-pillar="education"] .pillar-link  { color: var(--color-accent-education); }
 [data-pillar="safety"] .pillar-link     { color: var(--color-accent-safety); }
 [data-pillar="housing"] .pillar-link    { color: var(--color-accent-housing); }
@@ -606,6 +628,7 @@ header {
   color: var(--color-text);
   text-decoration: none;
   padding: 0.5rem 0.75rem;
+  min-height: 44px;
   border-radius: 6px;
   background: var(--color-bg);
   transition: background 0.15s;
@@ -713,14 +736,17 @@ header {
   outline: none;
   transition: border-color 0.2s;
   min-width: 0;
+  min-height: 44px;
 }
 .email-form input:focus { border-color: var(--color-muted); }
+.email-form input:focus-visible { outline: 2px solid var(--color-accent-primary); outline-offset: 2px; }
 .email-form input::placeholder { color: var(--color-border); }
 
 .email-form button {
   padding: 0.75rem 1.5rem;
+  min-height: 44px;
   background: var(--color-text);
-  color: #FFFFFF;
+  color: var(--color-bg);
   border: none;
   border-radius: 8px;
   font-family: var(--font-body);
@@ -730,7 +756,7 @@ header {
   transition: background 0.2s;
   white-space: nowrap;
 }
-.email-form button:hover { background: #333; }
+.email-form button:hover { background: var(--color-btn-hover); }
 
 .email-privacy {
   font-size: 0.72rem;
@@ -890,6 +916,10 @@ footer a:hover { color: var(--color-text); }
 .pillar-hero .breadcrumb a {
   color: var(--color-muted);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  min-width: 44px;
 }
 .pillar-hero .breadcrumb a:hover { color: var(--color-text); }
 
@@ -971,6 +1001,9 @@ footer a:hover { color: var(--color-text); }
 .project-card h3 a {
   color: var(--color-text);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 .project-card h3 a:hover { text-decoration: underline; }
 
@@ -999,14 +1032,15 @@ footer a:hover { color: var(--color-text); }
   font-size: 0.85rem;
   font-weight: 600;
   padding: 0.55rem 1.25rem;
+  min-height: 44px;
   border-radius: 8px;
   text-decoration: none;
   background: var(--color-text);
-  color: #FFFFFF;
+  color: var(--color-bg);
   transition: background 0.2s;
   white-space: nowrap;
 }
-.project-card .btn-github:hover { background: #333; }
+.project-card .btn-github:hover { background: var(--color-btn-hover); }
 .project-card .btn-github svg {
   width: 16px; height: 16px;
 }
@@ -1240,7 +1274,7 @@ footer a:hover { color: var(--color-text); }
   font-size: 0.95rem;
   transition: background 0.2s, transform 0.2s;
 }
-.btn-primary:hover { background: #333; transform: translateY(-1px); }
+.btn-primary:hover { background: var(--color-btn-hover); transform: translateY(-1px); }
 
 .btn-secondary {
   display: inline-flex;
@@ -1454,7 +1488,9 @@ footer a:hover { color: var(--color-text); }
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 .cross-link-card.current {
-  opacity: 0.45;
+  /* The page you are on. Muted text, not opacity, so it keeps 4.5:1 contrast. */
+  color: var(--color-muted);
+  border-style: dashed;
   pointer-events: none;
 }
 .cross-link-card[data-pillar="health"]::before     { background: var(--color-accent-health); }
@@ -1510,7 +1546,7 @@ footer a:hover { color: var(--color-text); }
 }
 .footer-brand .footer-social a:hover { color: var(--color-text); }
 
-.footer-col h4 {
+.footer-col h2 {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -1595,6 +1631,20 @@ noscript .stat-number { opacity: 1; }
    cascade (this is what made the footer 4 columns wide on phones). */
 @media (max-width: 700px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Footer links are 16-22px tall at desktop density; give them 44px rows on
+   phones (house rule: every touch target at least 44x44). */
+@media (max-width: 700px) {
+  .footer-col ul { gap: 0; }
+  .footer-col ul li a,
+  .footer-brand .footer-social a,
+  .footer-bottom a:not(.footer-notice a) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 
 @media (max-width: 500px) {
@@ -1706,6 +1756,8 @@ noscript .stat-number { opacity: 1; }
   border: none;
   color: var(--color-bg);
   padding: 0.3rem 0.7rem;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 600;

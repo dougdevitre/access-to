@@ -290,9 +290,9 @@ section + section { border-top: 1px solid var(--line); }
   position: fixed; right: var(--gutter); bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 15;
   width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line);
   background: var(--surface); color: var(--ink); display: grid; place-items: center; cursor: pointer;
-  opacity: 0; pointer-events: none; transition: opacity .2s;
+  opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s, visibility .2s;
 }
-.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top.show { opacity: 1; visibility: visible; pointer-events: auto; }   /* hidden = out of the tab order too */
 .back-to-top svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ── Larger screens ── */

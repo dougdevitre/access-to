@@ -149,6 +149,46 @@ section + section { border-top: 1px solid var(--line); }
 .door:hover { border-color: var(--c); }
 .door.caught { box-shadow: 0 0 0 2px var(--lamp), var(--shade); }
 
+/* ── Find my door ── */
+.finder-start { width: 100%; }
+.finder-flow { padding: 20px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shade); }
+.finder-progress { display: flex; gap: 6px; margin-bottom: 16px; }
+.finder-progress span { flex: 1; height: 6px; border-radius: 999px; background: var(--line); transition: background-color .3s; }
+.finder-progress span.on { background: var(--lamp); }
+.finder-q { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; margin-bottom: 16px; }
+.finder-q:focus { outline: none; }
+.finder-options { display: grid; gap: 10px; }
+.finder-option {
+  min-height: var(--tap); padding: 14px 18px; border-radius: 16px; text-align: left;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  font: 500 1.0625rem/1.3 var(--sans); cursor: pointer; touch-action: manipulation;
+}
+.finder-option:active { transform: scale(0.98); }
+.finder-option[aria-pressed="true"] { border-color: var(--lamp); box-shadow: inset 0 0 0 2px var(--lamp); }
+.finder-back {
+  margin-top: 14px; min-height: 44px; padding: 8px 4px; border: 0; background: none; color: var(--muted);
+  font: 500 1rem var(--sans); text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+}
+.finder-result h3:focus { outline: none; }
+.crisis {
+  margin-bottom: 18px; padding: 16px 18px; border-radius: 16px; font-weight: 500;
+  background: color-mix(in srgb, #C2410C 14%, var(--surface)); border: 2px solid #C2410C;
+}
+.match-list { list-style: none; padding: 0; margin: 14px 0; display: grid; gap: 10px; }
+.match {
+  --c: #5A8AAB;
+  width: 100%; display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: center;
+  min-height: 84px; padding: 14px; border-radius: 20px; text-align: left; cursor: pointer;
+  background: color-mix(in srgb, var(--c) 12%, var(--surface)); color: var(--ink);
+  border: 2px solid var(--c); font: inherit; touch-action: manipulation;
+}
+.match:active { transform: scale(0.98); }
+.match-text { display: grid; gap: 2px; }
+.match-name { font-family: var(--serif); font-size: 1.25rem; line-height: 1.15; }
+.match-why { color: var(--muted); font-size: 0.95rem; }
+.match-flag { font-size: 0.85rem; font-weight: 700; color: var(--lamp-ink); }
+.door.match-lit { border-color: var(--lamp); box-shadow: 0 0 0 3px var(--lamp), 0 0 28px -6px var(--lamp); }
+
 /* ── Practice builder ── */
 .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 28px; counter-reset: step; }
 .step { counter-increment: step; position: relative; padding-left: 52px; }
@@ -260,6 +300,8 @@ section + section { border-top: 1px solid var(--line); }
   .door-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .lamp-actions, .my-step-actions { grid-auto-flow: column; justify-content: start; }
   .gate-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .finder-start { width: auto; }
+  .finder-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sheet { margin: auto; max-width: 560px; border-radius: 24px; }
 }
 @media (min-width: 960px) {

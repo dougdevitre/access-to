@@ -34,6 +34,7 @@ jq -n \
   [
     { id: "welcome", text: "\($j.catalyst.welcome) \($j.catalyst.blend)" },
     { id: "distribute", text: $j.catalyst.distribute },
+    { id: "finder", text: $j.finder.intro },
     { id: "gates",
       text: "\($narration[0].gates_intro) \($j.gates | join(" ")) If it fails one, pause and revise." }
   ]

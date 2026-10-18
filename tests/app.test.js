@@ -81,11 +81,51 @@ describe('Homepage app', () => {
       expect(data.clips).toEqual(expected);
     });
 
-    test('there is a clip for the welcome, the practice, the gates and every project', () => {
-      ['welcome', 'distribute', 'gates', ...listed.map((r) => r.name)].forEach((id) => {
+    test('there is a clip for the welcome, the practice, the guide, the gates and every project', () => {
+      ['welcome', 'distribute', 'finder', 'gates', ...listed.map((r) => r.name)].forEach((id) => {
         expect(typeof data.clips[id]).toBe('string');
         expect(data.clips[id].length).toBeGreaterThan(20);
       });
+    });
+  });
+
+  describe('find my door', () => {
+    const F = journey.finder;
+    const names = new Set(listed.map((r) => r.name));
+
+    test('three questions: roles, needs and places all have options', () => {
+      expect(F.roles.length).toBeGreaterThanOrEqual(3);
+      expect(F.needs.length).toBeGreaterThanOrEqual(5);
+      expect(F.places.map((p) => p.id)).toContain('missouri');
+    });
+
+    test('every need points only at listed projects, and at least one', () => {
+      F.needs.forEach((n) => {
+        expect(n.doors.length).toBeGreaterThanOrEqual(1);
+        n.doors.forEach((d) => expect(names.has(d)).toBe(true));
+      });
+    });
+
+    test('every role says whether it adopts tools or is seeking help', () => {
+      F.roles.forEach((r) => expect(['adopt', 'help']).toContain(r.lens));
+      expect(F.roles.some((r) => r.lens === 'help')).toBe(true);
+    });
+
+    test('a safety need exists and shows 911, a DV hotline and 988 first', () => {
+      expect(F.needs.some((n) => n.crisis)).toBe(true);
+      expect(F.crisis_note).toContain('911');
+      expect(F.crisis_note).toContain('1-800-799-7233');
+      expect(F.crisis_note).toContain('988');
+    });
+
+    test('the page intro matches the narrated intro', () => {
+      expect($('#finder .section-lead').text().trim()).toBe(F.intro);
+    });
+
+    test('the guide degrades to the doors without JavaScript', () => {
+      expect($('#finder-start').attr('hidden')).toBeDefined();
+      expect($('#finder-flow').attr('hidden')).toBeDefined();
+      expect($('#finder noscript').length).toBe(1);
     });
   });
 

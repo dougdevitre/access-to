@@ -1549,6 +1549,11 @@ footer a:hover { color: var(--color-text); }
   font-size: 0.78rem;
   color: var(--color-muted);
 }
+.footer-bottom .footer-notice {
+  flex-basis: 100%;
+  line-height: 1.5;
+}
+.footer-bottom .footer-notice a { text-decoration: underline; }
 .footer-bottom a { text-decoration: none; }
 .footer-bottom a:hover { color: var(--color-text); }
 

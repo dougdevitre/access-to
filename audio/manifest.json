@@ -1,1 +1,111 @@
-{"clips":{}}
+{
+  "clips": {
+    "welcome": {
+      "file": "audio/welcome.mp3",
+      "sha": "c1827ecc4cf9c77b",
+      "chars": 410
+    },
+    "distribute": {
+      "file": "audio/distribute.mp3",
+      "sha": "96ac393958469378",
+      "chars": 236
+    },
+    "gates": {
+      "file": "audio/gates.mp3",
+      "sha": "b6f5cc2d5899fc0a",
+      "chars": 159
+    },
+    "access-to-housing": {
+      "file": "audio/access-to-housing.mp3",
+      "sha": "047d1b466b155032",
+      "chars": 280
+    },
+    "access-to-jobs": {
+      "file": "audio/access-to-jobs.mp3",
+      "sha": "3d8cb08942b3def5",
+      "chars": 269
+    },
+    "access-to-health": {
+      "file": "audio/access-to-health.mp3",
+      "sha": "25ea7bf23bbc50f9",
+      "chars": 266
+    },
+    "access-to-business": {
+      "file": "audio/access-to-business.mp3",
+      "sha": "21c0207692127554",
+      "chars": 232
+    },
+    "access-to-services": {
+      "file": "audio/access-to-services.mp3",
+      "sha": "1e700f3f1c9c1808",
+      "chars": 280
+    },
+    "access-to-education": {
+      "file": "audio/access-to-education.mp3",
+      "sha": "dcee65aae2f8fd37",
+      "chars": 245
+    },
+    "access-to-safety": {
+      "file": "audio/access-to-safety.mp3",
+      "sha": "ab0ecc1edd46e251",
+      "chars": 310
+    },
+    "access-to-justice": {
+      "file": "audio/access-to-justice.mp3",
+      "sha": "13990528d85ae060",
+      "chars": 342
+    },
+    "access-to-peace": {
+      "file": "audio/access-to-peace.mp3",
+      "sha": "578a2d153b564df8",
+      "chars": 339
+    },
+    "access-to-civics": {
+      "file": "audio/access-to-civics.mp3",
+      "sha": "36cc78348cc902ff",
+      "chars": 253
+    },
+    "access-to-crew": {
+      "file": "audio/access-to-crew.mp3",
+      "sha": "43222658c8a9a0f5",
+      "chars": 310
+    },
+    "access-to-food": {
+      "file": "audio/access-to-food.mp3",
+      "sha": "df56abb14437cf36",
+      "chars": 306
+    },
+    "access-to-energy": {
+      "file": "audio/access-to-energy.mp3",
+      "sha": "6bfc4eeeb79156c3",
+      "chars": 337
+    },
+    "access-to-care": {
+      "file": "audio/access-to-care.mp3",
+      "sha": "e7952fad9b468c81",
+      "chars": 336
+    },
+    "access-for-seniors": {
+      "file": "audio/access-for-seniors.mp3",
+      "sha": "22301fffc6111c00",
+      "chars": 291
+    },
+    "access-to-freedom": {
+      "file": "audio/access-to-freedom.mp3",
+      "sha": "da0cc43ed7c8cb56",
+      "chars": 281
+    },
+    "access-to-experts": {
+      "file": "audio/access-to-experts.mp3",
+      "sha": "eaa5e96dcd97c994",
+      "chars": 265
+    },
+    "access-to-hr": {
+      "file": "audio/access-to-hr.mp3",
+      "sha": "acdb407ac92eba56",
+      "chars": 231
+    }
+  },
+  "voice_id": "2ydcbtd5sJZRYFMNgMVZ",
+  "model_id": "eleven_multilingual_v2"
+}

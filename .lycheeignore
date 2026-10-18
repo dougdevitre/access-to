@@ -1,0 +1,16 @@
+# Exclusions for the Link check workflow (.github/workflows/link-check.yml).
+# One regular expression per line. Every entry says why it is skipped.
+
+# temporary — remove when the domain is reattached (dougdevitre.org is down:
+# the hub's CNAME was deleted 2026-04-07).
+^https?://(www\.)?dougdevitre\.org
+
+# BROKEN — needs a human (found 2026-10-18). Returns 404 to the link checker
+# (the Venmo button on about.html, the pillar pages and README.md). Could not
+# confirm a working profile URL (venmo.com blocks automated fetches).
+^https://venmo\.com/dougdevitre
+
+# BROKEN — needs a human (found 2026-10-18). The Mailchimp signup form's POST
+# action on about.html returns 404 to a GET. That may just be how the endpoint
+# answers GETs, or the audience may be gone; a human needs to submit the form.
+^https://us16\.list-manage\.com/subscribe/post\?u=62137ae349&id=090aae7d15

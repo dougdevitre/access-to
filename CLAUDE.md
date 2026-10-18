@@ -44,6 +44,9 @@ LOG_FORMAT=json .github/scripts/validate-config.sh .github/config
 # Preview narration: which clips would be (re)generated and how many characters
 .github/scripts/generate-narration.sh --dry-run
 
+# Stamp the shared disclaimer into a repo checkout (or --check for drift)
+.github/scripts/sync-disclaimer.sh <repo-name> <path-to-checkout>
+
 # Onboard a new repo
 .github/scripts/onboard-repo.sh <repo-name> <pillar> [scope]
 
@@ -69,3 +72,5 @@ open index.html
 - **Homepage app content is config.** `journey.json` holds the welcome, the Distributed Virtue framework (BEACON, nine virtues, four gates; canonical in `dougdevitre/distributed-virtue` `lib/beacon/`) and one `adoption` entry (adopter + first pilot) per listed project. A new project needs an `adoption` entry or `tests/app.test.js` fails.
 - **Narration.** `narration-clips.sh` composes every spoken script from config; the same text is embedded as the on-screen transcript, so they cannot drift. The Generate Narration workflow speaks changed clips in Doug's ElevenLabs voice (`narration.json`) and commits `audio/`. The API key lives only in the `ELEVENLABS_API_KEY` repository secret. Never hand-edit `audio/`.
 - **Every app shows the disclaimer** (educational only, 911/988, verify with official sources, no identifying details, no endorsement or warranty).
+- **The disclaimer wording lives once, in `.github/disclaimer/`.** `sync-disclaimer.sh <repo> <dir>` stamps it into a checkout: `DISCLAIMER.md`, a notice under the README title, and a once-per-conversation notice in `SKILL.md` (between `BEGIN/END DISCLAIMER` markers; repo-specific disclaimers outside the markers stay). To change the wording, edit the templates, then re-run the script for every repo and open a PR in each. Never edit a synced block in a child repo. Every hub page carries a `.footer-notice` (or `#disclaimer` on the homepage); `tests/disclaimer.test.js` enforces both.
+- **CI runs Jest** (`.github/workflows/test.yml`) on every PR.

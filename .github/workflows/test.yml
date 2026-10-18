@@ -1,0 +1,40 @@
+name: Test
+
+# Runs the Jest suite (site structure, accessibility, SEO, the homepage app and
+# the shared disclaimer) on every pull request and on main.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  jest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Check the hub disclaimer is in sync with the shared wording
+        run: .github/scripts/sync-disclaimer.sh --check access-to .
+
+      - name: Run tests
+        run: npx jest --ci

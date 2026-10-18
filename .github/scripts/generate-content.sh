@@ -42,8 +42,10 @@ BRAND_ACCENT=$(jq -r '.brand.colors.accent' "$CONTENT_FILE")
 FOUNDER=$(jq -r '.brand.founder' "$CONTENT_FILE")
 FONT_HEADING=$(jq -r '.brand.fonts.heading' "$CONTENT_FILE")
 FONT_BODY=$(jq -r '.brand.fonts.body' "$CONTENT_FILE")
-BRAND_STATS_PILLARS=$(jq -r '.brand.stats.pillars' "$CONTENT_FILE")
-BRAND_STATS_PROJECTS=$(jq -r '.brand.stats.projects' "$CONTENT_FILE")
+# Pillar/project counts come from repos.json (same definition as render-hub.sh:
+# listed, non-hub repos) so generated content never drifts from the live hub.
+BRAND_STATS_PILLARS=$(jq '[.repos[] | select(.role != "hub" and (.listed // true)) | .pillar] | unique | length' "$REPOS_FILE")
+BRAND_STATS_PROJECTS=$(jq '[.repos[] | select(.role != "hub" and (.listed // true))] | length' "$REPOS_FILE")
 BRAND_STATS_MODULES=$(jq -r '.brand.stats.modules' "$CONTENT_FILE")
 BRAND_STATS_COUNTIES=$(jq -r '.brand.stats.counties' "$CONTENT_FILE")
 SOCIAL_PROOF=$(jq -r '.brand.social_proof | join(", ")' "$CONTENT_FILE")
@@ -58,11 +60,30 @@ FORMAT_KEYS=$(jq -r '.formats | keys[]' "$CONTENT_FILE")
 
 for i in $(seq 0 $((REPO_COUNT - 1))); do
   ROLE=$(jq -r ".repos[$i].role" "$REPOS_FILE")
-  # Skip hub — content is for pillar repos
-  if [ "$ROLE" = "hub" ]; then continue; fi
+  REPO_NAME=$(jq -r ".repos[$i].name" "$REPOS_FILE")
+  # Content is for pillar repos only. Output files are named <format>-<pillar>.md,
+  # so a tool or docs repo sharing a pillar would overwrite the pillar's content.
+  if [ "$ROLE" != "pillar" ]; then continue; fi
+  # Templates link to github.com/<owner>/<repo>, which 404s for private repos.
+  if [ "$(jq -r ".repos[$i].visibility // \"public\"" "$REPOS_FILE")" = "private" ] \
+     || [ "$(jq -r ".repos[$i].listed // true" "$REPOS_FILE")" = "false" ]; then
+    log_info "Skipping $REPO_NAME (private or unlisted)"
+    continue
+  fi
+  # Templates describe the clone → upload SKILL.md → chat flow, which is only true
+  # for Claude Skills; apps, games, APIs and frameworks would get wrong instructions.
+  STATUS=$(jq -r ".repos[$i].status // \"skill\"" "$REPOS_FILE")
+  if [ "$STATUS" != "skill" ]; then
+    log_info "Skipping $REPO_NAME (status '$STATUS'; content templates are written for Claude Skills)"
+    continue
+  fi
+  # Use cases drive most sections; without them the output would be hollow.
+  if [ "$(jq ".repos[$i].use_cases // [] | length" "$REPOS_FILE")" -eq 0 ]; then
+    log_warn "Skipping $REPO_NAME: add use_cases to repos.json to generate its content"
+    continue
+  fi
 
   # Load repo data
-  REPO_NAME=$(jq -r ".repos[$i].name" "$REPOS_FILE")
   PILLAR=$(jq -r ".repos[$i].pillar" "$REPOS_FILE")
   PILLAR_NAME=$(echo "$PILLAR" | sed 's/./\U&/' )
   PILLAR_LOWER="$PILLAR"
@@ -75,11 +96,11 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
   CTA=$(jq -r ".repos[$i].cta" "$REPOS_FILE")
 
   # Audience
-  AUDIENCE_LIST=$(jq -r ".repos[$i].audience | join(\", \")" "$REPOS_FILE")
-  AUDIENCE_FIRST=$(jq -r ".repos[$i].audience[0]" "$REPOS_FILE")
-  AUDIENCE_LIST_PROSE=$(jq -r ".repos[$i].audience | join(\", \") | sub(\"(?<a>.*), \"; \"\(.a), and \")" "$REPOS_FILE" 2>/dev/null || echo "$AUDIENCE_LIST")
-  AUDIENCE_BULLETS=$(jq -r ".repos[$i].audience[] | \"- \" + ." "$REPOS_FILE")
-  AUDIENCE_HASHTAGS=$(jq -r ".repos[$i].audience | map(gsub(\" \"; \"\")) | map(\"#\" + .) | join(\" \")" "$REPOS_FILE")
+  AUDIENCE_LIST=$(jq -r ".repos[$i].audience // [] | join(\", \")" "$REPOS_FILE")
+  AUDIENCE_FIRST=$(jq -r ".repos[$i].audience[0] // \"\"" "$REPOS_FILE")
+  AUDIENCE_LIST_PROSE=$(jq -r ".repos[$i].audience // [] | join(\", \") | sub(\"(?<a>.*), \"; \"\(.a), and \")" "$REPOS_FILE" 2>/dev/null || echo "$AUDIENCE_LIST")
+  AUDIENCE_BULLETS=$(jq -r ".repos[$i].audience // [] | .[] | \"- \" + ." "$REPOS_FILE")
+  AUDIENCE_HASHTAGS=$(jq -r ".repos[$i].audience // [] | map(gsub(\" \"; \"\")) | map(\"#\" + .) | join(\" \")" "$REPOS_FILE")
 
   # Use cases
   USE_CASES_NUMBERED=$(jq -r ".repos[$i].use_cases | to_entries | map(\"\(.key + 1). \(.value)\") | join(\"\n\")" "$REPOS_FILE")
@@ -92,8 +113,8 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
   done < <(jq -r ".repos[$i].use_cases[]" "$REPOS_FILE")
 
   # Key stats
-  KEY_STATS_TABLE=$(jq -r ".repos[$i].key_stats | to_entries | map(\"| \(.key) | \(.value) |\") | join(\"\n\")" "$REPOS_FILE")
-  KEY_STATS_BULLETS=$(jq -r ".repos[$i].key_stats | to_entries | map(\"- **\(.key):** \(.value)\") | join(\"\n\")" "$REPOS_FILE")
+  KEY_STATS_TABLE=$(jq -r ".repos[$i].key_stats // {} | to_entries | map(\"| \(.key) | \(.value) |\") | join(\"\n\")" "$REPOS_FILE")
+  KEY_STATS_BULLETS=$(jq -r ".repos[$i].key_stats // {} | to_entries | map(\"- **\(.key):** \(.value)\") | join(\"\n\")" "$REPOS_FILE")
 
   # Connections
   CONNECTIONS_RAW=$(jq -r ".repos[$i].connects_to // [] | .[]" "$REPOS_FILE")

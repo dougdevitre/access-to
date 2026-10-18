@@ -212,6 +212,12 @@
       "color": "5B7A8A",
       "icon": "peace",
       "audience": ["mediators", "co-parents", "restorative practitioners"],
+      "key_stats": { "triggers": 80, "modules": 26, "roles": 20 },
+      "use_cases": [
+        "Route a conflict to the right module through an 80-trigger intake with a safety gate",
+        "Prepare a co-parent for a de-escalated exchange or a mediation session",
+        "Plan a restorative practice circle for a school or community group"
+      ],
       "cta": "Start a de-escalation plan"
     },
     {

@@ -164,6 +164,17 @@ if [ "$HUB_COUNT" -ne 1 ]; then
   ((WARNINGS++)) || true
 fi
 
+# At most one role "pillar" repo per pillar: generate-content.sh writes
+# <format>-<pillar>.md, so two would overwrite each other. Extra repos in a
+# pillar use role "tool" or "docs".
+SHARED_PILLARS=$(jq -r '[.repos[] | select(.role == "pillar") | .pillar] | group_by(.) | map(select(length > 1) | .[0]) | .[]' "$REPOS_FILE")
+if [ -n "$SHARED_PILLARS" ]; then
+  for P in $SHARED_PILLARS; do
+    log_error "Pillar '$P' has more than one repo with role 'pillar' — use role 'tool' or 'docs' for the others"
+    ((ERRORS++)) || true
+  done
+fi
+
 # --- labels.json ---
 log_info "Validating labels.json..."
 

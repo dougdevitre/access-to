@@ -54,7 +54,8 @@ open index.html
 - **Idempotent.** All sync scripts must be safe to re-run.
 - **Exit codes matter.** Scripts exit 1 on errors — don't mask failures.
 - When editing `repos.json`, valid pillars are: `hub`, `housing`, `jobs`, `health`, `business`, `services`, `education`, `safety`, `justice`, `peace`, `civics`, `community`, `food`, `energy`, `care`, `mobility`. Valid scopes: `missouri`, `nationwide`, `global`. Valid roles: `hub`, `pillar`, `tool`, `docs`. Optional site fields: `title`, `status` (`live`, `beta`, `skill`, `pre-pilot`, `spec`), `visibility` (`public`, `private`), `listed` (default `true`), `live_url`, `page`.
-- **Hub cards are generated, not fetched.** After any `repos.json` change, run `.github/scripts/render-hub.sh` and commit the updated `index.html`. CI runs `render-hub.sh --check` and fails if they drift. Never hand-edit between `<!-- BEGIN GENERATED:* -->` markers.
+- **Project listings are generated, not hand-written.** After any `repos.json` change, run `.github/scripts/render-hub.sh` and commit the updated `index.html` and `README.md` (badges, ecosystem diagram, pillars, project directory, impact numbers). CI runs `render-hub.sh --check` and fails if they drift. Never hand-edit between `<!-- BEGIN GENERATED:* -->` markers.
+- **Root `node_modules/` is not committed.** Run `npm ci` before `npx jest`.
 - A new pillar needs: an enum value in `repos.schema.json` and `validate-config.sh`, a `pillar:<name>` label in `labels.json`, and an icon in `.github/config/icons.json`.
 - Private repos stay `listed` with a "Coming soon" card and no repo link; set `"listed": false` to hide one entirely.
 - `connects_to` entries must reference repo names that exist in the registry.

@@ -8,10 +8,12 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-222?style=for-the-badge&logo=github&logoColor=white)](https://dougdevitre.org/)
-[![Projects](https://img.shields.io/badge/Projects-7-5B7A3A?style=for-the-badge)](https://dougdevitre.org/#pillars)
-[![Pillars](https://img.shields.io/badge/Pillars-7-2D5A7B?style=for-the-badge)](https://dougdevitre.org/#pillars)
+<!-- BEGIN GENERATED:badges -->
+[![Projects](https://img.shields.io/badge/Projects-18-5B7A3A?style=for-the-badge)](https://dougdevitre.org/#pillars)
+[![Pillars](https://img.shields.io/badge/Pillars-15-2D5A7B?style=for-the-badge)](https://dougdevitre.org/#pillars)
+<!-- END GENERATED:badges -->
 
-**A growing collection of open-source projects organized around seven pillars of human access — built for practitioners, advocates, and the people they serve.**
+**A growing collection of open-source projects organized around the pillars of human access — built for practitioners, advocates, and the people they serve.**
 
 [**View the Live Site**](https://dougdevitre.org/) | [**Browse Projects**](https://dougdevitre.org/#pillars) | [**How It Works**](https://dougdevitre.org/#how-it-works)
 
@@ -25,7 +27,7 @@
 - [Who Is This For?](#who-is-this-for)
 - [See It In Action](#see-it-in-action)
 - [Ecosystem Overview](#ecosystem-overview)
-- [The Seven Pillars](#the-seven-pillars)
+- [The Pillars](#the-pillars)
 - [Project Directory](#project-directory)
 - [Cross-Project Relationships](#cross-project-relationships)
 - [Data Flow Architecture](#data-flow-architecture)
@@ -82,6 +84,8 @@ Each skill's `SKILL.md` file teaches Claude a specialized workflow — from navi
 | **Healthcare navigator** | [access-to-health](https://github.com/dougdevitre/access-to-health) — Medicaid/Medicare guidance and benefits enrollment support |
 | **Aspiring entrepreneur** | [access-to-business](https://github.com/dougdevitre/access-to-business) — Missouri startup guide with business launch tools |
 
+Working on justice, peace, civics, community, food, energy, care, or relocation? See the full [Project Directory](#project-directory).
+
 ---
 
 ## See It In Action
@@ -98,100 +102,119 @@ Each scenario follows the same pattern: clone the repo, upload `SKILL.md` to a C
 
 ## Ecosystem Overview
 
-`access-to` is the central hub that connects a family of purpose-built AI tools. Each child repository is a standalone Claude Skill targeting a specific domain of human access.
+`access-to` is the central hub that connects a family of purpose-built tools. Most child repositories are standalone Claude Skills; others are live apps, games, APIs, or frameworks. Every project below is listed in [`.github/config/repos.json`](.github/config/repos.json).
 
+<!-- BEGIN GENERATED:ecosystem -->
 ```mermaid
-flowchart TB
+flowchart LR
     HUB["<b>access-to</b><br/>Central Hub & Landing Site<br/><i>dougdevitre.org</i>"]
-
-    HUB --> HEALTH["<b>access-to-health</b><br/>Healthcare navigation,<br/>benefits enrollment,<br/>Medicaid/Medicare guidance"]
-    HUB --> EDU["<b>access-to-education</b><br/>K-12 standards alignment,<br/>lesson planning,<br/>teacher growth tools"]
-    HUB --> SAFETY["<b>access-to-safety</b><br/>Safety planning,<br/>risk assessment,<br/>crisis resources"]
-    HUB --> HOUSING["<b>access-to-housing</b><br/>PropTech intelligence,<br/>market analysis,<br/>Fair Housing compliance"]
-    HUB --> SERVICES["<b>access-to-services</b><br/>Social services navigation,<br/>benefits matching,<br/>community resources"]
-    HUB --> JOBS["<b>access-to-jobs</b><br/>Workforce development,<br/>WIOA navigation,<br/>job matching"]
-    HUB --> BIZ["<b>access-to-business</b><br/>Startup guide,<br/>entrepreneur support,<br/>business launch tools"]
+    subgraph LIVE ["Live and piloting"]
+        direction TB
+        access_to_food["<b>access-to-food</b><br/>Access to Food"]
+        access_to_justice["<b>access-to-justice</b><br/>Access to Justice"]
+    end
+    HUB --> LIVE
+    subgraph BETA ["In beta"]
+        direction TB
+        access_to_civics["<b>access-to-civics</b><br/>Access to Civics"]
+        access_to_crew["<b>access-to-crew</b><br/>Block Crew"]
+        access_to_care["<b>access-to-care</b><br/>Care Compass<br/><i>coming soon</i>"]
+        access_to_freedom["<b>access-to-freedom</b><br/>Access to Freedom<br/><i>coming soon</i>"]
+    end
+    HUB --> BETA
+    subgraph SKILLS ["Claude Skills"]
+        direction TB
+        access_to_housing["<b>access-to-housing</b><br/>Access to Housing"]
+        access_to_jobs["<b>access-to-jobs</b><br/>Access to Jobs"]
+        access_to_health["<b>access-to-health</b><br/>Access to Health"]
+        access_to_business["<b>access-to-business</b><br/>Access to Business"]
+        access_to_services["<b>access-to-services</b><br/>Access to Services"]
+        access_to_education["<b>access-to-education</b><br/>Access to Education"]
+        access_to_safety["<b>access-to-safety</b><br/>Access to Safety"]
+        access_to_peace["<b>access-to-peace</b><br/>Access to Peace"]
+        access_to_energy["<b>access-to-energy</b><br/>Access to Energy<br/><i>coming soon</i>"]
+        access_for_seniors["<b>access-for-seniors</b><br/>Access for Seniors"]
+    end
+    HUB --> SKILLS
+    subgraph DESIGN ["In design"]
+        direction TB
+        access_to_experts["<b>access-to-experts</b><br/>Access to Experts"]
+        access_to_hr["<b>access-to-hr</b><br/>Access to HR"]
+    end
+    HUB --> DESIGN
 
     style HUB fill:#2D5A7B,stroke:#1A1A1A,color:#fff,stroke-width:3px
-    style HEALTH fill:#D4585B,stroke:#1A1A1A,color:#fff
-    style EDU fill:#4A7C59,stroke:#1A1A1A,color:#fff
-    style SAFETY fill:#B85C38,stroke:#1A1A1A,color:#fff
-    style HOUSING fill:#2D7A9B,stroke:#1A1A1A,color:#fff
-    style SERVICES fill:#6B5B8A,stroke:#1A1A1A,color:#fff
-    style JOBS fill:#7A6F5B,stroke:#1A1A1A,color:#fff
-    style BIZ fill:#006b75,stroke:#1A1A1A,color:#fff
+    style access_to_food fill:#94621F,stroke:#1A1A1A,color:#fff
+    style access_to_justice fill:#3E4C6B,stroke:#1A1A1A,color:#fff
+    style access_to_civics fill:#8A5A44,stroke:#1A1A1A,color:#fff
+    style access_to_crew fill:#4F6F3A,stroke:#1A1A1A,color:#fff
+    style access_to_care fill:#7A4E6B,stroke:#1A1A1A,color:#fff
+    style access_to_freedom fill:#2F6F6A,stroke:#1A1A1A,color:#fff
+    style access_to_housing fill:#2D7A9B,stroke:#1A1A1A,color:#fff
+    style access_to_jobs fill:#7A6F5B,stroke:#1A1A1A,color:#fff
+    style access_to_health fill:#D4585B,stroke:#1A1A1A,color:#fff
+    style access_to_business fill:#006b75,stroke:#1A1A1A,color:#fff
+    style access_to_services fill:#6B5B8A,stroke:#1A1A1A,color:#fff
+    style access_to_education fill:#4A7C59,stroke:#1A1A1A,color:#fff
+    style access_to_safety fill:#B85C38,stroke:#1A1A1A,color:#fff
+    style access_to_peace fill:#5B7A8A,stroke:#1A1A1A,color:#fff
+    style access_to_energy fill:#876A12,stroke:#1A1A1A,color:#fff
+    style access_for_seniors fill:#7A4E6B,stroke:#1A1A1A,color:#fff
+    style access_to_experts fill:#006b75,stroke:#1A1A1A,color:#fff
+    style access_to_hr fill:#7A6F5B,stroke:#1A1A1A,color:#fff
 ```
+<!-- END GENERATED:ecosystem -->
 
 ---
 
-## The Seven Pillars
+## The Pillars
 
-<table>
-<tr>
-<td align="center" width="33%">
-<img src="https://img.shields.io/badge/-%E2%9D%A4%EF%B8%8F-D4585B?style=for-the-badge&logoColor=white" alt="Health"><br>
-<strong>Health</strong><br>
-<sub>Healthcare navigation, benefits, Medicaid</sub><br><br>
-<a href="https://github.com/dougdevitre/access-to-health"><img src="https://img.shields.io/badge/access--to--health-222?style=flat-square&logo=github" alt="access-to-health"></a>
-</td>
-<td align="center" width="33%">
-<img src="https://img.shields.io/badge/-%F0%9F%93%9A-4A7C59?style=for-the-badge&logoColor=white" alt="Education"><br>
-<strong>Education</strong><br>
-<sub>K-12 standards, lesson planning, teacher growth</sub><br><br>
-<a href="https://github.com/dougdevitre/access-to-education"><img src="https://img.shields.io/badge/access--to--education-222?style=flat-square&logo=github" alt="access-to-education"></a>
-</td>
-<td align="center" width="33%">
-<img src="https://img.shields.io/badge/-%F0%9F%9B%A1%EF%B8%8F-B85C38?style=for-the-badge&logoColor=white" alt="Safety"><br>
-<strong>Safety</strong><br>
-<sub>Safety planning, risk assessment, crisis resources</sub><br><br>
-<a href="https://github.com/dougdevitre/access-to-safety"><img src="https://img.shields.io/badge/access--to--safety-222?style=flat-square&logo=github" alt="access-to-safety"></a>
-</td>
-</tr>
-<tr>
-<td align="center" width="33%">
-<img src="https://img.shields.io/badge/-%F0%9F%8F%A0-2D7A9B?style=for-the-badge&logoColor=white" alt="Housing"><br>
-<strong>Housing</strong><br>
-<sub>PropTech intelligence, Fair Housing-safe</sub><br><br>
-<a href="https://github.com/dougdevitre/access-to-housing"><img src="https://img.shields.io/badge/access--to--housing-222?style=flat-square&logo=github" alt="access-to-housing"></a>
-</td>
-<td align="center" width="33%">
-<img src="https://img.shields.io/badge/-%E2%9A%99%EF%B8%8F-6B5B8A?style=for-the-badge&logoColor=white" alt="Services"><br>
-<strong>Services</strong><br>
-<sub>Social services, benefits matching</sub><br><br>
-<a href="https://github.com/dougdevitre/access-to-services"><img src="https://img.shields.io/badge/access--to--services-222?style=flat-square&logo=github" alt="access-to-services"></a>
-</td>
-<td align="center" width="33%">
-<img src="https://img.shields.io/badge/-%F0%9F%92%BC-7A6F5B?style=for-the-badge&logoColor=white" alt="Jobs"><br>
-<strong>Jobs</strong><br>
-<sub>Workforce dev, WIOA, job matching</sub><br><br>
-<a href="https://github.com/dougdevitre/access-to-jobs"><img src="https://img.shields.io/badge/access--to--jobs-222?style=flat-square&logo=github" alt="access-to-jobs"></a>
-</td>
-</tr>
-<tr>
-<td align="center" width="33%">
-<img src="https://img.shields.io/badge/-%F0%9F%9A%80-006b75?style=for-the-badge&logoColor=white" alt="Business"><br>
-<strong>Business</strong><br>
-<sub>Startup guide, entrepreneur support</sub><br><br>
-<a href="https://github.com/dougdevitre/access-to-business"><img src="https://img.shields.io/badge/access--to--business-222?style=flat-square&logo=github" alt="access-to-business"></a>
-</td>
-<td align="center" width="33%"></td>
-<td align="center" width="33%"></td>
-</tr>
-</table>
+<!-- BEGIN GENERATED:pillars -->
+| Pillar | Projects |
+|:-------|:---------|
+| **Food** | [Access to Food](https://github.com/dougdevitre/access-to-food) |
+| **Justice** | [Access to Justice](https://github.com/dougdevitre/access-to-justice) |
+| **Civics** | [Access to Civics](https://github.com/dougdevitre/access-to-civics) |
+| **Community** | [Block Crew](https://github.com/dougdevitre/access-to-crew) |
+| **Care** | Care Compass _(coming soon)_ · [Access for Seniors](https://github.com/dougdevitre/access-for-seniors) |
+| **Mobility** | Access to Freedom _(coming soon)_ |
+| **Housing** | [Access to Housing](https://github.com/dougdevitre/access-to-housing) |
+| **Jobs** | [Access to Jobs](https://github.com/dougdevitre/access-to-jobs) · [Access to HR](https://github.com/dougdevitre/access-to-hr) |
+| **Health** | [Access to Health](https://github.com/dougdevitre/access-to-health) |
+| **Business** | [Access to Business](https://github.com/dougdevitre/access-to-business) · [Access to Experts](https://github.com/dougdevitre/access-to-experts) |
+| **Services** | [Access to Services](https://github.com/dougdevitre/access-to-services) |
+| **Education** | [Access to Education](https://github.com/dougdevitre/access-to-education) |
+| **Safety** | [Access to Safety](https://github.com/dougdevitre/access-to-safety) |
+| **Peace** | [Access to Peace](https://github.com/dougdevitre/access-to-peace) |
+| **Energy** | Access to Energy _(coming soon)_ |
+<!-- END GENERATED:pillars -->
 
 ---
 
 ## Project Directory
 
-| Repository | Pillar | Scope | Description | Status |
-|:-----------|:-------|:------|:------------|:-------|
-| [access-to-health](https://github.com/dougdevitre/access-to-health) | Health | Nationwide | Healthcare navigation, benefits enrollment, Medicaid/Medicare guidance | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
-| [access-to-education](https://github.com/dougdevitre/access-to-education) | Education | Missouri K-12 | Standards alignment, lesson planning, teacher growth tools | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
-| [access-to-safety](https://github.com/dougdevitre/access-to-safety) | Safety | Nationwide | Safety planning, risk assessment, crisis resources, protection orders | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+<!-- BEGIN GENERATED:directory -->
+| Project | Pillar | Scope | What it does | Status |
+|:--------|:-------|:------|:-------------|:-------|
+| [access-to-food](https://github.com/dougdevitre/access-to-food) · [live ↗](https://food.cotrackpro.com) | Food | Missouri | St. Louis food access platform: pantry map, distribution events, SNAP guidance, an AI assistant, and volunteer tools | ![Live](https://img.shields.io/badge/-Live-2E7D32?style=flat-square) |
+| [access-to-justice](https://github.com/dougdevitre/access-to-justice) · [live ↗](https://dougdevitre.github.io/access-to-justice/) | Justice | Missouri | Civic transparency framework for Missouri family courts: 72 governance-protected metrics, an OSCA binder, and an interactive metric catalog | ![Pre-pilot](https://img.shields.io/badge/-Pre--pilot-3E4C6B?style=flat-square) |
+| [access-to-civics](https://github.com/dougdevitre/access-to-civics) | Civics | Nationwide | Charter: a civic education game for ages 8-14 built on the primary text of all 50 U.S. state constitutions | ![Beta](https://img.shields.io/badge/-Beta-8A5A44?style=flat-square) |
+| [access-to-crew](https://github.com/dougdevitre/access-to-crew) | Community | Missouri | St. Louis civic volunteering backend that turns 311 complaints into cleanup sessions, gated by a Tier-0 volunteer-safety classifier | ![Beta](https://img.shields.io/badge/-Beta-8A5A44?style=flat-square) |
+| access-to-care | Care | Nationwide | Helps a family go from no conversation to a living care plan, designed to be readable by a 10-year-old and a senior with low vision | ![Coming soon](https://img.shields.io/badge/-Coming_soon-6B6B6B?style=flat-square) |
+| access-to-freedom | Mobility | Global | Calm, trauma-informed navigator for people planning to move abroad, from first thought to a concrete 12-month plan | ![Coming soon](https://img.shields.io/badge/-Coming_soon-6B6B6B?style=flat-square) |
 | [access-to-housing](https://github.com/dougdevitre/access-to-housing) | Housing | Nationwide | PropTech intelligence, market analysis, Fair Housing compliance | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
-| [access-to-services](https://github.com/dougdevitre/access-to-services) | Services | Nationwide | Social services navigation, benefits matching, community resources | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
-| [access-to-jobs](https://github.com/dougdevitre/access-to-jobs) | Jobs | Missouri | Workforce development, WIOA navigation, job matching across 114 counties | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
-| [access-to-business](https://github.com/dougdevitre/access-to-business) | Business | Missouri | Startup guide, entrepreneur support, business launch tools | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-jobs](https://github.com/dougdevitre/access-to-jobs) | Jobs | Missouri | WIOA navigation, job matching across 114 Missouri counties | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-health](https://github.com/dougdevitre/access-to-health) | Health | Nationwide | Healthcare navigation, benefits enrollment, Medicaid/Medicare | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-business](https://github.com/dougdevitre/access-to-business) | Business | Missouri | Startup guide, entrepreneur support, business launch | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-services](https://github.com/dougdevitre/access-to-services) | Services | Nationwide | Social services navigation, benefits matching, workforce dev | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-education](https://github.com/dougdevitre/access-to-education) | Education | Missouri | Standards alignment, lesson planning, teacher growth for Missouri K-12 | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-safety](https://github.com/dougdevitre/access-to-safety) | Safety | Nationwide | Safety planning, risk assessment, protective orders, crisis resources | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-peace](https://github.com/dougdevitre/access-to-peace) | Peace | Nationwide | Trauma-informed conflict resolution, mediation, co-parenting de-escalation, and restorative practice navigation | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| access-to-energy | Energy | Missouri | Energy as civic duty: routes residents to conservation, production, and utility-assistance programs across all 114 Missouri counties | ![Coming soon](https://img.shields.io/badge/-Coming_soon-6B6B6B?style=flat-square) |
+| [access-for-seniors](https://github.com/dougdevitre/access-for-seniors) | Care | Nationwide | Senior connection and aging-services navigation: early isolation detection, family connection, and benefits routing | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-experts](https://github.com/dougdevitre/access-to-experts) | Business | Global | Platform spec for packaging vetted practitioner methodology into guided, executable playbooks | ![In design](https://img.shields.io/badge/-In_design-6B6B6B?style=flat-square) |
+| [access-to-hr](https://github.com/dougdevitre/access-to-hr) | Jobs | Nationwide | Human resources navigation: employment rights, workplace protections, and HR process guidance | ![In design](https://img.shields.io/badge/-In_design-6B6B6B?style=flat-square) |
+<!-- END GENERATED:directory -->
 
 ---
 
@@ -365,10 +388,12 @@ They're independent but complementary. A person navigating one access gap often 
 
 <div align="center">
 
+<!-- BEGIN GENERATED:impact -->
 | | | | |
 |:---:|:---:|:---:|:---:|
-| **7** | **7** | **400+** | **114** |
+| **15** | **18** | **400+** | **114** |
 | Pillars | Projects | Modules | MO Counties Served |
+<!-- END GENERATED:impact -->
 
 </div>
 

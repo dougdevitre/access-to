@@ -11,7 +11,7 @@ Trauma-informed AI for safety planning and crisis response. Free, open-source Cl
 Build a personalized safety plan addressing housing, health, and legal needs — now possible with a free AI skill. Access To Safety gives DV advocates a domain expert in their pocket. https://dougdevitre.org #OpenSource
 
 ### Stats Post
-15 pillars. 18 projects. 400+ modules. 114 Missouri counties. One mission: close the access gap. https://dougdevitre.org #AccessTo
+15 pillars. 18 projects. 15 open source. 114 Missouri counties covered. One mission: close the access gap. https://dougdevitre.org #AccessTo
 
 ### Connection Post
 Safety doesn't work alone. It connects to Health because real problems cross boundaries. That's the Access To difference. #CivicTech
@@ -35,7 +35,7 @@ What you can do:
 2. Walk through the protective order filing process step by step
 3. Identify local crisis resources and warm handoff protocols
 
-It's part of the Access To ecosystem — 15 pillars, 18 projects, all open source.
+It's part of the Access To ecosystem — 15 pillars, 18 projects, 15 of them open source.
 
 Try it: github.com/dougdevitre/access-to-safety
 Learn more: https://dougdevitre.org

@@ -11,7 +11,7 @@ Workforce navigation for every Missouri county. Free, open-source Claude Skill f
 Match a job seeker to WIOA-eligible training programs in their county — now possible with a free AI skill. Access To Jobs gives workforce development staff a domain expert in their pocket. https://dougdevitre.org #OpenSource
 
 ### Stats Post
-15 pillars. 18 projects. 400+ modules. 114 Missouri counties. One mission: close the access gap. https://dougdevitre.org #AccessTo
+15 pillars. 18 projects. 15 open source. 114 Missouri counties covered. One mission: close the access gap. https://dougdevitre.org #AccessTo
 
 ### Connection Post
 Jobs doesn't work alone. It connects to Education because real problems cross boundaries. That's the Access To difference. #CivicTech
@@ -35,7 +35,7 @@ What you can do:
 2. Navigate On-the-Job Training funding requirements
 3. Build a career pathway from assessment to placement
 
-It's part of the Access To ecosystem — 15 pillars, 18 projects, all open source.
+It's part of the Access To ecosystem — 15 pillars, 18 projects, 15 of them open source.
 
 Try it: github.com/dougdevitre/access-to-jobs
 Learn more: https://dougdevitre.org

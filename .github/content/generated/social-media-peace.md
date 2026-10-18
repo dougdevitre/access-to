@@ -11,7 +11,7 @@ Calmer conversations when the stakes are high. Free, open-source Claude Skill fo
 Route a conflict to the right module through an 80-trigger intake with a safety gate — now possible with a free AI skill. Access To Peace gives mediators a domain expert in their pocket. https://dougdevitre.org #OpenSource
 
 ### Stats Post
-15 pillars. 18 projects. 400+ modules. 114 Missouri counties. One mission: close the access gap. https://dougdevitre.org #AccessTo
+15 pillars. 18 projects. 15 open source. 114 Missouri counties covered. One mission: close the access gap. https://dougdevitre.org #AccessTo
 
 ### Connection Post
 Peace doesn't work alone. It connects to Safety because real problems cross boundaries. That's the Access To difference. #CivicTech
@@ -35,7 +35,7 @@ What you can do:
 2. Prepare a co-parent for a de-escalated exchange or a mediation session
 3. Plan a restorative practice circle for a school or community group
 
-It's part of the Access To ecosystem — 15 pillars, 18 projects, all open source.
+It's part of the Access To ecosystem — 15 pillars, 18 projects, 15 of them open source.
 
 Try it: github.com/dougdevitre/access-to-peace
 Learn more: https://dougdevitre.org

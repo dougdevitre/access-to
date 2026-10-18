@@ -57,7 +57,7 @@ A deep dive into how AI-powered Claude Skills are closing the education access g
 - The Access To ecosystem: 15 pillars, 18 projects
 - Founded by Doug Devitre (CoTrackPro)
 - Open source model: why free matters for civic tech
-- Social proof: AFCC, Missouri Bar, NASW, EAPA, Justice Technology Association
+- Built for: family court professionals, attorneys, social workers, employee assistance professionals, legal technologists
 
 ## Segment 6: How to Get Started (3 min)
 

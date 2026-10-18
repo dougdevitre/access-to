@@ -11,7 +11,7 @@ AI-powered real estate intelligence for informed decisions. Free, open-source Cl
 Run a comparative market analysis with climate risk scoring — now possible with a free AI skill. Access To Housing gives real estate professionals a domain expert in their pocket. https://dougdevitre.org #OpenSource
 
 ### Stats Post
-15 pillars. 18 projects. 400+ modules. 114 Missouri counties. One mission: close the access gap. https://dougdevitre.org #AccessTo
+15 pillars. 18 projects. 15 open source. 114 Missouri counties covered. One mission: close the access gap. https://dougdevitre.org #AccessTo
 
 ### Connection Post
 Housing doesn't work alone. It connects to Safety because real problems cross boundaries. That's the Access To difference. #CivicTech
@@ -35,7 +35,7 @@ What you can do:
 2. Check Fair Housing compliance before listing a property
 3. Generate an investment feasibility report for multifamily housing
 
-It's part of the Access To ecosystem — 15 pillars, 18 projects, all open source.
+It's part of the Access To ecosystem — 15 pillars, 18 projects, 15 of them open source.
 
 Try it: github.com/dougdevitre/access-to-housing
 Learn more: https://dougdevitre.org

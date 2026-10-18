@@ -53,7 +53,7 @@ Each conversation is grounded in domain expertise — not generic AI."
 **Visual:** Hub-and-spokes diagram
 
 **Voiceover:**
-"Access To Business is part of a larger ecosystem — 15 pillars, 18 projects, 400+ modules. And because people don't face one challenge at a time, Business connects directly to Jobs, Services."
+"Access To Business is part of a larger ecosystem — 15 pillars, 18 projects, 15 of them open source. And because people don't face one challenge at a time, Business connects directly to Jobs, Services."
 
 ---
 

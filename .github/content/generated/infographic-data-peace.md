@@ -19,8 +19,8 @@
 
 - 15 pillars of human access
 - 18 active projects
-- 400+ modules of domain content
-- 114 Missouri counties served
+- 15 open-source repositories (MIT or Apache 2.0)
+- 114 Missouri counties covered
 
 ## Audience
 

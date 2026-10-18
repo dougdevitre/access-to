@@ -11,7 +11,7 @@ Standards-aligned AI tools for Missouri educators. Free, open-source Claude Skil
 Align a lesson plan to Missouri Learning Standards with differentiation — now possible with a free AI skill. Access To Education gives educators a domain expert in their pocket. https://dougdevitre.org #OpenSource
 
 ### Stats Post
-15 pillars. 18 projects. 400+ modules. 114 Missouri counties. One mission: close the access gap. https://dougdevitre.org #AccessTo
+15 pillars. 18 projects. 15 open source. 114 Missouri counties covered. One mission: close the access gap. https://dougdevitre.org #AccessTo
 
 ### Connection Post
 Education doesn't work alone. It connects to Jobs because real problems cross boundaries. That's the Access To difference. #CivicTech
@@ -35,7 +35,7 @@ What you can do:
 2. Generate a professional growth plan tied to student outcomes
 3. Design a cross-curricular unit connecting ELA and social studies
 
-It's part of the Access To ecosystem — 15 pillars, 18 projects, all open source.
+It's part of the Access To ecosystem — 15 pillars, 18 projects, 15 of them open source.
 
 Try it: github.com/dougdevitre/access-to-education
 Learn more: https://dougdevitre.org

@@ -169,6 +169,33 @@ describe('Phone check', () => {
     });
   });
 
+  describe('no horizontal scroll at 320/375px, even at 200% text', () => {
+    test('the homepage beam is clipped to the welcome (it widened the page by 44px)', () => {
+      expect(bodyOf(APP, '.lamp')).toMatch(/overflow-x:\s*(clip|hidden)/);
+    });
+
+    test.each([['styles.css', STYLES], ['app.css', APP]])('%s wraps a long word instead of widening the page', (_, list) => {
+      expect(bodyOf(list, 'body')).toMatch(/overflow-wrap:\s*(break-word|anywhere)/);
+    });
+
+    test.each(['.capabilities-grid', '.audience-grid', '.project-card', '.footer-grid', '.contributor-inner'])(
+      '%s lets its track shrink below its content on phones', (selector) => {
+        const phone = STYLES.filter((r) => r.selectors.includes(selector) && /grid-template-columns:\s*(repeat\(\d+,\s*)?minmax\(0,/.test(r.body));
+        expect(phone.length).toBeGreaterThan(0);
+      });
+
+    test('labels that never wrapped now can', () => {
+      const last = (selector, prop) => {
+        const hits = STYLES.filter((r) => r.selectors.includes(selector)).map((r) => r.body.match(new RegExp(`${prop}:\\s*([^;]+)`))).filter(Boolean);
+        return hits.length ? hits[hits.length - 1][1].trim() : '';
+      };
+      expect(last('.social-proof-logos span', 'white-space')).toBe('normal');
+      expect(last('.email-form button', 'white-space')).toBe('normal');
+      expect(last('.tag', 'white-space')).toBe('normal');
+      expect(bodyOf(STYLES, '.footer-brand .footer-social')).toMatch(/flex-wrap:\s*wrap/);
+    });
+  });
+
   describe('keyboard and names', () => {
     test('the email field shows a focus ring (its outline: none would otherwise hide it)', () => {
       expect(bodyOf(STYLES, '.email-form input')).toMatch(/outline:\s*none/);

@@ -109,6 +109,7 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   transition: background 0.3s, color 0.3s;
+  overflow-wrap: break-word;   /* at 200% text a long word wraps instead of widening the page */
 }
 
 /* ── SKIP TO CONTENT ── */
@@ -1785,3 +1786,25 @@ noscript .stat-number { opacity: 1; }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ── REFLOW AT LARGE TEXT ──
+   At 200% text on a 320-375px phone, long words and fixed-track grids pushed
+   cards past the screen edge. Tracks may shrink below their content, long
+   words wrap, and buttons wrap their labels. */
+.capability-card, .audience-card, .project-card, .pillar-card, .cross-link-card,
+.social-proof-logos span, .contributor-inner, .donate-banner { overflow-wrap: anywhere; }
+.social-proof-logos span { white-space: normal; }
+@media (max-width: 700px) {
+  .capabilities-grid, .audience-grid, .project-card { grid-template-columns: minmax(0, 1fr); }
+  .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-card .project-actions { flex-wrap: wrap; }
+  .project-card .btn-github, .donate-btn { white-space: normal; max-width: 100%; }
+  .contributor-actions { flex-wrap: wrap; }
+  .contributor-inner { grid-template-columns: minmax(0, 1fr); padding: 1.5rem; }
+  .footer-brand .footer-social { flex-wrap: wrap; }
+  .email-form button { white-space: normal; }
+  .tag { white-space: normal; max-width: 100%; }
+  .contributor-actions > * { max-width: 100%; }
+}
+@media (max-width: 500px) {
+  .footer-grid { grid-template-columns: minmax(0, 1fr); }
+}

@@ -48,9 +48,11 @@ done
 REPO_COUNT=$(jq '.repos | length' "$REPOS_FILE")
 mapfile -t REPO_NAMES < <(jq -r '.repos[].name' "$REPOS_FILE")
 
-VALID_PILLARS=("hub" "housing" "jobs" "health" "business" "services" "education" "safety")
+VALID_PILLARS=("hub" "housing" "jobs" "health" "business" "services" "education" "safety" "justice" "peace" "civics" "community" "food" "energy" "care" "mobility")
 VALID_SCOPES=("missouri" "nationwide" "global")
 VALID_ROLES=("hub" "pillar" "tool" "docs")
+VALID_STATUSES=("live" "beta" "skill" "pre-pilot" "spec")
+VALID_VISIBILITY=("public" "private")
 
 for i in $(seq 0 $((REPO_COUNT - 1))); do
   NAME=$(jq -r ".repos[$i].name" "$REPOS_FILE")
@@ -95,6 +97,39 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
       log_error "repos[$i] ($NAME): invalid role '$ROLE' — expected one of: ${VALID_ROLES[*]}"
       ((ERRORS++)) || true
     fi
+  fi
+
+  # Optional hub-site fields: status, visibility, live_url, page
+  STATUS=$(jq -r ".repos[$i].status // empty" "$REPOS_FILE")
+  if [ -n "$STATUS" ]; then
+    FOUND=false
+    for S in "${VALID_STATUSES[@]}"; do [ "$S" = "$STATUS" ] && FOUND=true; done
+    if [ "$FOUND" = false ]; then
+      log_error "repos[$i] ($NAME): invalid status '$STATUS' — expected one of: ${VALID_STATUSES[*]}"
+      ((ERRORS++)) || true
+    fi
+  fi
+
+  VISIBILITY=$(jq -r ".repos[$i].visibility // empty" "$REPOS_FILE")
+  if [ -n "$VISIBILITY" ]; then
+    FOUND=false
+    for V in "${VALID_VISIBILITY[@]}"; do [ "$V" = "$VISIBILITY" ] && FOUND=true; done
+    if [ "$FOUND" = false ]; then
+      log_error "repos[$i] ($NAME): invalid visibility '$VISIBILITY' — expected one of: ${VALID_VISIBILITY[*]}"
+      ((ERRORS++)) || true
+    fi
+  fi
+
+  LIVE_URL=$(jq -r ".repos[$i].live_url // empty" "$REPOS_FILE")
+  if [ -n "$LIVE_URL" ] && [[ "$LIVE_URL" != https://* ]]; then
+    log_error "repos[$i] ($NAME): live_url must start with https://"
+    ((ERRORS++)) || true
+  fi
+
+  PAGE=$(jq -r ".repos[$i].page // empty" "$REPOS_FILE")
+  if [ -n "$PAGE" ] && [ ! -f "$CONFIG_DIR/../../$PAGE" ]; then
+    log_error "repos[$i] ($NAME): page '$PAGE' does not exist at the repo root"
+    ((ERRORS++)) || true
   fi
 
   # Referential integrity: connects_to must reference existing repo names

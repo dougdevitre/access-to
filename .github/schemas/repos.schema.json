@@ -29,7 +29,7 @@
           },
           "pillar": {
             "type": "string",
-            "enum": ["hub", "housing", "jobs", "health", "business", "services", "education", "safety"],
+            "enum": ["hub", "housing", "jobs", "health", "business", "services", "education", "safety", "justice", "peace", "civics", "community", "food", "energy", "care", "mobility"],
             "description": "Which pillar this repo belongs to"
           },
           "description": {
@@ -88,6 +88,35 @@
           "cta": {
             "type": "string",
             "description": "Call to action text for this pillar"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 60,
+            "description": "Display name on the hub card (defaults to 'Access to <Pillar>')"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["live", "beta", "skill", "pre-pilot", "spec"],
+            "description": "Maturity shown on the hub card"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": ["public", "private"],
+            "description": "GitHub visibility; private repos are listed without a repo link"
+          },
+          "listed": {
+            "type": "boolean",
+            "description": "Show on the hub site (default true)"
+          },
+          "live_url": {
+            "type": "string",
+            "pattern": "^https://",
+            "description": "Public URL of the running app or site"
+          },
+          "page": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+\\.html$",
+            "description": "Local pillar page on the hub site"
           }
         },
         "additionalProperties": false

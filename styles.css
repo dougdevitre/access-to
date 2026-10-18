@@ -518,6 +518,14 @@ header {
 .pillar-card:nth-child(5) { animation-delay: 0.33s; }
 .pillar-card:nth-child(6) { animation-delay: 0.40s; }
 .pillar-card:nth-child(7) { animation-delay: 0.47s; }
+.pillar-card:nth-child(n+8) { animation-delay: 0.54s; }
+
+/* Generic pillar colors from repos.json (--pillar-color set inline by render-hub.sh).
+   The named-pillar rules below are more specific in source order and win for the original seven. */
+.pillar-card::before           { background: var(--pillar-color, var(--color-accent-primary)); }
+.pillar-card .pillar-icon      { color: var(--pillar-color, var(--color-accent-primary));
+                                 background: color-mix(in srgb, var(--pillar-color, var(--color-accent-primary)) 12%, transparent); }
+.pillar-card .pillar-link      { color: var(--pillar-color, var(--color-accent-primary)); }
 
 .pillar-card[data-pillar="health"]::before     { background: var(--color-accent-health); }
 .pillar-card[data-pillar="education"]::before  { background: var(--color-accent-education); }
@@ -613,6 +621,31 @@ header {
   font-size: 0.78rem;
   color: var(--color-muted);
   font-style: italic;
+}
+
+/* Private / not-yet-public projects */
+.pillar-card .pillar-link-pending {
+  color: var(--color-muted);
+  cursor: default;
+}
+.pillar-card .pillar-link-pending:hover { gap: 0.4rem; }
+.repo-list li .repo-private {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px dashed var(--color-border);
+}
+
+/* Dark mode: lift colors for pillars that don't have a named dark-mode accent token */
+[data-theme="dark"] .pillar-card:not([data-pillar="health"], [data-pillar="education"], [data-pillar="safety"], [data-pillar="housing"], [data-pillar="services"], [data-pillar="jobs"], [data-pillar="business"]) .pillar-link:not(.pillar-link-pending),
+[data-theme="dark"] .pillar-card:not([data-pillar="health"], [data-pillar="education"], [data-pillar="safety"], [data-pillar="housing"], [data-pillar="services"], [data-pillar="jobs"], [data-pillar="business"]) .pillar-icon {
+  color: color-mix(in srgb, var(--pillar-color, var(--color-accent-primary)) 60%, white);
+}
+[data-theme="dark"] .pillar-card:not([data-pillar="health"], [data-pillar="education"], [data-pillar="safety"], [data-pillar="housing"], [data-pillar="services"], [data-pillar="jobs"], [data-pillar="business"]) .pillar-icon {
+  filter: none;
 }
 
 /* ── SHIELDS BADGES ── */

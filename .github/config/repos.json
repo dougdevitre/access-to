@@ -12,7 +12,7 @@
       "color": "1a1a2e",
       "icon": "hub",
       "audience": ["contributors", "sponsors", "media"],
-      "key_stats": { "pillars": 7, "projects": 7, "modules": 400, "counties": 114 },
+      "key_stats": { "pillars": 15, "projects": 18, "modules": 400, "counties": 114 },
       "use_cases": [
         "Discover which Access To skill fits your practice area",
         "Contribute new pillar content or improve existing skills",
@@ -37,7 +37,11 @@
         "Check Fair Housing compliance before listing a property",
         "Generate an investment feasibility report for multifamily housing"
       ],
-      "cta": "Start analyzing properties"
+      "cta": "Start analyzing properties",
+      "title": "Access to Housing",
+      "status": "skill",
+      "visibility": "public",
+      "page": "housing.html"
     },
     {
       "name": "access-to-jobs",
@@ -56,7 +60,11 @@
         "Navigate On-the-Job Training funding requirements",
         "Build a career pathway from assessment to placement"
       ],
-      "cta": "Navigate workforce programs"
+      "cta": "Navigate workforce programs",
+      "title": "Access to Jobs",
+      "status": "skill",
+      "visibility": "public",
+      "page": "jobs.html"
     },
     {
       "name": "access-to-health",
@@ -75,7 +83,11 @@
         "Compare Medicare Advantage plans for a client's specific needs",
         "Navigate CHIP enrollment for children in a mixed-status family"
       ],
-      "cta": "Navigate healthcare access"
+      "cta": "Navigate healthcare access",
+      "title": "Access to Health",
+      "status": "skill",
+      "visibility": "public",
+      "page": "health.html"
     },
     {
       "name": "access-to-business",
@@ -94,7 +106,11 @@
         "Navigate Missouri business registration and licensing",
         "Identify startup funding sources and grant programs"
       ],
-      "cta": "Launch your business"
+      "cta": "Launch your business",
+      "title": "Access to Business",
+      "status": "skill",
+      "visibility": "public",
+      "page": "business.html"
     },
     {
       "name": "access-to-services",
@@ -113,7 +129,11 @@
         "Build a coordinated service plan spanning housing, health, and employment",
         "Navigate TANF recertification requirements step by step"
       ],
-      "cta": "Match clients to services"
+      "cta": "Match clients to services",
+      "title": "Access to Services",
+      "status": "skill",
+      "visibility": "public",
+      "page": "services.html"
     },
     {
       "name": "access-to-education",
@@ -132,7 +152,11 @@
         "Generate a professional growth plan tied to student outcomes",
         "Design a cross-curricular unit connecting ELA and social studies"
       ],
-      "cta": "Plan standards-aligned lessons"
+      "cta": "Plan standards-aligned lessons",
+      "title": "Access to Education",
+      "status": "skill",
+      "visibility": "public",
+      "page": "education.html"
     },
     {
       "name": "access-to-safety",
@@ -151,7 +175,190 @@
         "Walk through the protective order filing process step by step",
         "Identify local crisis resources and warm handoff protocols"
       ],
-      "cta": "Create a safety plan"
+      "cta": "Create a safety plan",
+      "title": "Access to Safety",
+      "status": "skill",
+      "visibility": "public",
+      "page": "safety.html"
+    },
+    {
+      "name": "access-to-justice",
+      "pillar": "justice",
+      "title": "Access to Justice",
+      "description": "Civic transparency framework for Missouri family courts: 72 governance-protected metrics, an OSCA binder, and an interactive metric catalog",
+      "scope": "missouri",
+      "role": "pillar",
+      "status": "pre-pilot",
+      "visibility": "public",
+      "live_url": "https://dougdevitre.github.io/access-to-justice/",
+      "connects_to": ["access-to-safety", "access-to-peace"],
+      "tagline": "Measuring what family courts do, so families are not left guessing",
+      "color": "3E4C6B",
+      "icon": "justice",
+      "audience": ["court administrators", "judicial educators", "family law researchers"],
+      "cta": "Read the framework"
+    },
+    {
+      "name": "access-to-peace",
+      "pillar": "peace",
+      "title": "Access to Peace",
+      "description": "Trauma-informed conflict resolution, mediation, co-parenting de-escalation, and restorative practice navigation",
+      "scope": "nationwide",
+      "role": "pillar",
+      "status": "skill",
+      "visibility": "public",
+      "connects_to": ["access-to-safety", "access-to-justice"],
+      "tagline": "Calmer conversations when the stakes are high",
+      "color": "5B7A8A",
+      "icon": "peace",
+      "audience": ["mediators", "co-parents", "restorative practitioners"],
+      "cta": "Start a de-escalation plan"
+    },
+    {
+      "name": "access-to-civics",
+      "pillar": "civics",
+      "title": "Access to Civics",
+      "description": "Charter: a civic education game for ages 8-14 built on the primary text of all 50 U.S. state constitutions",
+      "scope": "nationwide",
+      "role": "pillar",
+      "status": "beta",
+      "visibility": "public",
+      "connects_to": ["access-to-education"],
+      "tagline": "Kids draft a charter, then meet the real states that chose the same",
+      "color": "8A5A44",
+      "icon": "civics",
+      "audience": ["teachers", "students", "families"],
+      "cta": "Play Charter"
+    },
+    {
+      "name": "access-to-crew",
+      "pillar": "community",
+      "title": "Block Crew",
+      "description": "St. Louis civic volunteering backend that turns 311 complaints into cleanup sessions, gated by a Tier-0 volunteer-safety classifier",
+      "scope": "missouri",
+      "role": "pillar",
+      "status": "beta",
+      "visibility": "public",
+      "connects_to": ["access-to-services"],
+      "tagline": "Small, safe, bookable ways to fix your block",
+      "color": "4F6F3A",
+      "icon": "community",
+      "audience": ["neighbors", "volunteer coordinators", "city staff"],
+      "cta": "See how Block Crew works"
+    },
+    {
+      "name": "access-to-food",
+      "pillar": "food",
+      "title": "Access to Food",
+      "description": "St. Louis food access platform: pantry map, distribution events, SNAP guidance, an AI assistant, and volunteer tools",
+      "scope": "missouri",
+      "role": "pillar",
+      "status": "live",
+      "visibility": "public",
+      "live_url": "https://food.cotrackpro.com",
+      "connects_to": ["access-to-services", "access-to-health"],
+      "tagline": "Find food near you, today",
+      "color": "94621F",
+      "icon": "food",
+      "audience": ["families", "pantry staff", "volunteers"],
+      "cta": "Find food near you"
+    },
+    {
+      "name": "access-to-energy",
+      "pillar": "energy",
+      "title": "Access to Energy",
+      "description": "Energy as civic duty: routes residents to conservation, production, and utility-assistance programs across all 114 Missouri counties",
+      "scope": "missouri",
+      "role": "pillar",
+      "status": "skill",
+      "visibility": "private",
+      "connects_to": ["access-to-housing", "access-to-services"],
+      "tagline": "Stay connected, use less, help produce more",
+      "color": "876A12",
+      "icon": "energy",
+      "audience": ["residents", "community action agencies", "energy advocates"],
+      "key_stats": { "counties": 114 },
+      "cta": "Find energy help"
+    },
+    {
+      "name": "access-to-care",
+      "pillar": "care",
+      "title": "Care Compass",
+      "description": "Helps a family go from no conversation to a living care plan, designed to be readable by a 10-year-old and a senior with low vision",
+      "scope": "nationwide",
+      "role": "pillar",
+      "status": "beta",
+      "visibility": "private",
+      "connects_to": ["access-for-seniors", "access-to-health"],
+      "tagline": "A care plan your whole family can hold",
+      "color": "7A4E6B",
+      "icon": "care",
+      "audience": ["family caregivers", "care managers", "older adults"],
+      "cta": "Start a care plan"
+    },
+    {
+      "name": "access-for-seniors",
+      "pillar": "care",
+      "title": "Access for Seniors",
+      "description": "Senior connection and aging-services navigation: early isolation detection, family connection, and benefits routing",
+      "scope": "nationwide",
+      "role": "tool",
+      "status": "skill",
+      "visibility": "public",
+      "connects_to": ["access-to-care", "access-to-services"],
+      "tagline": "Fewer isolated seniors, more connected families",
+      "color": "7A4E6B",
+      "icon": "care",
+      "audience": ["area agencies on aging", "senior living staff", "home health"],
+      "cta": "Explore the senior toolkit"
+    },
+    {
+      "name": "access-to-freedom",
+      "pillar": "mobility",
+      "title": "Access to Freedom",
+      "description": "Calm, trauma-informed navigator for people planning to move abroad, from first thought to a concrete 12-month plan",
+      "scope": "global",
+      "role": "pillar",
+      "status": "beta",
+      "visibility": "private",
+      "connects_to": ["access-to-safety"],
+      "tagline": "From thinking about leaving to a real plan",
+      "color": "2F6F6A",
+      "icon": "mobility",
+      "audience": ["individuals and families relocating", "advocates"],
+      "cta": "Build a relocation plan"
+    },
+    {
+      "name": "access-to-experts",
+      "pillar": "business",
+      "title": "Access to Experts",
+      "description": "Platform spec for packaging vetted practitioner methodology into guided, executable playbooks",
+      "scope": "global",
+      "role": "tool",
+      "status": "spec",
+      "visibility": "public",
+      "connects_to": ["access-to-business"],
+      "tagline": "Expertise delivered as guided outcomes, not files",
+      "color": "006b75",
+      "icon": "business",
+      "audience": ["practitioners", "consultants", "speakers"],
+      "cta": "Read the spec"
+    },
+    {
+      "name": "access-to-hr",
+      "pillar": "jobs",
+      "title": "Access to HR",
+      "description": "Human resources navigation: employment rights, workplace protections, and HR process guidance",
+      "scope": "nationwide",
+      "role": "tool",
+      "status": "spec",
+      "visibility": "public",
+      "connects_to": ["access-to-jobs"],
+      "tagline": "Know your workplace rights and processes",
+      "color": "7A6F5B",
+      "icon": "jobs",
+      "audience": ["employees", "HR generalists", "small employers"],
+      "cta": "Explore HR guidance"
     }
   ]
 }

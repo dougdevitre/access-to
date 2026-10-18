@@ -5,11 +5,15 @@ on:
     paths:
       - '.github/config/**'
       - '.github/schemas/**'
+      - '.github/scripts/render-hub.sh'
+      - 'index.html'
   push:
     branches: [main]
     paths:
       - '.github/config/**'
       - '.github/schemas/**'
+      - '.github/scripts/render-hub.sh'
+      - 'index.html'
   workflow_dispatch:
 
 permissions:
@@ -26,3 +30,8 @@ jobs:
         run: |
           chmod +x .github/scripts/validate-config.sh
           .github/scripts/validate-config.sh .github/config
+
+      - name: Check hub page is in sync with repos.json
+        run: |
+          chmod +x .github/scripts/render-hub.sh
+          .github/scripts/render-hub.sh --check

@@ -104,6 +104,11 @@
       "file": "audio/access-to-hr.mp3",
       "sha": "acdb407ac92eba56",
       "chars": 231
+    },
+    "finder": {
+      "file": "audio/finder.mp3",
+      "sha": "cde8963bebcede9d",
+      "chars": 81
     }
   },
   "voice_id": "2ydcbtd5sJZRYFMNgMVZ",

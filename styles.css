@@ -220,6 +220,10 @@ html:not([data-theme="dark"]) .theme-toggle .icon-moon { display: inline; }
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: 1.5rem;
+  /* Grid items default to min-width: auto, so the nowrap `git clone` command
+     forced the whole section (and page) wider than small phones. Let the card
+     shrink; the .copy-block scrolls horizontally on its own. */
+  min-width: 0;
 }
 
 .explainer-step .step-num {
@@ -1189,7 +1193,6 @@ footer a:hover { color: var(--color-text); }
   .pillar-context { grid-template-columns: 1fr; gap: 1.5rem; }
   .project-card { grid-template-columns: 1fr; }
   .project-card .project-actions { flex-direction: row; align-items: center; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 500px) {
@@ -1213,11 +1216,6 @@ footer a:hover { color: var(--color-text); }
   .pillar-context { padding: 0 1.25rem 2rem; }
   .project-list { padding: 0 1.25rem 3rem; }
   .how-to-use { padding: 0 1.25rem 3rem; }
-  .changelog { padding: 0 1.25rem 3rem; }
-  .contributor-cta { padding: 0 1.25rem 3rem; }
-  .cross-links { padding: 0 1.25rem 3rem; }
-  .footer-grid { grid-template-columns: 1fr; }
-  .site-footer { padding: 2.5rem 1.25rem 1.5rem; }
 }
 
 /* ── HERO CTA BUTTONS ── */
@@ -1586,6 +1584,22 @@ footer a:hover { color: var(--color-text); }
 noscript .stat-number { opacity: 1; }
 
 /* ── PRINT STYLES ── */
+/* ── RESPONSIVE (late sections) ──
+   These sections' base rules appear after the main RESPONSIVE block above, so
+   their phone overrides must come after them too, or the base rules win the
+   cascade (this is what made the footer 4 columns wide on phones). */
+@media (max-width: 700px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 500px) {
+  .changelog { padding: 0 1.25rem 3rem; }
+  .contributor-cta { padding: 0 1.25rem 3rem; }
+  .cross-links { padding: 0 1.25rem 3rem; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .site-footer { padding: 2.5rem 1.25rem 1.5rem; }
+}
+
 @media print {
   header, .hamburger, .theme-toggle, .back-to-top, .nav-donate,
   .donate-section, .email-capture, .contributor-cta, .hero-actions,
@@ -1677,6 +1691,9 @@ noscript .stat-number { opacity: 1; }
   color: inherit;
   font-size: inherit;
   white-space: nowrap;
+  /* Scroll the command itself so the Copy button stays visible on phones */
+  min-width: 0;
+  overflow-x: auto;
 }
 
 .copy-btn {

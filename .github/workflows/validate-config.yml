@@ -7,6 +7,7 @@ on:
       - '.github/schemas/**'
       - '.github/scripts/render-hub.sh'
       - 'index.html'
+      - 'README.md'
   push:
     branches: [main]
     paths:
@@ -14,6 +15,7 @@ on:
       - '.github/schemas/**'
       - '.github/scripts/render-hub.sh'
       - 'index.html'
+      - 'README.md'
   workflow_dispatch:
 
 permissions:
@@ -31,7 +33,7 @@ jobs:
           chmod +x .github/scripts/validate-config.sh
           .github/scripts/validate-config.sh .github/config
 
-      - name: Check hub page is in sync with repos.json
+      - name: Check hub page and README are in sync with repos.json
         run: |
           chmod +x .github/scripts/render-hub.sh
           .github/scripts/render-hub.sh --check

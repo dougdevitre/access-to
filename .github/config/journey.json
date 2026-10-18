@@ -36,6 +36,36 @@
     "Is it constructive?",
     "Is it proportionate?"
   ],
+  "finder": {
+    "intro": "Not sure where to start? Tell me three things, and I'll light the doors that fit.",
+    "roles": [
+      { "id": "leader", "label": "I lead an organization", "lens": "adopt" },
+      { "id": "professional", "label": "I help people in my work", "lens": "adopt" },
+      { "id": "educator", "label": "I teach or train", "lens": "adopt" },
+      { "id": "neighbor", "label": "I'm a neighbor or volunteer", "lens": "adopt" },
+      { "id": "self", "label": "I'm looking for help for me or my family", "lens": "help" }
+    ],
+    "needs": [
+      { "id": "safety", "label": "Safety or abuse", "crisis": true, "doors": ["access-to-safety", "access-to-peace", "access-to-justice"] },
+      { "id": "court", "label": "A court or family matter", "doors": ["access-to-justice", "access-to-peace", "access-to-safety"] },
+      { "id": "housing", "label": "Housing or utility bills", "doors": ["access-to-housing", "access-to-energy", "access-to-services"] },
+      { "id": "work", "label": "Work or income", "doors": ["access-to-jobs", "access-to-hr", "access-to-services"] },
+      { "id": "health", "label": "Health or benefits", "doors": ["access-to-health", "access-to-services", "access-to-care"] },
+      { "id": "food", "label": "Food", "doors": ["access-to-food", "access-to-services"] },
+      { "id": "aging", "label": "Aging or caregiving", "doors": ["access-for-seniors", "access-to-care", "access-to-health"] },
+      { "id": "school", "label": "Kids and school", "doors": ["access-to-education", "access-to-civics", "access-to-peace"] },
+      { "id": "business", "label": "Starting a business", "doors": ["access-to-business", "access-to-experts", "access-to-jobs"] },
+      { "id": "community", "label": "My neighborhood", "doors": ["access-to-crew", "access-to-civics", "access-to-food"] },
+      { "id": "moving", "label": "Moving abroad", "doors": ["access-to-freedom"] }
+    ],
+    "places": [
+      { "id": "missouri", "label": "Missouri" },
+      { "id": "us", "label": "Elsewhere in the U.S." },
+      { "id": "abroad", "label": "Outside the U.S." }
+    ],
+    "help_note": "These tools give general information. For help near you today, dial 211 in most of the U.S.",
+    "crisis_note": "If you are in danger, call 911. For support, call the National Domestic Violence Hotline at 1-800-799-7233, or call or text 988."
+  },
   "adoption": {
     "access-to-justice": { "adopter": "circuit court administration", "pilot": "three transparency metrics in one circuit for one quarter" },
     "access-to-peace": { "adopter": "mediators, parenting coordinators and family court services", "pilot": "one program's co-parenting referrals for sixty days" },

@@ -280,6 +280,131 @@
   openFromHash();
   window.addEventListener('hashchange', openFromHash);
 
+  /* ── Find my door: who you are, what's going on, where you are → up to 3 doors ──
+   * The questions and the need → door mapping live in journey.json (finder).
+   * A safety answer always shows the crisis lines before any door. The last
+   * result is remembered on this device only, so a return visit opens on it. */
+  var F = J.finder;
+  if (F) {
+    var QUESTIONS = [
+      { key: 'role', text: 'Who are you?', options: F.roles },
+      { key: 'need', text: "What's going on?", options: F.needs },
+      { key: 'place', text: 'Where are you?', options: F.places }
+    ];
+    var answers = {};
+    var stepIndex = 0;
+    var startBtn = $('#finder-start');
+    var flow = $('#finder-flow');
+    var result = $('#finder-result');
+    startBtn.hidden = false;
+
+    var renderQuestion = function () {
+      var q = QUESTIONS[stepIndex];
+      var qEl = $('#finder-q');
+      qEl.textContent = q.text;
+      $all('.finder-progress span').forEach(function (s, i) { s.classList.toggle('on', i <= stepIndex); });
+      var box = $('#finder-options');
+      box.textContent = '';
+      q.options.forEach(function (o) {
+        var b = el('button', { type: 'button', class: 'finder-option', 'aria-pressed': String(answers[q.key] === o.id) }, o.label);
+        b.addEventListener('click', function () {
+          haptic();
+          tone(SCALE[(stepIndex * 2) % 5] * 2, 0.6, 0.07);
+          answers[q.key] = o.id;
+          if (stepIndex < QUESTIONS.length - 1) { stepIndex++; renderQuestion(); }
+          else showResult(true);
+        });
+        box.appendChild(b);
+      });
+      $('#finder-back').hidden = stepIndex === 0;
+      qEl.focus();
+    };
+
+    var pickDoors = function () {
+      var need = F.needs.filter(function (n) { return n.id === answers.need; })[0];
+      var role = F.roles.filter(function (r) { return r.id === answers.role; })[0];
+      var helpLens = role && role.lens === 'help';
+      var all = need.doors.map(function (id) { return BY_ID[id]; }).filter(Boolean);
+      // Someone seeking help today needs a tool that works today.
+      var usable = helpLens ? all.filter(function (p) { return !p.private && p.status !== 'In design'; }) : all;
+      var local = answers.place === 'missouri' ? usable : usable.filter(function (p) { return p.scope !== 'Missouri'; });
+      var chosen = (local.length ? local : usable.length ? usable : all).slice(0, 3);
+      return { need: need, helpLens: helpLens, doors: chosen, missouriOnly: !local.length && answers.place !== 'missouri' };
+    };
+
+    var showResult = function (fresh) {
+      var r = pickDoors();
+      flow.hidden = true;
+      startBtn.hidden = true;
+      result.hidden = false;
+
+      var crisis = $('#finder-crisis');
+      crisis.hidden = !r.need.crisis;
+      crisis.textContent = r.need.crisis ? F.crisis_note : '';
+
+      var list = $('#match-list');
+      list.textContent = '';
+      r.doors.forEach(function (p) {
+        var li = el('li');
+        var b = el('button', { type: 'button', class: 'match' });
+        b.style.setProperty('--c', p.color);
+        var icon = el('span', { class: 'door-icon', 'aria-hidden': 'true' });
+        icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + p.icon + '</svg>';
+        var text = el('span', { class: 'match-text' });
+        text.appendChild(el('span', { class: 'match-name' }, p.title));
+        var why = r.helpLens || !p.pilot ? p.description + '.' : 'A first pilot: ' + p.pilot + '.';
+        text.appendChild(el('span', { class: 'match-why' }, why));
+        if (p.private || p.status === 'In design') text.appendChild(el('span', { class: 'match-flag' }, p.status));
+        else if (p.scope === 'Missouri' && answers.place !== 'missouri') text.appendChild(el('span', { class: 'match-flag' }, 'Built for Missouri'));
+        b.appendChild(icon);
+        b.appendChild(text);
+        b.addEventListener('click', function () { haptic(); openSheet(p.id); });
+        li.appendChild(b);
+        list.appendChild(li);
+      });
+
+      var note = r.helpLens ? F.help_note : 'Tap a door to see who adopts it, a first pilot, and how it blends with the others.';
+      if (r.missouriOnly) note += ' These were built for Missouri; the approach still applies where you are.';
+      $('#finder-note').textContent = note;
+
+      // Light the matching doors in the grid until the guide is restarted.
+      $all('.door').forEach(function (d) {
+        d.classList.toggle('match-lit', r.doors.some(function (p) { return p.id === d.getAttribute('data-id'); }));
+      });
+      if (fresh) {
+        [0, 2, 4].forEach(function (k, n) { tone(SCALE[k] * 2, 1.4, 0.06, n * 0.1); });
+        store('finder', JSON.stringify(answers));
+        $('#finder-result-title').focus();
+      }
+    };
+
+    var startFinder = function () {
+      answers = {};
+      stepIndex = 0;
+      result.hidden = true;
+      startBtn.hidden = true;
+      flow.hidden = false;
+      $all('.door.match-lit').forEach(function (d) { d.classList.remove('match-lit'); });
+      store('finder', '');
+      renderQuestion();
+    };
+
+    startBtn.addEventListener('click', function () { haptic(); tone(SCALE[0] * 2, 0.5, 0.06); startFinder(); });
+    $('#finder-restart').addEventListener('click', startFinder);
+    $('#finder-back').addEventListener('click', function () {
+      if (stepIndex > 0) { stepIndex--; renderQuestion(); }
+    });
+
+    // A return visit opens on the last result (stored on this device only).
+    try {
+      var saved = JSON.parse(store('finder') || 'null');
+      var valid = saved && F.roles.some(function (x) { return x.id === saved.role; }) &&
+        F.needs.some(function (x) { return x.id === saved.need; }) &&
+        F.places.some(function (x) { return x.id === saved.place; });
+      if (valid) { answers = saved; showResult(false); }
+    } catch (e) { /* ignore a malformed saved answer */ }
+  }
+
   /* ── Distribute virtue: virtue + door + four gates = one mindful step ── */
   var pick = { virtue: null, door: null, gates: {} };
 

@@ -25,14 +25,13 @@
 
 - [Quick Start](#quick-start)
 - [Who Is This For?](#who-is-this-for)
-- [See It In Action](#see-it-in-action)
+- [Example Scenarios](#example-scenarios)
 - [Ecosystem Overview](#ecosystem-overview)
 - [The Pillars](#the-pillars)
 - [Project Directory](#project-directory)
 - [Cross-Project Relationships](#cross-project-relationships)
 - [Data Flow Architecture](#data-flow-architecture)
 - [FAQ](#faq)
-- [What People Are Saying](#what-people-are-saying)
 - [Impact at a Glance](#impact-at-a-glance)
 - [Contributing](#contributing)
 - [Site Architecture](#site-architecture)
@@ -88,15 +87,19 @@ Working on justice, peace, civics, community, food, energy, care, or relocation?
 
 ---
 
-## See It In Action
+## Example Scenarios
 
-> **A caseworker in Greene County** used [access-to-jobs](https://github.com/dougdevitre/access-to-jobs) to match a single mother with WIOA-funded childcare assistance and CDL training — navigating eligibility across three different programs in a single conversation.
+These are illustrative examples of how the tools are designed to be used. They are not reports from real users.
 
-> **A K-8 curriculum director** used [access-to-education](https://github.com/dougdevitre/access-to-education) to align an entire semester of science lessons to Missouri Learning Standards in under an hour, with differentiated activities for each grade level.
+> **Workforce caseworker.** A caseworker could use [access-to-jobs](https://github.com/dougdevitre/access-to-jobs) to review a client's options across WIOA training, childcare assistance, and CDL programs in one conversation, then confirm eligibility with each program.
 
-> **A domestic violence advocate** used [access-to-safety](https://github.com/dougdevitre/access-to-safety) to build a personalized safety plan for a client, including local shelter contacts, protective order steps, and a technology safety checklist — all generated in one session.
+> **Curriculum director.** A K-8 curriculum director could use [access-to-education](https://github.com/dougdevitre/access-to-education) to draft a semester of science lessons aligned to Missouri Learning Standards, with differentiated activities for each grade level to review and adapt.
 
-Each scenario follows the same pattern: clone the repo, upload `SKILL.md` to a Claude Project, and start a conversation. Claude handles the domain expertise; you bring the context.
+> **Domestic violence advocate.** An advocate could use [access-to-safety](https://github.com/dougdevitre/access-to-safety) to prepare for a safety-planning conversation: local shelter contacts, protective order steps, and a technology safety checklist to go through with the client.
+
+Each scenario follows the same pattern: clone the repo, upload `SKILL.md` to a Claude Project, and start a conversation. Claude brings structured domain guidance; you bring the context and professional judgment. When working with client information, use de-identified details: no names, addresses, or case numbers.
+
+**Used one of these tools in your work?** [Tell us what worked and what didn't](mailto:dougdevitre@gmail.com?subject=My%20Access%20To%20experience). We publish a story only with your written permission, and we can attribute it by role alone. Please leave out anything that could identify a client.
 
 ---
 
@@ -338,49 +341,6 @@ Some projects are Missouri-specific (access-to-education, access-to-jobs, mo-sta
 <br>
 They're independent but complementary. A person navigating one access gap often faces others — a domestic violence survivor may need safety planning, housing support, and healthcare navigation simultaneously. See the <a href="#cross-project-relationships">Cross-Project Relationships</a> diagram for how they interconnect.
 </details>
-
----
-
-## What People Are Saying
-
-<table>
-<tr>
-<td width="50%">
-
-> "I used to spend an entire afternoon matching clients to WIOA programs. With access-to-jobs, I can do it in one conversation."
->
-> — **Workforce development specialist**, Missouri Job Center
-
-</td>
-<td width="50%">
-
-> "The safety planning tool helped me walk a client through every step — shelter contacts, protective orders, tech safety — without missing anything."
->
-> — **Domestic violence advocate**, nonprofit shelter
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-> "I aligned a full semester of science lessons to Missouri standards in under an hour. It would have taken me a week."
->
-> — **K-8 curriculum director**, Missouri public school
-
-</td>
-<td width="50%">
-
-> "Finally — a real estate tool that understands Fair Housing compliance isn't optional. It's built into every response."
->
-> — **Real estate broker**, St. Louis metro area
-
-</td>
-</tr>
-</table>
-
-<div align="center">
-<sub>Have a story to share? <a href="mailto:dougdevitre@gmail.com?subject=Access%20To%20Testimonial">We'd love to hear it.</a></sub>
-</div>
 
 ---
 

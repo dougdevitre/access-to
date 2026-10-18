@@ -32,17 +32,14 @@
       "body": "DM Sans"
     },
     "stats": {
-      "pillars": 6,
-      "projects": 7,
-      "modules": 400,
       "counties": 114
     },
-    "social_proof": [
-      "AFCC",
-      "Missouri Bar",
-      "NASW",
-      "EAPA",
-      "Justice Technology Association"
+    "audiences": [
+      "family court professionals",
+      "attorneys",
+      "social workers",
+      "employee assistance professionals",
+      "legal technologists"
     ]
   },
   "formats": {

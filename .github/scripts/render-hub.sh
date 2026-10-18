@@ -96,7 +96,7 @@ jq -r --slurpfile icons "$ICONS_FILE" "
 # --- Counts used by the stats bar and share text ---
 PROJECT_COUNT=$(jq "($PROJECTS_JQ) | length" "$REPOS_FILE")
 PILLAR_COUNT=$(jq "($PROJECTS_JQ) | map(.pillar) | unique | length" "$REPOS_FILE")
-MODULES=$(jq -r '.repos[] | select(.role == "hub") | .key_stats.modules // 0' "$REPOS_FILE")
+OPEN_SOURCE_COUNT=$(jq "($PROJECTS_JQ) | map(select((.visibility // \"public\") == \"public\")) | length" "$REPOS_FILE")
 COUNTIES=$(jq -r '.repos[] | select(.role == "hub") | .key_stats.counties // 0' "$REPOS_FILE")
 
 if [ "$PROJECT_COUNT" -eq 0 ]; then
@@ -107,8 +107,8 @@ fi
 cat > "$WORK_DIR/stats" <<EOF
     <div class="stat"><div class="stat-number" data-target="$PILLAR_COUNT">$PILLAR_COUNT</div><div class="stat-label">Pillars</div></div>
     <div class="stat"><div class="stat-number" data-target="$PROJECT_COUNT">$PROJECT_COUNT</div><div class="stat-label">Projects</div></div>
-    <div class="stat"><div class="stat-number" data-target="$MODULES" data-suffix="+">$MODULES+</div><div class="stat-label">Modules</div></div>
-    <div class="stat"><div class="stat-number" data-target="$COUNTIES">$COUNTIES</div><div class="stat-label">MO Counties Served</div></div>
+    <div class="stat"><div class="stat-number" data-target="$OPEN_SOURCE_COUNT">$OPEN_SOURCE_COUNT</div><div class="stat-label">Open-Source Repos</div></div>
+    <div class="stat"><div class="stat-number" data-target="$COUNTIES">$COUNTIES</div><div class="stat-label">MO Counties Covered</div></div>
 EOF
 
 SHARE="$PROJECT_COUNT open-source projects across $PILLAR_COUNT pillars — closing the access gaps that matter most."
@@ -193,8 +193,8 @@ jq -r "$README_JQ_DEFS"'
 cat > "$WORK_DIR/readme_impact" <<EOF
 | | | | |
 |:---:|:---:|:---:|:---:|
-| **$PILLAR_COUNT** | **$PROJECT_COUNT** | **$MODULES+** | **$COUNTIES** |
-| Pillars | Projects | Modules | MO Counties Served |
+| **$PILLAR_COUNT** | **$PROJECT_COUNT** | **$OPEN_SOURCE_COUNT** | **$COUNTIES** |
+| Pillars | Projects | Open-Source Repos | MO Counties Covered |
 EOF
 
 # --- Splice each block between its markers ---

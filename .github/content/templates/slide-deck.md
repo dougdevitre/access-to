@@ -69,8 +69,8 @@ Flow: {{STORY_FLOW}}
 
 - {{BRAND_STATS_PILLARS}} pillars of human access
 - {{BRAND_STATS_PROJECTS}} active projects
-- {{BRAND_STATS_MODULES}}+ modules of domain content
-- {{BRAND_STATS_COUNTIES}} Missouri counties served
+- {{BRAND_STATS_OPEN_SOURCE}} open-source repositories (MIT or Apache 2.0)
+- {{BRAND_STATS_COUNTIES}} Missouri counties covered
 - MIT open source — free forever
 
 ---

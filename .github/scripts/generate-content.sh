@@ -42,13 +42,13 @@ BRAND_ACCENT=$(jq -r '.brand.colors.accent' "$CONTENT_FILE")
 FOUNDER=$(jq -r '.brand.founder' "$CONTENT_FILE")
 FONT_HEADING=$(jq -r '.brand.fonts.heading' "$CONTENT_FILE")
 FONT_BODY=$(jq -r '.brand.fonts.body' "$CONTENT_FILE")
-# Pillar/project counts come from repos.json (same definition as render-hub.sh:
+# Pillar/project/open-source counts come from repos.json (same definition as render-hub.sh:
 # listed, non-hub repos) so generated content never drifts from the live hub.
 BRAND_STATS_PILLARS=$(jq '[.repos[] | select(.role != "hub" and (.listed // true)) | .pillar] | unique | length' "$REPOS_FILE")
 BRAND_STATS_PROJECTS=$(jq '[.repos[] | select(.role != "hub" and (.listed // true))] | length' "$REPOS_FILE")
-BRAND_STATS_MODULES=$(jq -r '.brand.stats.modules' "$CONTENT_FILE")
+BRAND_STATS_OPEN_SOURCE=$(jq '[.repos[] | select(.role != "hub" and (.listed // true) and ((.visibility // "public") == "public"))] | length' "$REPOS_FILE")
 BRAND_STATS_COUNTIES=$(jq -r '.brand.stats.counties' "$CONTENT_FILE")
-SOCIAL_PROOF=$(jq -r '.brand.social_proof | join(", ")' "$CONTENT_FILE")
+BRAND_AUDIENCES=$(jq -r '.brand.audiences // [] | join(", ")' "$CONTENT_FILE")
 OWNER=$(jq -r '.owner' "$REPOS_FILE")
 DATE=$(date -u '+%Y-%m-%d')
 
@@ -187,9 +187,9 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
       -e "s|{{BRAND_ACCENT}}|$BRAND_ACCENT|g" \
       -e "s|{{BRAND_STATS_PILLARS}}|$BRAND_STATS_PILLARS|g" \
       -e "s|{{BRAND_STATS_PROJECTS}}|$BRAND_STATS_PROJECTS|g" \
-      -e "s|{{BRAND_STATS_MODULES}}|$BRAND_STATS_MODULES|g" \
+      -e "s|{{BRAND_STATS_OPEN_SOURCE}}|$BRAND_STATS_OPEN_SOURCE|g" \
       -e "s|{{BRAND_STATS_COUNTIES}}|$BRAND_STATS_COUNTIES|g" \
-      -e "s|{{SOCIAL_PROOF}}|$SOCIAL_PROOF|g" \
+      -e "s|{{BRAND_AUDIENCES}}|$BRAND_AUDIENCES|g" \
       -e "s|{{FOUNDER}}|$FOUNDER|g" \
       -e "s|{{OWNER}}|$OWNER|g" \
       -e "s|{{FONT_HEADING}}|$FONT_HEADING|g" \

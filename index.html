@@ -2,62 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="robots" content="index, follow">
-  <title>Access To — Open Tools for Human Rights</title>
-  <meta name="description" content="Open-source tools expanding access to justice, health, care, food, housing, safety, jobs, education, and more. Built in Missouri, serving nationwide.">
-  <meta property="og:title" content="Access To — Open Tools for Human Rights">
-  <!-- BEGIN GENERATED:share -->
-  <meta property="og:description" content="18 open-source projects across 15 pillars — closing the access gaps that matter most.">
-  <meta name="twitter:description" content="18 open-source projects across 15 pillars — closing the access gaps that matter most.">
-  <!-- END GENERATED:share -->
+  <title>Doug Devitre — Access To: open doors for every community</title>
+  <meta name="description" content="Free, open tools for the places people fall through the cracks, from Doug Devitre, Community Development Catalyst. Choose a door, hear how it works, and take one mindful step.">
+  <meta property="og:title" content="Doug Devitre — Access To: open doors for every community">
+  <meta property="og:description" content="Free, open tools for the places people fall through the cracks. Choose a door, hear how it works, and take one mindful step.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://dougdevitre.org/">
   <meta property="og:image" content="https://dougdevitre.org/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Access To — Open Tools for Human Rights">
+  <meta name="twitter:title" content="Doug Devitre — Access To: open doors for every community">
+  <meta name="twitter:description" content="Free, open tools for the places people fall through the cracks. Choose a door, hear how it works, and take one mindful step.">
   <meta name="twitter:image" content="https://dougdevitre.org/og-image.png">
   <link rel="canonical" href="https://dougdevitre.org/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#1A1A1A">
+  <meta name="theme-color" content="#0F1E2E">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="stylesheet" href="styles.css">
-  <noscript><style>.stat-number{opacity:1!important}.pillar-card{opacity:1!important;transform:none!important;animation:none!important}.back-to-top{display:none!important}.hamburger{display:none!important}.topbar-links{display:flex!important;position:static!important;flex-direction:row!important;background:none!important;box-shadow:none!important}</style></noscript>
+  <link rel="stylesheet" href="app.css">
 
-  <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "WebSite",
     "name": "Access To",
     "url": "https://dougdevitre.org/",
-    "description": "Open-source tools expanding access to justice, health, care, food, housing, safety, jobs, education, and more.",
-    "founder": {
+    "description": "Free, open tools for the places people fall through the cracks: courts, safety, housing, health, food and work.",
+    "author": {
       "@type": "Person",
       "name": "Doug Devitre",
+      "jobTitle": "Community Development Catalyst",
       "url": "https://linkedin.com/in/dougdevitre",
-      "jobTitle": "Founder & CEO, CoTrackPro"
-    },
-    "sameAs": [
-      "https://github.com/dougdevitre",
-      "https://linkedin.com/in/dougdevitre"
-    ]
+      "sameAs": ["https://github.com/dougdevitre", "https://linkedin.com/in/dougdevitre"]
+    }
   }
   </script>
 
   <!-- Apply saved theme before paint to prevent flash -->
   <script>
     (function(){
-      var t = localStorage.getItem('theme');
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
       if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.setAttribute('data-theme', 'dark');
       }
@@ -68,487 +61,180 @@
 
   <a href="#main" class="skip-link">Skip to main content</a>
 
-  <header>
-    <div class="topbar">
-      <div class="topbar-logo"><a href="#">Access To</a></div>
-      <button class="hamburger" aria-label="Toggle menu" onclick="this.classList.toggle('open');document.querySelector('.topbar-links').classList.toggle('open');">
-        <span></span><span></span><span></span>
+  <header class="bar">
+    <a class="bar-name" href="index.html" aria-label="Doug Devitre, home">
+      <span class="bar-person">Doug Devitre</span>
+      <span class="bar-role">Community Development Catalyst</span>
+    </a>
+    <div class="bar-actions">
+      <button class="icon-btn" id="sound-toggle" type="button" aria-pressed="true" aria-label="Sound on. Turn sound off">
+        <svg class="i-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        <svg class="i-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
       </button>
-      <nav class="topbar-links">
-        <a href="#pillars" onclick="closeMobileNav()">Pillars</a>
-        <a href="#how-it-works" onclick="closeMobileNav()">How It Works</a>
-        <a href="#updates" onclick="closeMobileNav()">Updates</a>
-        <a href="#about" onclick="closeMobileNav()">About</a>
-        <a href="https://github.com/dougdevitre" target="_blank" rel="noopener" onclick="closeMobileNav()">GitHub</a>
-        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-          <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
-          <svg class="icon-sun" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>
-        </button>
-        <a href="#donate" class="nav-donate" onclick="closeMobileNav()">Donate</a>
-      </nav>
+      <button class="icon-btn theme-toggle" id="theme-toggle" type="button" aria-label="Switch between light and dark mode">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+      </button>
     </div>
   </header>
 
   <main id="main">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-badge">Open Source &middot; Missouri &middot; Nationwide</div>
-    <h1>Open tools for the access&nbsp;gaps that matter&nbsp;most</h1>
-    <p>A growing collection of AI-powered, open-source projects organized around the pillars of human access — built for practitioners, advocates, and the people they serve.</p>
-    <div class="hero-actions">
-      <a href="#pillars" class="btn-primary">Browse the Projects &#8595;</a>
-      <a href="#how-it-works" class="btn-secondary">How It Works</a>
-    </div>
-  </section>
-
-  <!-- IMPACT STATS (animated on scroll) -->
-  <div class="impact-stats" id="stats">
-    <!-- BEGIN GENERATED:stats -->
-    <div class="stat"><div class="stat-number" data-target="15">15</div><div class="stat-label">Pillars</div></div>
-    <div class="stat"><div class="stat-number" data-target="18">18</div><div class="stat-label">Projects</div></div>
-    <div class="stat"><div class="stat-number" data-target="15">15</div><div class="stat-label">Open-Source Repos</div></div>
-    <div class="stat"><div class="stat-number" data-target="114">114</div><div class="stat-label">MO Counties Covered</div></div>
-    <!-- END GENERATED:stats -->
-  </div>
-
-  <!-- SOCIAL PROOF -->
-  <div class="social-proof reveal">
-    <div class="social-proof-label" id="built-for-label">Built for</div>
-    <div class="social-proof-logos" role="list" aria-labelledby="built-for-label">
-      <span role="listitem">Family court professionals</span>
-      <span role="listitem">Attorneys</span>
-      <span role="listitem">Social workers</span>
-      <span role="listitem">Employee assistance professionals</span>
-      <span role="listitem">Legal technologists</span>
-    </div>
-  </div>
-
-  <!-- PILLARS: generated from .github/config/repos.json by .github/scripts/render-hub.sh — do not hand-edit -->
-  <section class="pillars" id="pillars" aria-label="Access To projects">
-    <!-- BEGIN GENERATED:pillars -->
-    <article class="pillar-card" data-pillar="food" data-status="live" style="--pillar-color:#94621F">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-      <h2>Access to Food</h2>
-      <p class="pillar-desc">St. Louis food access platform: pantry map, distribution events, SNAP guidance, an AI assistant, and volunteer tools</p>
-      <div class="tag-row"><span class="tag">Live app</span><span class="tag">Missouri</span></div>
-      <a href="https://food.cotrackpro.com" class="pillar-link" target="_blank" rel="noopener">Find food near you &#8599;</a>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-food" target="_blank" rel="noopener" aria-label="access-to-food on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-food <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Live</span>
-    </article>
-    <article class="pillar-card" data-pillar="justice" data-status="pre-pilot" style="--pillar-color:#3E4C6B">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/></svg></div>
-      <h2>Access to Justice</h2>
-      <p class="pillar-desc">Civic transparency framework for Missouri family courts: 72 governance-protected metrics, an OSCA binder, and an interactive metric catalog</p>
-      <div class="tag-row"><span class="tag">Pre-pilot</span><span class="tag">Missouri</span></div>
-      <a href="https://dougdevitre.github.io/access-to-justice/" class="pillar-link" target="_blank" rel="noopener">Read the framework &#8599;</a>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-justice" target="_blank" rel="noopener" aria-label="access-to-justice on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-justice <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Pre-pilot</span>
-    </article>
-    <article class="pillar-card" data-pillar="civics" data-status="beta" style="--pillar-color:#8A5A44">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></div>
-      <h2>Access to Civics</h2>
-      <p class="pillar-desc">Charter: a civic education game for ages 8-14 built on the primary text of all 50 U.S. state constitutions</p>
-      <div class="tag-row"><span class="tag">In beta</span><span class="tag">Nationwide</span></div>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-civics" target="_blank" rel="noopener" aria-label="access-to-civics on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-civics <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Beta</span>
-    </article>
-    <article class="pillar-card" data-pillar="community" data-status="beta" style="--pillar-color:#4F6F3A">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-      <h2>Block Crew</h2>
-      <p class="pillar-desc">St. Louis civic volunteering backend that turns 311 complaints into cleanup sessions, gated by a Tier-0 volunteer-safety classifier</p>
-      <div class="tag-row"><span class="tag">In beta</span><span class="tag">Missouri</span></div>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-crew" target="_blank" rel="noopener" aria-label="access-to-crew on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-crew <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Beta</span>
-    </article>
-    <article class="pillar-card" data-pillar="care" data-status="beta" style="--pillar-color:#7A4E6B">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-      <h2>Care Compass</h2>
-      <p class="pillar-desc">Helps a family go from no conversation to a living care plan, designed to be readable by a 10-year-old and a senior with low vision</p>
-      <div class="tag-row"><span class="tag">In beta</span><span class="tag">Nationwide</span></div>
-      <span class="pillar-link pillar-link-pending">Coming soon</span>
-      <ul class="repo-list"><li><span class="repo-private">access-to-care &middot; source opening soon</span></li></ul>
-      <span class="pillar-status">In development</span>
-    </article>
-    <article class="pillar-card" data-pillar="mobility" data-status="beta" style="--pillar-color:#2F6F6A">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-      <h2>Access to Freedom</h2>
-      <p class="pillar-desc">Calm, trauma-informed navigator for people planning to move abroad, from first thought to a concrete 12-month plan</p>
-      <div class="tag-row"><span class="tag">In beta</span><span class="tag">Global</span></div>
-      <span class="pillar-link pillar-link-pending">Coming soon</span>
-      <ul class="repo-list"><li><span class="repo-private">access-to-freedom &middot; source opening soon</span></li></ul>
-      <span class="pillar-status">In development</span>
-    </article>
-    <article class="pillar-card" data-pillar="housing" data-status="skill" style="--pillar-color:#2D7A9B">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-      <h2>Access to Housing</h2>
-      <p class="pillar-desc">PropTech intelligence, market analysis, Fair Housing compliance</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Nationwide</span><span class="tag tag-time">5 min setup</span></div>
-      <a href="housing.html" class="pillar-link">Explore projects &#8594;</a>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-housing" target="_blank" rel="noopener" aria-label="access-to-housing on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-housing <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Active</span>
-    </article>
-    <article class="pillar-card" data-pillar="jobs" data-status="skill" style="--pillar-color:#7A6F5B">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-      <h2>Access to Jobs</h2>
-      <p class="pillar-desc">WIOA navigation, job matching across 114 Missouri counties</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Missouri</span><span class="tag tag-time">5 min setup</span></div>
-      <a href="jobs.html" class="pillar-link">Explore projects &#8594;</a>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-jobs" target="_blank" rel="noopener" aria-label="access-to-jobs on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-jobs <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Active</span>
-    </article>
-    <article class="pillar-card" data-pillar="health" data-status="skill" style="--pillar-color:#D4585B">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-      <h2>Access to Health</h2>
-      <p class="pillar-desc">Healthcare navigation, benefits enrollment, Medicaid/Medicare</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Nationwide</span><span class="tag tag-time">5 min setup</span></div>
-      <a href="health.html" class="pillar-link">Explore projects &#8594;</a>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-health" target="_blank" rel="noopener" aria-label="access-to-health on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-health <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Active</span>
-    </article>
-    <article class="pillar-card" data-pillar="business" data-status="skill" style="--pillar-color:#006b75">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-      <h2>Access to Business</h2>
-      <p class="pillar-desc">Startup guide, entrepreneur support, business launch</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Missouri</span><span class="tag tag-time">5 min setup</span></div>
-      <a href="business.html" class="pillar-link">Explore projects &#8594;</a>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-business" target="_blank" rel="noopener" aria-label="access-to-business on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-business <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Active</span>
-    </article>
-    <article class="pillar-card" data-pillar="services" data-status="skill" style="--pillar-color:#6B5B8A">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-      <h2>Access to Services</h2>
-      <p class="pillar-desc">Social services navigation, benefits matching, workforce dev</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Nationwide</span><span class="tag tag-time">5 min setup</span></div>
-      <a href="services.html" class="pillar-link">Explore projects &#8594;</a>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-services" target="_blank" rel="noopener" aria-label="access-to-services on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-services <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Active</span>
-    </article>
-    <article class="pillar-card" data-pillar="education" data-status="skill" style="--pillar-color:#4A7C59">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-      <h2>Access to Education</h2>
-      <p class="pillar-desc">Standards alignment, lesson planning, teacher growth for Missouri K-12</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Missouri</span><span class="tag tag-time">5 min setup</span></div>
-      <a href="education.html" class="pillar-link">Explore projects &#8594;</a>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-education" target="_blank" rel="noopener" aria-label="access-to-education on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-education <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Active</span>
-    </article>
-    <article class="pillar-card" data-pillar="safety" data-status="skill" style="--pillar-color:#B85C38">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-      <h2>Access to Safety</h2>
-      <p class="pillar-desc">Safety planning, risk assessment, protective orders, crisis resources</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Nationwide</span><span class="tag tag-time">5 min setup</span></div>
-      <a href="safety.html" class="pillar-link">Explore projects &#8594;</a>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-safety" target="_blank" rel="noopener" aria-label="access-to-safety on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-safety <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Active</span>
-    </article>
-    <article class="pillar-card" data-pillar="peace" data-status="skill" style="--pillar-color:#5B7A8A">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div>
-      <h2>Access to Peace</h2>
-      <p class="pillar-desc">Trauma-informed conflict resolution, mediation, co-parenting de-escalation, and restorative practice navigation</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Nationwide</span><span class="tag tag-time">5 min setup</span></div>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-peace" target="_blank" rel="noopener" aria-label="access-to-peace on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-peace <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Active</span>
-    </article>
-    <article class="pillar-card" data-pillar="energy" data-status="skill" style="--pillar-color:#876A12">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-      <h2>Access to Energy</h2>
-      <p class="pillar-desc">Energy as civic duty: routes residents to conservation, production, and utility-assistance programs across all 114 Missouri counties</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Missouri</span></div>
-      <span class="pillar-link pillar-link-pending">Coming soon</span>
-      <ul class="repo-list"><li><span class="repo-private">access-to-energy &middot; source opening soon</span></li></ul>
-      <span class="pillar-status">In development</span>
-    </article>
-    <article class="pillar-card" data-pillar="care" data-status="skill" style="--pillar-color:#7A4E6B">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-      <h2>Access for Seniors</h2>
-      <p class="pillar-desc">Senior connection and aging-services navigation: early isolation detection, family connection, and benefits routing</p>
-      <div class="tag-row"><span class="tag">Claude Skill</span><span class="tag">Nationwide</span><span class="tag tag-time">5 min setup</span></div>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-for-seniors" target="_blank" rel="noopener" aria-label="access-for-seniors on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-for-seniors <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">Active</span>
-    </article>
-    <article class="pillar-card" data-pillar="business" data-status="spec" style="--pillar-color:#006b75">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-      <h2>Access to Experts</h2>
-      <p class="pillar-desc">Platform spec for packaging vetted practitioner methodology into guided, executable playbooks</p>
-      <div class="tag-row"><span class="tag">Spec</span><span class="tag">Global</span></div>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-experts" target="_blank" rel="noopener" aria-label="access-to-experts on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-experts <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">In design</span>
-    </article>
-    <article class="pillar-card" data-pillar="jobs" data-status="spec" style="--pillar-color:#7A6F5B">
-      <div class="pillar-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-      <h2>Access to HR</h2>
-      <p class="pillar-desc">Human resources navigation: employment rights, workplace protections, and HR process guidance</p>
-      <div class="tag-row"><span class="tag">Spec</span><span class="tag">Nationwide</span></div>
-      <ul class="repo-list"><li><a href="https://github.com/dougdevitre/access-to-hr" target="_blank" rel="noopener" aria-label="access-to-hr on GitHub (opens in a new tab)"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> access-to-hr <span class="repo-arrow" aria-hidden="true">&#8599;</span></a></li></ul>
-      <span class="pillar-status">In design</span>
-    </article>
-    <!-- END GENERATED:pillars -->
-  </section>
-
-  <!-- WHAT ARE CLAUDE SKILLS EXPLAINER -->
-  <section class="explainer reveal" id="how-it-works">
-    <div class="explainer-inner">
-      <div class="explainer-header">
-        <h2>What are Claude Skills?</h2>
-        <p>These projects are structured AI prompt systems that run inside Claude.ai — no coding required.</p>
+    <section class="lamp" aria-labelledby="lamp-title">
+      <div class="beam" aria-hidden="true"></div>
+      <h1 id="lamp-title">Find the door your community needs.</h1>
+      <p class="lamp-lead">Free, open tools for the places people fall through the cracks: courts, safety, housing, health, food and work. Choose a door to hear how it helps and how to bring it home.</p>
+      <div class="lamp-actions">
+        <button class="big-btn lamp-btn" type="button" data-clip="welcome" hidden>
+          <span class="play-glyph" aria-hidden="true"></span>
+          <span class="big-btn-text">Hear Doug's welcome</span>
+        </button>
+        <a class="big-btn ghost" href="#doors">Choose a door</a>
       </div>
-      <div class="explainer-step">
-        <div class="step-num">1</div>
-        <h3>Clone the repo</h3>
-        <p>Download the skill from GitHub. The key file is <code>SKILL.md</code> — a structured prompt that teaches Claude a specialized workflow.</p>
-        <div class="copy-block">
-          <code>git clone https://github.com/dougdevitre/&lt;repo-name&gt;</code>
-          <button class="copy-btn" aria-label="Copy git clone command" onclick="copyCmd(this,'git clone https://github.com/dougdevitre/')">Copy</button>
+      <details class="transcript" data-transcript="welcome">
+        <summary>Read the welcome</summary>
+        <p></p>
+      </details>
+    </section>
+
+    <section class="doors" id="doors" aria-labelledby="doors-title">
+      <h2 id="doors-title">Choose a door</h2>
+      <p class="section-lead">Each door is a free tool. They blend into one another, so every door shows the ones it works beside.</p>
+      <ul class="door-grid" role="list">
+      <!-- BEGIN GENERATED:doors -->
+      <li><a class="door" href="https://food.cotrackpro.com" data-id="access-to-food" style="--c:#94621F" target="_blank" rel="noopener"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span><span class="door-name">Access to Food</span><span class="door-status">Live</span></a></li>
+      <li><a class="door" href="https://dougdevitre.github.io/access-to-justice/" data-id="access-to-justice" style="--c:#3E4C6B" target="_blank" rel="noopener"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/></svg></span><span class="door-name">Access to Justice</span><span class="door-status">Pre-pilot</span></a></li>
+      <li><a class="door" href="https://github.com/dougdevitre/access-to-civics" data-id="access-to-civics" style="--c:#8A5A44" target="_blank" rel="noopener"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span><span class="door-name">Access to Civics</span><span class="door-status">Beta</span></a></li>
+      <li><a class="door" href="https://github.com/dougdevitre/access-to-crew" data-id="access-to-crew" style="--c:#4F6F3A" target="_blank" rel="noopener"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="door-name">Block Crew</span><span class="door-status">Beta</span></a></li>
+      <li><a class="door" href="about.html#pillars" data-id="access-to-care" style="--c:#7A4E6B"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><span class="door-name">Care Compass</span><span class="door-status">Coming soon</span></a></li>
+      <li><a class="door" href="about.html#pillars" data-id="access-to-freedom" style="--c:#2F6F6A"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span><span class="door-name">Access to Freedom</span><span class="door-status">Coming soon</span></a></li>
+      <li><a class="door" href="housing.html" data-id="access-to-housing" style="--c:#2D7A9B"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="door-name">Access to Housing</span><span class="door-status">Ready to use</span></a></li>
+      <li><a class="door" href="jobs.html" data-id="access-to-jobs" style="--c:#7A6F5B"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span><span class="door-name">Access to Jobs</span><span class="door-status">Ready to use</span></a></li>
+      <li><a class="door" href="health.html" data-id="access-to-health" style="--c:#D4585B"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="door-name">Access to Health</span><span class="door-status">Ready to use</span></a></li>
+      <li><a class="door" href="business.html" data-id="access-to-business" style="--c:#006b75"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span><span class="door-name">Access to Business</span><span class="door-status">Ready to use</span></a></li>
+      <li><a class="door" href="services.html" data-id="access-to-services" style="--c:#6B5B8A"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="door-name">Access to Services</span><span class="door-status">Ready to use</span></a></li>
+      <li><a class="door" href="education.html" data-id="access-to-education" style="--c:#4A7C59"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span class="door-name">Access to Education</span><span class="door-status">Ready to use</span></a></li>
+      <li><a class="door" href="safety.html" data-id="access-to-safety" style="--c:#B85C38"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span class="door-name">Access to Safety</span><span class="door-status">Ready to use</span></a></li>
+      <li><a class="door" href="https://github.com/dougdevitre/access-to-peace" data-id="access-to-peace" style="--c:#5B7A8A" target="_blank" rel="noopener"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></span><span class="door-name">Access to Peace</span><span class="door-status">Ready to use</span></a></li>
+      <li><a class="door" href="about.html#pillars" data-id="access-to-energy" style="--c:#876A12"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><span class="door-name">Access to Energy</span><span class="door-status">Coming soon</span></a></li>
+      <li><a class="door" href="https://github.com/dougdevitre/access-for-seniors" data-id="access-for-seniors" style="--c:#7A4E6B" target="_blank" rel="noopener"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><span class="door-name">Access for Seniors</span><span class="door-status">Ready to use</span></a></li>
+      <li><a class="door" href="https://github.com/dougdevitre/access-to-experts" data-id="access-to-experts" style="--c:#006b75" target="_blank" rel="noopener"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span><span class="door-name">Access to Experts</span><span class="door-status">In design</span></a></li>
+      <li><a class="door" href="https://github.com/dougdevitre/access-to-hr" data-id="access-to-hr" style="--c:#7A6F5B" target="_blank" rel="noopener"><span class="door-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span><span class="door-name">Access to HR</span><span class="door-status">In design</span></a></li>
+      <!-- END GENERATED:doors -->
+      </ul>
+    </section>
+
+    <section class="practice" id="practice" aria-labelledby="practice-title">
+      <h2 id="practice-title">Distribute virtue</h2>
+      <p class="section-lead">Character spreads the way information does. Build one mindful step for this week in three taps.</p>
+      <button class="listen-btn" type="button" data-clip="distribute" hidden>
+        <span class="play-glyph" aria-hidden="true"></span> Listen
+      </button>
+
+      <ol class="steps">
+        <li class="step" id="step-virtue">
+          <h3>Pick a virtue</h3>
+          <div class="chip-row" id="virtue-chips" role="group" aria-label="Virtues"></div>
+          <p class="step-note" id="virtue-question" aria-live="polite"></p>
+        </li>
+        <li class="step" id="step-door">
+          <h3>Pick a door</h3>
+          <div class="chip-row" id="door-chips" role="group" aria-label="Doors"></div>
+        </li>
+        <li class="step" id="step-gates">
+          <h3>Pass the four gates</h3>
+          <p class="step-note">Before you act or share, tap each gate you can honestly pass.</p>
+          <div class="gate-row" id="gates"></div>
+          <button class="listen-btn" type="button" data-clip="gates" hidden>
+            <span class="play-glyph" aria-hidden="true"></span> Why four gates
+          </button>
+        </li>
+      </ol>
+
+      <div class="my-step" id="my-step" aria-live="polite" hidden>
+        <h3>Your mindful step</h3>
+        <p class="my-step-text" id="my-step-text"></p>
+        <div class="my-step-actions">
+          <button class="big-btn" type="button" id="share-step">Share this step</button>
+          <button class="big-btn ghost" type="button" id="reset-step">Start over</button>
         </div>
       </div>
-      <div class="explainer-step">
-        <div class="step-num">2</div>
-        <h3>Upload to Claude</h3>
-        <p>Create a new Project in <a href="https://claude.ai" target="_blank" rel="noopener" style="color:var(--color-accent-primary)">Claude.ai</a> and add the <code>SKILL.md</code> file as project knowledge.</p>
+      <noscript><p class="step-note">This builder needs JavaScript. Every door above still works.</p></noscript>
+    </section>
+
+    <section class="beacon" id="beacon" aria-labelledby="beacon-title">
+      <h2 id="beacon-title">How a community adopts any of these</h2>
+      <p class="section-lead">BEACON, from Distributed Virtue: six questions, in order, that keep a new tool human.</p>
+      <ol class="beacon-list" id="beacon-list"></ol>
+    </section>
+
+    <section class="work" id="work" aria-labelledby="work-title">
+      <h2 id="work-title">Bring a door home</h2>
+      <p>Every tool here is free to use on your own. If your court, agency, school or neighborhood wants help with readiness, a first pilot, training or measuring what changed, Doug can lead that work with you.</p>
+      <div class="lamp-actions">
+        <a class="big-btn" href="mailto:dougdevitre@gmail.com?subject=Bringing%20an%20Access%20To%20tool%20to%20our%20community">Talk with Doug</a>
+        <a class="big-btn ghost" href="about.html">About Access To</a>
       </div>
-      <div class="explainer-step">
-        <div class="step-num">3</div>
-        <h3>Start a conversation</h3>
-        <p>The skill guides you through its capabilities. Ask it for help — it handles the rest.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- EMAIL CAPTURE (Mailchimp) -->
-  <section class="email-capture reveal" id="updates">
-    <div class="email-capture-inner">
-      <h2>Stay in the loop</h2>
-      <p>Get notified when new tools launch, existing projects hit milestones, or speaking events are announced.</p>
-      <form action="https://us16.list-manage.com/subscribe/post?u=62137ae349&amp;id=090aae7d15" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="email-form" target="_blank" novalidate>
-        <input type="email" name="EMAIL" placeholder="your@email.com" id="mce-EMAIL" aria-label="Email address" required>
-        <!-- Bot honeypot field — do not remove -->
-        <div style="position:absolute;left:-5000px" aria-hidden="true"><input type="text" name="b_62137ae349_090aae7d15" tabindex="-1" value=""></div>
-        <button type="submit" name="subscribe" id="mc-embedded-subscribe">Get Updates</button>
-      </form>
-      <div class="email-success" id="email-success">&#10003; You're subscribed! Check your inbox to confirm.</div>
-      <p class="email-privacy">No spam. Unsubscribe anytime. Updates only.</p>
-    </div>
-  </section>
-
-  <!-- DONATE CTA -->
-  <section class="donate-section reveal" id="donate">
-    <div class="donate-banner">
-      <h2>These tools are free. Building&nbsp;them&nbsp;isn't.</h2>
-      <p>Every dollar funds development time on open-source tools that help families, job seekers, educators, and advocates navigate broken systems.</p>
-      <a href="https://venmo.com/dougdevitre" target="_blank" rel="noopener" class="donate-btn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.27 3c.76 1.25 1.1 2.54 1.1 4.17 0 5.19-4.43 11.93-8.03 16.63H5.72L3.13 4.08l5.76-.55 1.48 11.92c1.38-2.25 3.08-5.78 3.08-8.2 0-1.54-.26-2.6-.68-3.45L19.27 3z"/></svg>
-        Fund the Mission on Venmo
-      </a>
-      <span class="donate-subtext">100% goes to development &middot; No overhead &middot; Receipt on request</span>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="about reveal" id="about">
-    <div>
-      <h2>Why "Access"?</h2>
-      <p>Every day, people fall through gaps — in courts, classrooms, housing markets, and service systems — not because solutions don't exist, but because the tools to navigate them are scattered, expensive, or built for insiders.</p>
-      <p>These projects exist to close those gaps with practical, AI-powered, open-source tools that meet people where they are.</p>
-    </div>
-    <div>
-      <h2>Built by</h2>
-      <p><strong>Doug Devitre</strong> — product builder, speaker, and founder of <a href="https://cotrackpro.com" target="_blank" rel="noopener">CoTrackPro</a>, based in the St.&nbsp;Louis metro area.</p>
-      <p>Focused on family law technology, workforce development, and civic access tools for Missouri and beyond.</p>
-      <p><a href="https://linkedin.com/in/dougdevitre" target="_blank" rel="noopener">LinkedIn</a> &middot; <a href="https://github.com/dougdevitre" target="_blank" rel="noopener">GitHub</a> &middot; <a href="mailto:dougdevitre@gmail.com">Email</a></p>
-    </div>
-  </section>
-
-  <!-- CHANGELOG -->
-  <section class="changelog reveal" id="changelog">
-    <h2>Latest Updates</h2>
-    <ul class="changelog-list">
-      <li class="changelog-item">
-        <div class="changelog-date">Oct 2026</div>
-        <div class="changelog-text">Hub expanded to <strong>18 projects across 15 pillars</strong> — adding justice, peace, civics, community, food, energy, care, and mobility. Project cards are now built into the page, so they load without JavaScript.</div>
-      </li>
-      <li class="changelog-item">
-        <div class="changelog-date">Mar 2026</div>
-        <div class="changelog-text"><a href="safety.html">Access to Safety</a> pillar launched — safety planning, risk assessment, and crisis resources now available.</div>
-      </li>
-      <li class="changelog-item">
-        <div class="changelog-date">Apr 2026</div>
-        <div class="changelog-text">Site rebuilt to be <strong>config-driven</strong> — pillar cards now render from <code>repos.json</code>, 7 pillars across 7 projects.</div>
-      </li>
-      <li class="changelog-item">
-        <div class="changelog-date">Mar 2026</div>
-        <div class="changelog-text"><a href="jobs.html">Access to Jobs</a> workforce navigator expanded to cover all 114 Missouri counties with WIOA-grounded modules.</div>
-      </li>
-      <li class="changelog-item">
-        <div class="changelog-date">Mar 2026</div>
-        <div class="changelog-text"><a href="housing.html">Access to Housing</a> PropTech skill reached 74 modules across 6 analytical pods.</div>
-      </li>
-      <li class="changelog-item">
-        <div class="changelog-date">Mar 2026</div>
-        <div class="changelog-text"><a href="business.html">Access to Business</a> startup guide launched for Missouri entrepreneurs.</div>
-      </li>
-      <li class="changelog-item">
-        <div class="changelog-date">Feb 2026</div>
-        <div class="changelog-text"><a href="health.html">Access to Health</a> added Medicaid eligibility screening and Medicare Advantage comparison tools.</div>
-      </li>
-    </ul>
-  </section>
-
-  <!-- CONTRIBUTOR CTA -->
-  <section class="contributor-cta reveal">
-    <div class="contributor-inner">
-      <div>
-        <h2>Want to contribute or partner?</h2>
-        <p>Whether you're a developer, practitioner, researcher, or organization — there's a way to get involved. Open issues, suggest features, or bring these tools to your community.</p>
-      </div>
-      <div class="contributor-actions">
-        <a href="https://github.com/dougdevitre" target="_blank" rel="noopener" class="btn-primary">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-          View on GitHub
-        </a>
-        <a href="mailto:dougdevitre@gmail.com?subject=Access%20To%20—%20Partnership%20Inquiry" class="btn-secondary">Get in Touch</a>
-      </div>
-    </div>
-  </section>
-
+    <section class="notice" id="disclaimer" aria-labelledby="notice-title">
+      <h2 id="notice-title">Please read before use</h2>
+      <p>These tools offer general educational information only. They are not legal, medical, mental health, financial or safety advice, and using them creates no professional relationship.</p>
+      <ul>
+        <li><strong>In danger now?</strong> Call 911. For crisis support, call or text 988.</li>
+        <li>Information and AI output can be wrong or out of date. Confirm anything important with the official source or a licensed professional.</li>
+        <li>Leave out names, case numbers and anything else that identifies a person.</li>
+        <li>Not affiliated with or endorsed by any court, agency or organization named here. Provided as is, without warranty.</li>
+      </ul>
+    </section>
   </main>
 
-  <!-- RICH FOOTER -->
-  <footer class="site-footer">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="topbar-logo">Access To</div>
-        <p>Open-source, AI-powered tools closing the access gaps that matter most. Built in Missouri, serving nationwide.</p>
-        <div class="footer-social">
-          <a href="https://github.com/dougdevitre" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://linkedin.com/in/dougdevitre" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="mailto:dougdevitre@gmail.com">Email</a>
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <div class="sheet-inner">
+      <div class="sheet-head">
+        <span class="sheet-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg></span>
+        <div>
+          <h2 id="sheet-title"></h2>
+          <p class="sheet-meta"></p>
         </div>
+        <button class="icon-btn sheet-close" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
       </div>
-      <div class="footer-col">
-        <h4>Pillars</h4>
-        <ul>
-          <li><a href="health.html">Health</a></li>
-          <li><a href="education.html">Education</a></li>
-          <li><a href="safety.html">Safety</a></li>
-          <li><a href="housing.html">Housing</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="jobs.html">Jobs</a></li>
-          <li><a href="business.html">Business</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Resources</h4>
-        <ul>
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#changelog">Changelog</a></li>
-          <li><a href="https://github.com/dougdevitre" target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href="https://claude.ai" target="_blank" rel="noopener">Claude.ai</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="#updates">Get Updates</a></li>
-          <li><a href="#donate">Donate</a></li>
-          <li><a href="https://cotrackpro.com" target="_blank" rel="noopener">CoTrackPro</a></li>
-          <li><a href="#about">About</a></li>
-        </ul>
-      </div>
+      <button class="big-btn sheet-listen" type="button" hidden>
+        <span class="play-glyph" aria-hidden="true"></span>
+        <span class="big-btn-text">Listen</span>
+      </button>
+      <details class="transcript sheet-transcript"><summary>Read along</summary><p></p></details>
+      <p class="sheet-desc"></p>
+      <dl class="sheet-facts"></dl>
+      <h3 class="sheet-sub">Adopt it with BEACON</h3>
+      <ol class="sheet-beacon"></ol>
+      <h3 class="sheet-sub sheet-blend-title">Blends with</h3>
+      <div class="chip-row sheet-blend"></div>
+      <div class="sheet-links"></div>
+      <p class="sheet-fine">Educational information only, not legal, medical or safety advice. In danger, call 911.</p>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Doug Devitre. Open source under MIT unless otherwise noted.</p>
-      <a href="#">Back to top &#8593;</a>
-    </div>
+  </dialog>
+
+  <footer class="foot">
+    <nav aria-label="More from Access To">
+      <a href="about.html">About Access To</a>
+      <a href="about.html#pillars">All project details</a>
+      <a href="https://github.com/dougdevitre" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/dougdevitre" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="#disclaimer">Disclaimer</a>
+    </nav>
+    <p>&copy; 2026 Doug Devitre. Open source under MIT or Apache 2.0.</p>
   </footer>
 
-  <!-- BACK TO TOP -->
-  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})" aria-label="Back to top">&#8593;</button>
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
 
-  <script>
-    // Mobile nav
-    function closeMobileNav(){
-      document.querySelector('.hamburger').classList.remove('open');
-      document.querySelector('.topbar-links').classList.remove('open');
-    }
-
-    // Dark mode toggle
-    function toggleTheme(){
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('theme','light');
-      } else {
-        document.documentElement.setAttribute('data-theme','dark');
-        localStorage.setItem('theme','dark');
-      }
-    }
-
-    // Back to top visibility
-    var btt = document.getElementById('backToTop');
-    window.addEventListener('scroll', function(){
-      btt.classList.toggle('visible', window.scrollY > 600);
-    }, {passive:true});
-
-    // Animated stat counters
-    var statsObserved = false;
-    var statsObserver = new IntersectionObserver(function(entries){
-      if (entries[0].isIntersecting && !statsObserved) {
-        statsObserved = true;
-        document.querySelectorAll('.stat-number[data-target]').forEach(function(el){
-          var target = parseInt(el.getAttribute('data-target'));
-          var suffix = el.getAttribute('data-suffix') || '';
-          var duration = 1200;
-          var start = performance.now();
-          function tick(now){
-            var elapsed = now - start;
-            var progress = Math.min(elapsed / duration, 1);
-            var ease = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.round(target * ease) + suffix;
-            if (progress < 1) requestAnimationFrame(tick);
-          }
-          requestAnimationFrame(tick);
-        });
-      }
-    }, {threshold: 0.3});
-    statsObserver.observe(document.getElementById('stats'));
-
-    // Mailchimp form — show success message after submit
-    var mcForm = document.getElementById('mc-embedded-subscribe-form');
-    if (mcForm) {
-      mcForm.addEventListener('submit', function(){
-        setTimeout(function(){
-          mcForm.style.display = 'none';
-          document.getElementById('email-success').classList.add('show');
-        }, 300);
-      });
-    }
-
-    // Copy to clipboard
-    function copyCmd(btn, text) {
-      navigator.clipboard.writeText(text).then(function(){
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
-        setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-      }, function(){
-        btn.textContent = 'Failed';
-        setTimeout(function(){ btn.textContent = 'Copy'; }, 2000);
-      });
-    }
-
-    // Scroll reveal observer
-    var revealObserver = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
-    document.querySelectorAll('.reveal').forEach(function(el){
-      revealObserver.observe(el);
-    });
-  </script>
-
+  <!-- BEGIN GENERATED:app-data -->
+  <script type="application/json" id="app-data">{"projects":[{"id":"access-to-food","title":"Access to Food","pillar":"food","color":"#94621F","icon":"<path d=\"M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z\"/><line x1=\"3\" y1=\"6\" x2=\"21\" y2=\"6\"/><path d=\"M16 10a4 4 0 0 1-8 0\"/>","description":"St. Louis food access platform: pantry map, distribution events, SNAP guidance, an AI assistant, and volunteer tools","status":"Live","scope":"Missouri","private":false,"live":"https://food.cotrackpro.com","cta":"Find food near you","page":null,"repo":"https://github.com/dougdevitre/access-to-food","audience":["families","pantry staff","volunteers"],"adopter":"food pantries and food networks","pilot":"the pantry map and events for one network","connects":["access-to-services","access-to-health"]},{"id":"access-to-justice","title":"Access to Justice","pillar":"justice","color":"#3E4C6B","icon":"<path d=\"M12 3v18\"/><path d=\"M7 21h10\"/><path d=\"M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2\"/><path d=\"M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z\"/><path d=\"M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z\"/>","description":"Civic transparency framework for Missouri family courts: 72 governance-protected metrics, an OSCA binder, and an interactive metric catalog","status":"Pre-pilot","scope":"Missouri","private":false,"live":"https://dougdevitre.github.io/access-to-justice/","cta":"Read the framework","page":null,"repo":"https://github.com/dougdevitre/access-to-justice","audience":["court administrators","judicial educators","family law researchers"],"adopter":"circuit court administration","pilot":"three transparency metrics in one circuit for one quarter","connects":["access-to-safety","access-to-peace"]},{"id":"access-to-civics","title":"Access to Civics","pillar":"civics","color":"#8A5A44","icon":"<line x1=\"3\" y1=\"22\" x2=\"21\" y2=\"22\"/><line x1=\"6\" y1=\"18\" x2=\"6\" y2=\"11\"/><line x1=\"10\" y1=\"18\" x2=\"10\" y2=\"11\"/><line x1=\"14\" y1=\"18\" x2=\"14\" y2=\"11\"/><line x1=\"18\" y1=\"18\" x2=\"18\" y2=\"11\"/><polygon points=\"12 2 20 7 4 7\"/>","description":"Charter: a civic education game for ages 8-14 built on the primary text of all 50 U.S. state constitutions","status":"Beta","scope":"Nationwide","private":false,"live":null,"cta":"Play Charter","page":null,"repo":"https://github.com/dougdevitre/access-to-civics","audience":["teachers","students","families"],"adopter":"teachers and libraries","pilot":"one unit in one classroom","connects":["access-to-education"]},{"id":"access-to-crew","title":"Block Crew","pillar":"community","color":"#4F6F3A","icon":"<path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/>","description":"St. Louis civic volunteering backend that turns 311 complaints into cleanup sessions, gated by a Tier-0 volunteer-safety classifier","status":"Beta","scope":"Missouri","private":false,"live":null,"cta":"See how Block Crew works","page":null,"repo":"https://github.com/dougdevitre/access-to-crew","audience":["neighbors","volunteer coordinators","city staff"],"adopter":"neighborhood associations and city services","pilot":"two cleanup sessions drawn from 311 reports","connects":["access-to-services"]},{"id":"access-to-care","title":"Care Compass","pillar":"care","color":"#7A4E6B","icon":"<path d=\"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z\"/>","description":"Helps a family go from no conversation to a living care plan, designed to be readable by a 10-year-old and a senior with low vision","status":"Coming soon","scope":"Nationwide","private":true,"live":null,"cta":"Start a care plan","page":null,"repo":null,"audience":["family caregivers","care managers","older adults"],"adopter":"family caregivers and care managers","pilot":"one family's first living care plan","connects":["access-for-seniors","access-to-health"]},{"id":"access-to-freedom","title":"Access to Freedom","pillar":"mobility","color":"#2F6F6A","icon":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"/><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"/>","description":"Calm, trauma-informed navigator for people planning to move abroad, from first thought to a concrete 12-month plan","status":"Coming soon","scope":"Global","private":true,"live":null,"cta":"Build a relocation plan","page":null,"repo":null,"audience":["individuals and families relocating","advocates"],"adopter":"relocation advocates","pilot":"one family's twelve-month plan","connects":["access-to-safety"]},{"id":"access-to-housing","title":"Access to Housing","pillar":"housing","color":"#2D7A9B","icon":"<path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><polyline points=\"9 22 9 12 15 12 15 22\"/>","description":"PropTech intelligence, market analysis, Fair Housing compliance","status":"Ready to use","scope":"Nationwide","private":false,"live":null,"cta":"Start analyzing properties","page":"housing.html","repo":"https://github.com/dougdevitre/access-to-housing","audience":["real estate professionals","investors","housing counselors"],"adopter":"brokerages and housing counselors","pilot":"Fair Housing-safe market analysis in one office","connects":["access-to-safety","access-to-jobs","access-to-services"]},{"id":"access-to-jobs","title":"Access to Jobs","pillar":"jobs","color":"#7A6F5B","icon":"<rect x=\"2\" y=\"7\" width=\"20\" height=\"14\" rx=\"2\" ry=\"2\"/><path d=\"M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16\"/>","description":"WIOA navigation, job matching across 114 Missouri counties","status":"Ready to use","scope":"Missouri","private":false,"live":null,"cta":"Navigate workforce programs","page":"jobs.html","repo":"https://github.com/dougdevitre/access-to-jobs","audience":["workforce development staff","job seekers","career counselors"],"adopter":"job centers and workforce boards","pilot":"one center's WIOA eligibility screening","connects":["access-to-education","access-to-services","access-to-housing"]},{"id":"access-to-health","title":"Access to Health","pillar":"health","color":"#D4585B","icon":"<path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"/>","description":"Healthcare navigation, benefits enrollment, Medicaid/Medicare","status":"Ready to use","scope":"Nationwide","private":false,"live":null,"cta":"Navigate healthcare access","page":"health.html","repo":"https://github.com/dougdevitre/access-to-health","audience":["healthcare navigators","social workers","benefits counselors"],"adopter":"health navigators and community health centers","pilot":"benefits-enrollment support at one site","connects":["access-to-safety","access-to-services"]},{"id":"access-to-business","title":"Access to Business","pillar":"business","color":"#006b75","icon":"<polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\"/>","description":"Startup guide, entrepreneur support, business launch","status":"Ready to use","scope":"Missouri","private":false,"live":null,"cta":"Launch your business","page":"business.html","repo":"https://github.com/dougdevitre/access-to-business","audience":["aspiring entrepreneurs","small business owners","startup mentors"],"adopter":"small business development centers","pilot":"one cohort of new founders","connects":["access-to-jobs","access-to-services"]},{"id":"access-to-services","title":"Access to Services","pillar":"services","color":"#6B5B8A","icon":"<circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z\"/>","description":"Social services navigation, benefits matching, workforce dev","status":"Ready to use","scope":"Nationwide","private":false,"live":null,"cta":"Match clients to services","page":"services.html","repo":"https://github.com/dougdevitre/access-to-services","audience":["social workers","caseworkers","benefits counselors"],"adopter":"social service agencies and health clinics","pilot":"screening and referral at one intake desk","connects":["access-to-jobs","access-to-health","access-to-housing"]},{"id":"access-to-education","title":"Access to Education","pillar":"education","color":"#4A7C59","icon":"<path d=\"M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z\"/><path d=\"M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z\"/>","description":"Standards alignment, lesson planning, teacher growth for Missouri K-12","status":"Ready to use","scope":"Missouri","private":false,"live":null,"cta":"Plan standards-aligned lessons","page":"education.html","repo":"https://github.com/dougdevitre/access-to-education","audience":["educators","curriculum directors","instructional coaches"],"adopter":"school districts","pilot":"standards alignment for one grade band","connects":["access-to-jobs","access-to-services"]},{"id":"access-to-safety","title":"Access to Safety","pillar":"safety","color":"#B85C38","icon":"<path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"/>","description":"Safety planning, risk assessment, protective orders, crisis resources","status":"Ready to use","scope":"Nationwide","private":false,"live":null,"cta":"Create a safety plan","page":"safety.html","repo":"https://github.com/dougdevitre/access-to-safety","audience":["DV advocates","crisis counselors","legal aid attorneys"],"adopter":"domestic violence advocacy programs","pilot":"advocates preparing for safety-planning conversations in one office","connects":["access-to-health","access-to-housing","access-to-services"]},{"id":"access-to-peace","title":"Access to Peace","pillar":"peace","color":"#5B7A8A","icon":"<path d=\"M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z\"/><line x1=\"16\" y1=\"8\" x2=\"2\" y2=\"22\"/><line x1=\"17.5\" y1=\"15\" x2=\"9\" y2=\"15\"/>","description":"Trauma-informed conflict resolution, mediation, co-parenting de-escalation, and restorative practice navigation","status":"Ready to use","scope":"Nationwide","private":false,"live":null,"cta":"Start a de-escalation plan","page":null,"repo":"https://github.com/dougdevitre/access-to-peace","audience":["mediators","co-parents","restorative practitioners"],"adopter":"mediators, parenting coordinators and family court services","pilot":"one program's co-parenting referrals for sixty days","connects":["access-to-safety","access-to-justice"]},{"id":"access-to-energy","title":"Access to Energy","pillar":"energy","color":"#876A12","icon":"<polygon points=\"13 2 3 14 12 14 11 22 21 10 12 10 13 2\"/>","description":"Energy as civic duty: routes residents to conservation, production, and utility-assistance programs across all 114 Missouri counties","status":"Coming soon","scope":"Missouri","private":true,"live":null,"cta":"Find energy help","page":null,"repo":null,"audience":["residents","community action agencies","energy advocates"],"adopter":"community action agencies","pilot":"utility-assistance routing in one county","connects":["access-to-housing","access-to-services"]},{"id":"access-for-seniors","title":"Access for Seniors","pillar":"care","color":"#7A4E6B","icon":"<path d=\"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z\"/>","description":"Senior connection and aging-services navigation: early isolation detection, family connection, and benefits routing","status":"Ready to use","scope":"Nationwide","private":false,"live":null,"cta":"Explore the senior toolkit","page":null,"repo":"https://github.com/dougdevitre/access-for-seniors","audience":["area agencies on aging","senior living staff","home health"],"adopter":"area agencies on aging","pilot":"isolation check-ins for one caseload","connects":["access-to-care","access-to-services"]},{"id":"access-to-experts","title":"Access to Experts","pillar":"business","color":"#006b75","icon":"<polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\"/>","description":"Platform spec for packaging vetted practitioner methodology into guided, executable playbooks","status":"In design","scope":"Global","private":false,"live":null,"cta":"Read the spec","page":null,"repo":"https://github.com/dougdevitre/access-to-experts","audience":["practitioners","consultants","speakers"],"adopter":"practitioner networks","pilot":"one practitioner's methodology as a guided playbook","connects":["access-to-business"]},{"id":"access-to-hr","title":"Access to HR","pillar":"jobs","color":"#7A6F5B","icon":"<rect x=\"2\" y=\"7\" width=\"20\" height=\"14\" rx=\"2\" ry=\"2\"/><path d=\"M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16\"/>","description":"Human resources navigation: employment rights, workplace protections, and HR process guidance","status":"In design","scope":"Nationwide","private":false,"live":null,"cta":"Explore HR guidance","page":null,"repo":"https://github.com/dougdevitre/access-to-hr","audience":["employees","HR generalists","small employers"],"adopter":"small employers","pilot":"one workplace's policy questions","connects":["access-to-jobs"]}],"journey":{"catalyst":{"name":"Doug Devitre","title":"Community Development Catalyst","welcome":"I'm Doug Devitre. I build free, open tools for the places people fall through the cracks: courts, safety, housing, health, food and work. Then I help communities put them to use. Every project here starts the same way, with a person who is struggling, not with technology.","distribute":"Distributed virtue means character can spread the way information does. One person's skill becomes a whole community's capacity. Leaders start small: choose a virtue, choose a part of your community, and take one mindful step this week.","blend":"These pillars blend into one another. A family in crisis rarely needs just one door, so every project points to the ones it works beside."},"beacon":[{"letter":"B","title":"Begin with humanity","prompt":"Who is hurting, confused, excluded, or overwhelmed?"},{"letter":"E","title":"Examine the system","prompt":"What are the institutions, resources, barriers, and information flows?"},{"letter":"A","title":"Augment people","prompt":"Whose capacity does this increase, and how?"},{"letter":"C","title":"Create shared capacity","prompt":"What reusable thing comes out of this — a guide, template, or workshop?"},{"letter":"O","title":"Open doors","prompt":"Who cannot access this because of cost, literacy, language, disability, or distrust?"},{"letter":"N","title":"Never surrender judgment","prompt":"Which decisions here stay with a named, accountable human?"}],"virtues":[{"name":"Wisdom","question":"What should we do?","practice":"Before you decide, ask two people closest to the problem what they would do."},{"name":"Courage","question":"What am I standing for?","practice":"Name one access gap out loud at your next meeting."},{"name":"Justice","question":"Who is being overlooked?","practice":"Notice who is missing from the room, then invite one of them."},{"name":"Compassion","question":"Who needs to be heard?","practice":"Spend ten minutes listening to someone you serve, without trying to fix anything."},{"name":"Humility","question":"What do I still need to learn?","practice":"Ask a frontline worker what your organization gets wrong."},{"name":"Temperance","question":"Is this worth amplifying?","practice":"Run your next public post through the Four Gates before you share it."},{"name":"Honesty","question":"Am I being transparent?","practice":"Share one number your team is still working to improve."},{"name":"Stewardship","question":"What will I do with this power?","practice":"Turn one thing you know into a guide someone else can use."},{"name":"Hope","question":"What better future can we build?","practice":"Pick one tool on this page and try it this week."}],"gates":["Is it true?","Is it necessary?","Is it constructive?","Is it proportionate?"]},"clips":{"welcome":"I'm Doug Devitre. I build free, open tools for the places people fall through the cracks: courts, safety, housing, health, food and work. Then I help communities put them to use. Every project here starts the same way, with a person who is struggling, not with technology. These pillars blend into one another. A family in crisis rarely needs just one door, so every project points to the ones it works beside.","distribute":"Distributed virtue means character can spread the way information does. One person's skill becomes a whole community's capacity. Leaders start small: choose a virtue, choose a part of your community, and take one mindful step this week.","gates":"Before you share anything, pass it through four gates. Is it true? Is it necessary? Is it constructive? Is it proportionate? If it fails one, pause and revise.","access-to-housing":"Access to Housing. PropTech intelligence, market analysis, Fair Housing compliance. It is built for brokerages and housing counselors. A good first step is Fair Housing-safe market analysis in one office. It works alongside Access to Safety, Access to Jobs and Access to Services.","access-to-jobs":"Access to Jobs. WIOA navigation, job matching across 114 Missouri counties. It is built for job centers and workforce boards. A good first step is one center's WIOA eligibility screening. It works alongside Access to Education, Access to Services and Access to Housing.","access-to-health":"Access to Health. Healthcare navigation, benefits enrollment, Medicaid/Medicare. It is built for health navigators and community health centers. A good first step is benefits-enrollment support at one site. It works alongside Access to Safety and Access to Services.","access-to-business":"Access to Business. Startup guide, entrepreneur support, business launch. It is built for small business development centers. A good first step is one cohort of new founders. It works alongside Access to Jobs and Access to Services.","access-to-services":"Access to Services. Social services navigation, benefits matching, workforce dev. It is built for social service agencies and health clinics. A good first step is screening and referral at one intake desk. It works alongside Access to Jobs, Access to Health and Access to Housing.","access-to-education":"Access to Education. Standards alignment, lesson planning, teacher growth for Missouri K-12. It is built for school districts. A good first step is standards alignment for one grade band. It works alongside Access to Jobs and Access to Services.","access-to-safety":"Access to Safety. Safety planning, risk assessment, protective orders, crisis resources. It is built for domestic violence advocacy programs. A good first step is advocates preparing for safety-planning conversations in one office. It works alongside Access to Health, Access to Housing and Access to Services.","access-to-justice":"Access to Justice. Civic transparency framework for Missouri family courts: 72 governance-protected metrics, an OSCA binder, and an interactive metric catalog. It is built for circuit court administration. A good first step is three transparency metrics in one circuit for one quarter. It works alongside Access to Safety and Access to Peace.","access-to-peace":"Access to Peace. Trauma-informed conflict resolution, mediation, co-parenting de-escalation, and restorative practice navigation. It is built for mediators, parenting coordinators and family court services. A good first step is one program's co-parenting referrals for sixty days. It works alongside Access to Safety and Access to Justice.","access-to-civics":"Access to Civics. Charter: a civic education game for ages 8-14 built on the primary text of all 50 U.S. state constitutions. It is built for teachers and libraries. A good first step is one unit in one classroom. It works alongside Access to Education.","access-to-crew":"Block Crew. St. Louis civic volunteering backend that turns 311 complaints into cleanup sessions, gated by a Tier-0 volunteer-safety classifier. It is built for neighborhood associations and city services. A good first step is two cleanup sessions drawn from 311 reports. It works alongside Access to Services.","access-to-food":"Access to Food. St. Louis food access platform: pantry map, distribution events, SNAP guidance, an AI assistant, and volunteer tools. It is built for food pantries and food networks. A good first step is the pantry map and events for one network. It works alongside Access to Services and Access to Health.","access-to-energy":"Access to Energy. Energy as civic duty: routes residents to conservation, production, and utility-assistance programs across all 114 Missouri counties. It is built for community action agencies. A good first step is utility-assistance routing in one county. It works alongside Access to Housing and Access to Services. It is coming soon.","access-to-care":"Care Compass. Helps a family go from no conversation to a living care plan, designed to be readable by a 10-year-old and a senior with low vision. It is built for family caregivers and care managers. A good first step is one family's first living care plan. It works alongside Access for Seniors and Access to Health. It is coming soon.","access-for-seniors":"Access for Seniors. Senior connection and aging-services navigation: early isolation detection, family connection, and benefits routing. It is built for area agencies on aging. A good first step is isolation check-ins for one caseload. It works alongside Care Compass and Access to Services.","access-to-freedom":"Access to Freedom. Calm, trauma-informed navigator for people planning to move abroad, from first thought to a concrete 12-month plan. It is built for relocation advocates. A good first step is one family's twelve-month plan. It works alongside Access to Safety. It is coming soon.","access-to-experts":"Access to Experts. Platform spec for packaging vetted practitioner methodology into guided, executable playbooks. It is built for practitioner networks. A good first step is one practitioner's methodology as a guided playbook. It works alongside Access to Business.","access-to-hr":"Access to HR. Human resources navigation: employment rights, workplace protections, and HR process guidance. It is built for small employers. A good first step is one workplace's policy questions. It works alongside Access to Jobs."}}
+</script>
+  <!-- END GENERATED:app-data -->
+  <script src="app.js" defer></script>
 </body>
 </html>

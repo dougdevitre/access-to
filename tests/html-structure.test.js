@@ -8,6 +8,7 @@ const ROOT = path.join(__dirname, '..');
 
 const HTML_PAGES = [
   'index.html',
+  'about.html',
   'health.html',
   'education.html',
   'safety.html',
@@ -67,9 +68,9 @@ describe('HTML document structure', () => {
         expect(icon).toBe('favicon.svg');
       });
 
-      test('has <link rel="stylesheet" href="styles.css">', () => {
-        const stylesheet = $('link[rel="stylesheet"][href="styles.css"]');
-        expect(stylesheet.length).toBe(1);
+      test('links its site stylesheet (styles.css, or app.css for the homepage app)', () => {
+        const sheet = page === 'index.html' ? 'app.css' : 'styles.css';
+        expect($(`link[rel="stylesheet"][href="${sheet}"]`).length).toBe(1);
       });
 
       test('has a <header> element', () => {

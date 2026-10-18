@@ -1,0 +1,57 @@
+name: Generate Narration
+
+# Speaks the homepage app's scripts in Doug Devitre's ElevenLabs voice and
+# commits the MP3s to audio/. Only clips whose words or voice settings changed
+# are regenerated, so re-running is free.
+#
+# One-time setup: Settings → Secrets and variables → Actions → New repository
+# secret → ELEVENLABS_API_KEY.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/config/journey.json'
+      - '.github/config/narration.json'
+      - '.github/config/repos.json'
+      - '.github/scripts/narration-clips.sh'
+      - '.github/scripts/generate-narration.sh'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: narration
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Generate changed clips
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+        run: |
+          chmod +x .github/scripts/generate-narration.sh .github/scripts/narration-clips.sh
+          if [ -z "$ELEVENLABS_API_KEY" ]; then
+            echo "::warning::ELEVENLABS_API_KEY secret is not set — listing what would be generated instead."
+            .github/scripts/generate-narration.sh --dry-run
+            exit 0
+          fi
+          .github/scripts/generate-narration.sh
+
+      - name: Commit audio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audio
+          if git diff --cached --quiet; then
+            echo "No narration changes."
+          else
+            git commit -m "Generate narration audio [skip ci]"
+            git push
+          fi

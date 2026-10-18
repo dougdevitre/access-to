@@ -26,23 +26,23 @@ describe('Navigation', () => {
           expect(logoLink.attr('href')).toBe('index.html');
         });
 
-        test('nav contains link to index.html#pillars', () => {
-          const pillarsLink = $('nav.topbar-links a[href="index.html#pillars"]');
+        test('nav contains link to about.html#pillars', () => {
+          const pillarsLink = $('nav.topbar-links a[href="about.html#pillars"]');
           expect(pillarsLink.length).toBe(1);
         });
 
-        test('nav contains link to index.html#how-it-works', () => {
-          const link = $('nav.topbar-links a[href="index.html#how-it-works"]');
+        test('nav contains link to about.html#how-it-works', () => {
+          const link = $('nav.topbar-links a[href="about.html#how-it-works"]');
           expect(link.length).toBe(1);
         });
 
-        test('nav contains link to index.html#updates', () => {
-          const link = $('nav.topbar-links a[href="index.html#updates"]');
+        test('nav contains link to about.html#updates', () => {
+          const link = $('nav.topbar-links a[href="about.html#updates"]');
           expect(link.length).toBe(1);
         });
 
-        test('nav contains link to index.html#about', () => {
-          const link = $('nav.topbar-links a[href="index.html#about"]');
+        test('nav contains link to about.html#about', () => {
+          const link = $('nav.topbar-links a[href="about.html#about"]');
           expect(link.length).toBe(1);
         });
 
@@ -59,13 +59,13 @@ describe('Navigation', () => {
     });
   });
 
-  describe('index.html navigation', () => {
+  describe('about.html navigation (the full hub page)', () => {
     let $;
-    beforeAll(() => { $ = load('index.html'); });
+    beforeAll(() => { $ = load('about.html'); });
 
-    test('logo links to # (top of page)', () => {
+    test('logo links home to the app (index.html)', () => {
       const logoLink = $('.topbar-logo a').first();
-      expect(logoLink.attr('href')).toBe('#');
+      expect(logoLink.attr('href')).toBe('index.html');
     });
 
     test('nav has Pillars anchor link', () => {
@@ -180,7 +180,7 @@ describe('Navigation', () => {
   });
 
   describe('footer navigation', () => {
-    const allMainPages = ['index.html', ...PILLAR_PAGES];
+    const allMainPages = ['about.html', ...PILLAR_PAGES];
 
     allMainPages.forEach((page) => {
       describe(page, () => {
@@ -223,7 +223,7 @@ describe('Navigation', () => {
       fs.readdirSync(ROOT).filter((f) => f.endsWith('.html'))
     );
 
-    const allMainPages = ['index.html', ...PILLAR_PAGES, '404.html'];
+    const allMainPages = ['index.html', 'about.html', ...PILLAR_PAGES, '404.html'];
 
     allMainPages.forEach((page) => {
       test(`${page} — all internal .html links resolve to existing files`, () => {

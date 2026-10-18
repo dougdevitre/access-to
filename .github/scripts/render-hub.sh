@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Renders project listings from repos.json into the hub's index.html (cards,
-# counters, share text) and README.md (badges, ecosystem diagram, pillars,
-# project directory, impact numbers), so neither can drift from the registry
-# and the site works without JavaScript.
+# Renders project listings from repos.json into the hub page about.html (cards,
+# counters, share text), the homepage app index.html (doors, plus the embedded
+# data app.js reads: projects, journey.json, narration transcripts) and README.md
+# (badges, ecosystem diagram, pillars, project directory, impact numbers), so
+# nothing can drift from the registry and every page works without JavaScript.
 #
 # Usage:
-#   ./render-hub.sh                 # rewrite index.html and README.md in place
-#   ./render-hub.sh --check         # exit 1 if either is out of date
+#   ./render-hub.sh                 # rewrite about.html, index.html and README.md
+#   ./render-hub.sh --check         # exit 1 if any of them is out of date
 #
 # Generated regions in both files are wrapped in marker comments:
 #   <!-- BEGIN GENERATED:<name> -->  ...  <!-- END GENERATED:<name> -->
@@ -20,13 +21,15 @@ source "$SCRIPT_DIR/lib-log.sh"
 ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 REPOS_FILE="$ROOT/.github/config/repos.json"
 ICONS_FILE="$ROOT/.github/config/icons.json"
-INDEX_FILE="$ROOT/index.html"
+INDEX_FILE="$ROOT/about.html"   # the full hub page (cards, stats, sections)
+APP_FILE="$ROOT/index.html"     # the homepage app (doors + embedded data)
+JOURNEY_FILE="$ROOT/.github/config/journey.json"
 README_FILE="$ROOT/README.md"
 MODE="${1:-write}"
 
 log_init "render-hub"
 
-for F in "$REPOS_FILE" "$ICONS_FILE" "$INDEX_FILE" "$README_FILE"; do
+for F in "$REPOS_FILE" "$ICONS_FILE" "$INDEX_FILE" "$APP_FILE" "$JOURNEY_FILE" "$README_FILE"; do
   if [ ! -f "$F" ]; then
     log_error "Required file not found: $F"
     exit 1
@@ -197,6 +200,71 @@ cat > "$WORK_DIR/readme_impact" <<EOF
 | Pillars | Projects | Open-Source Repos | MO Counties Covered |
 EOF
 
+# --- Homepage app: one door (big touch button) per project ---
+# Works without JavaScript: each door is a real link. app.js upgrades a tap into
+# the project's detail sheet.
+jq -r --slurpfile icons "$ICONS_FILE" "
+  ($PROJECTS_JQ) as \$projects
+  | .owner as \$owner
+  | {live:\"Live\", beta:\"Beta\", skill:\"Ready to use\", \"pre-pilot\":\"Pre-pilot\", spec:\"In design\"} as \$labels
+  | \$projects[]
+  | (.visibility // \"public\") as \$vis
+  | (.title // .name) as \$title
+  | (if .live_url then .live_url
+     elif .page then .page
+     elif \$vis == \"public\" then \"https://github.com/\" + \$owner + \"/\" + .name
+     else \"about.html#pillars\" end) as \$href
+  | ((\$href | startswith(\"https://\"))) as \$external
+  | \"      <li><a class=\\\"door\\\" href=\\\"\" + (\$href | @html) + \"\\\" data-id=\\\"\" + .name + \"\\\" style=\\\"--c:#\" + (.color // \"5A8AAB\") + \"\\\"\"
+    + (if \$external then \" target=\\\"_blank\\\" rel=\\\"noopener\\\"\" else \"\" end) + \">\"
+    + \"<span class=\\\"door-icon\\\" aria-hidden=\\\"true\\\"><svg viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\">\" + (\$icons[0][.icon // .pillar] // \"\") + \"</svg></span>\"
+    + \"<span class=\\\"door-name\\\">\" + (\$title | @html) + \"</span>\"
+    + \"<span class=\\\"door-status\\\">\" + (if \$vis == \"private\" then \"Coming soon\" else \$labels[.status // \"skill\"] end) + \"</span>\"
+    + \"</a></li>\"
+" "$REPOS_FILE" > "$WORK_DIR/doors"
+
+# --- Homepage app: embedded data (projects + journey + narration transcripts) ---
+# Embedded rather than fetched so the app works offline and never shows an
+# empty state. "</" is escaped so the JSON can't close its <script> element.
+CLIPS_JSON="$("$SCRIPT_DIR/narration-clips.sh" "$ROOT/.github/config")"
+{
+  printf '  <script type="application/json" id="app-data">'
+  jq -c --slurpfile icons "$ICONS_FILE" --slurpfile journey "$JOURNEY_FILE" --argjson clips "$CLIPS_JSON" "
+    ($PROJECTS_JQ) as \$projects
+    | .owner as \$owner
+    | (\$projects | map(.name)) as \$listed
+    | {live:\"Live\", beta:\"Beta\", skill:\"Ready to use\", \"pre-pilot\":\"Pre-pilot\", spec:\"In design\"} as \$labels
+    | {missouri:\"Missouri\", nationwide:\"Nationwide\", global:\"Global\"} as \$scopes
+    | {
+        projects: [ \$projects[]
+          | (.visibility // \"public\") as \$vis
+          | (\$journey[0].adoption[.name] // {}) as \$a
+          | {
+              id: .name,
+              title: (.title // .name),
+              pillar: .pillar,
+              color: (\"#\" + (.color // \"5A8AAB\")),
+              icon: (\$icons[0][.icon // .pillar] // \"\"),
+              description: .description,
+              status: (if \$vis == \"private\" then \"Coming soon\" else \$labels[.status // \"skill\"] end),
+              scope: (\$scopes[.scope] // .scope),
+              private: (\$vis == \"private\"),
+              live: (.live_url // null),
+              cta: (.cta // \"Open the app\"),
+              page: (.page // null),
+              repo: (if \$vis == \"public\" then \"https://github.com/\" + \$owner + \"/\" + .name else null end),
+              audience: (.audience // []),
+              adopter: (\$a.adopter // null),
+              pilot: (\$a.pilot // null),
+              connects: [ (.connects_to // [])[] | select(. as \$c | \$listed | index(\$c)) ]
+            } ],
+        journey: (\$journey[0] | del(._readme, .adoption)),
+        clips: (\$clips | map({key: .id, value: .text}) | from_entries)
+      }
+  " "$REPOS_FILE" | sed 's#</#<\\/#g'
+  printf '</script>\n'
+} > "$WORK_DIR/app_data"
+
 # --- Splice each block between its markers ---
 splice() {
   local name="$1" block="$2" src="$3" out="$4" label="$5"
@@ -226,11 +294,12 @@ render_file() {
 }
 
 render_file "$INDEX_FILE"  "pillars:pillars" "stats:stats" "share:share"
+render_file "$APP_FILE"    "doors:doors" "app-data:app_data"
 render_file "$README_FILE" "badges:readme_badges" "ecosystem:readme_ecosystem" "pillars:readme_pillars" \
                            "directory:readme_directory" "impact:readme_impact"
 
 STALE=0
-for TARGET in "$INDEX_FILE" "$README_FILE"; do
+for TARGET in "$INDEX_FILE" "$APP_FILE" "$README_FILE"; do
   NAME="$(basename "$TARGET")"
   if diff -q "$TARGET" "$WORK_DIR/$NAME.rendered" >/dev/null; then
     [ "$MODE" = "--check" ] || log_info "$NAME already up to date"
@@ -248,7 +317,7 @@ done
 
 if [ "$MODE" = "--check" ]; then
   [ "$STALE" -eq 0 ] || exit 1
-  log_success "index.html and README.md are in sync with repos.json ($PROJECT_COUNT projects, $PILLAR_COUNT pillars)"
+  log_success "about.html, index.html and README.md are in sync with repos.json ($PROJECT_COUNT projects, $PILLAR_COUNT pillars)"
   exit 0
 fi
 log_success "Rendered $PROJECT_COUNT projects across $PILLAR_COUNT pillars"

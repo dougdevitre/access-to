@@ -1,0 +1,19 @@
+{
+  "_readme": [
+    "Spoken narration for the homepage app, in Doug Devitre's ElevenLabs voice.",
+    "The words come from journey.json and repos.json (see .github/scripts/narration-clips.sh); this file holds only how they are performed.",
+    "Voice settings match Distributed Virtue Season One (profile warm-v2) so both sites sound like the same person.",
+    "The voice id is not a secret. The API key is: it lives only in the ELEVENLABS_API_KEY repository secret."
+  ],
+  "voice_id": "2ydcbtd5sJZRYFMNgMVZ",
+  "model_id": "eleven_multilingual_v2",
+  "output_format": "mp3_44100_128",
+  "voice_settings": {
+    "stability": 0.35,
+    "similarity_boost": 0.8,
+    "style": 0.22,
+    "speed": 0.88,
+    "use_speaker_boost": true
+  },
+  "gates_intro": "Before you share anything, pass it through four gates."
+}

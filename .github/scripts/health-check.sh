@@ -162,6 +162,18 @@ THIRTY_DAYS_AGO=$(date -u -d '30 days ago' '+%Y-%m-%d' 2>/dev/null || date -u -v
 
 } >> "$OUTPUT"
 
+# --- Ecosystem drift (shared disclaimer + stale skill packages) ---
+# The dashboard shows it; the monthly Ecosystem Drift workflow owns the
+# failing run and the tracking issue, so findings only warn here.
+DRIFT_REPORT=$(mktemp)
+if GITHUB_STEP_SUMMARY="" "$SCRIPT_DIR/ecosystem-drift.sh" --report "$DRIFT_REPORT" "$REPOS_FILE"; then
+  log_action "ecosystem-drift" "all repos" "clean"
+else
+  log_warn "Ecosystem drift found problems; see the Ecosystem drift section of the dashboard"
+fi
+{ echo ""; cat "$DRIFT_REPORT"; } >> "$OUTPUT"
+rm -f "$DRIFT_REPORT"
+
 log_summary
 
 if [ "$FETCH_ERRORS" -gt 0 ]; then

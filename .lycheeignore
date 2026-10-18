@@ -1,0 +1,6 @@
+# Exclusions for the Link check workflow (.github/workflows/link-check.yml).
+# One regular expression per line. Every entry says why it is skipped.
+
+# temporary — remove when the domain is reattached (dougdevitre.org is down:
+# the hub's CNAME was deleted 2026-04-07).
+^https?://(www\.)?dougdevitre\.org

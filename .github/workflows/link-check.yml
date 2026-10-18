@@ -1,0 +1,95 @@
+name: Link check
+
+# Checks every link in the hub's user-facing pages with lychee: the root HTML
+# pages (homepage, about, pillar pages, 404) and the root Markdown docs. Skips
+# CLAUDE.md (agent instructions, not for readers), audio/ and its generated
+# narration, node_modules, tests and .github. Relative links are checked as
+# files, so a renamed page is caught too.
+#   - pull requests that touch pages, docs or the registry: fail on a broken link
+#   - monthly schedule and manual runs: open or update ONE issue,
+#     "Broken links (monthly check)", instead of failing silently
+# Exclusions live in .lycheeignore, each with a comment saying why.
+
+on:
+  pull_request:
+    paths:
+      - '**/*.md'
+      - '**/*.html'
+      - '.github/config/**'   # repos.json/journey.json generate the project listings
+      - '.lycheeignore'
+      - '.github/workflows/link-check.yml'
+  schedule:
+    - cron: '41 10 5 * *'   # 10:41 UTC on the 5th of each month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: link-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lychee:
+    name: Check links
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Run lychee
+        id: lychee
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          # 403 and 429 are accepted: many sites block or rate-limit GitHub-hosted
+          # bots, and a bot block is not a dead link. 404, 410, DNS/connection
+          # errors and repeated 5xx still fail.
+          args: >-
+            --no-progress
+            --max-concurrency 8
+            --max-retries 3
+            --timeout 20
+            --accept 200..=299,403,429
+            --exclude '^tel:'
+            --exclude '^mailto:'
+            --exclude-path 'CLAUDE\.md'
+            './*.md'
+            './*.html'
+          output: lychee/report.md
+          fail: false
+          jobSummary: true
+
+      - name: Fail the pull request on broken links
+        if: github.event_name == 'pull_request' && steps.lychee.outputs.exit_code != '0'
+        run: |
+          echo "Broken links:"
+          grep -E '^\* \[' lychee/report.md || cat lychee/report.md
+          # One annotation listing every failure, readable from the checks API too.
+          list="$(grep -E '^\* \[' lychee/report.md | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')"
+          echo "::error title=Broken links::${list:-see the job log}"
+          exit 1
+
+      - name: Open or update the link-check issue
+        if: github.event_name != 'pull_request' && steps.lychee.outputs.exit_code != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title="Broken links (monthly check)"
+          {
+            echo "The link check found broken links ([run]($RUN_URL))."
+            echo "Fix each link with a replacement you have confirmed loads the intended page, or, if a site only blocks bots, add a commented exclusion to \`.lycheeignore\`."
+            echo
+            cat lychee/report.md
+          } > lychee/issue.md
+          number="$(gh issue list --state open --search "\"$title\" in:title" --json number,title \
+            --jq "[.[] | select(.title == \"$title\")][0].number // empty")"
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file lychee/issue.md
+          else
+            gh issue create --title "$title" --body-file lychee/issue.md
+          fi

@@ -71,10 +71,10 @@
   <header>
     <div class="topbar">
       <div class="topbar-logo"><a href="index.html">Access To</a></div>
-      <button class="hamburger" aria-label="Toggle menu" onclick="this.classList.toggle('open');document.querySelector('.topbar-links').classList.toggle('open');">
+      <button class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="site-nav" onclick="this.setAttribute('aria-expanded',this.classList.toggle('open'));document.querySelector('.topbar-links').classList.toggle('open');">
         <span></span><span></span><span></span>
       </button>
-      <nav class="topbar-links">
+      <nav class="topbar-links" id="site-nav" aria-label="Main">
         <a href="#pillars" onclick="closeMobileNav()">Pillars</a>
         <a href="#how-it-works" onclick="closeMobileNav()">How It Works</a>
         <a href="#updates" onclick="closeMobileNav()">Updates</a>
@@ -298,7 +298,7 @@
         <h3>Clone the repo</h3>
         <p>Download the skill from GitHub. The key file is <code>SKILL.md</code> — a structured prompt that teaches Claude a specialized workflow.</p>
         <div class="copy-block">
-          <code>git clone https://github.com/dougdevitre/&lt;repo-name&gt;</code>
+          <code tabindex="0">git clone https://github.com/dougdevitre/&lt;repo-name&gt;</code>
           <button class="copy-btn" aria-label="Copy git clone command" onclick="copyCmd(this,'git clone https://github.com/dougdevitre/')">Copy</button>
         </div>
       </div>
@@ -426,7 +426,7 @@
         </div>
       </div>
       <div class="footer-col">
-        <h4>Pillars</h4>
+        <h2>Pillars</h2>
         <ul>
           <li><a href="health.html">Health</a></li>
           <li><a href="education.html">Education</a></li>
@@ -438,7 +438,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Resources</h4>
+        <h2>Resources</h2>
         <ul>
           <li><a href="#how-it-works">How It Works</a></li>
           <li><a href="#changelog">Changelog</a></li>
@@ -447,7 +447,7 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Connect</h4>
+        <h2>Connect</h2>
         <ul>
           <li><a href="#updates">Get Updates</a></li>
           <li><a href="#donate">Donate</a></li>
@@ -470,6 +470,7 @@
     // Mobile nav
     function closeMobileNav(){
       document.querySelector('.hamburger').classList.remove('open');
+      document.querySelector('.hamburger').setAttribute('aria-expanded','false');
       document.querySelector('.topbar-links').classList.remove('open');
     }
 

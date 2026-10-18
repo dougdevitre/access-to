@@ -23,7 +23,10 @@
   <header>
     <div class="topbar">
       <div class="topbar-logo"><a href="index.html">Access To</a></div>
-      <nav class="topbar-links">
+      <button class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="site-nav" onclick="this.setAttribute('aria-expanded',this.classList.toggle('open'));document.querySelector('.topbar-links').classList.toggle('open');">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="topbar-links" id="site-nav" aria-label="Main">
         <a href="about.html#pillars">Pillars</a>
         <a href="about.html#how-it-works">How It Works</a>
         <a href="https://github.com/dougdevitre" target="_blank" rel="noopener">GitHub</a>

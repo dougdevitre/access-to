@@ -61,31 +61,33 @@ block() {
   printf '%s\n' "$END_MARK"
 }
 
-# upsert <file> <template> <insert-after-line> — replace the marked block, or
-# insert it after the given line (0 = top of file) with blank lines around it.
-upsert() {
+# strip <file> — the file without any marked block (and the blank line after it).
+strip() {
+  awk -v begin="$BEGIN_MARK" -v end="$END_MARK" '
+    index($0, begin) == 1 { skip = 1; next }
+    skip { if (index($0, end) == 1) { skip = 0; drop = 1 } next }
+    drop && $0 == "" { drop = 0; next }
+    { drop = 0; print }
+  ' "$1"
+}
+
+# insert <file> <template> <insert-after-line> — insert the marked block after
+# the given line (0 = top of file), with one blank line on each side. Callers
+# pass a stripped file, so the block always lands in its canonical place: a
+# re-run is a no-op, and a block in an old position moves.
+insert() {
   local file="$1" tmpl="$2" after="$3" blk="$WORK/block"
   block "$tmpl" > "$blk"
-  if grep -qF "$BEGIN_MARK" "$file"; then
-    awk -v blk="$blk" -v begin="$BEGIN_MARK" -v end="$END_MARK" '
-      BEGIN { while ((getline l < blk) > 0) b = b l "\n" }
-      index($0, begin) == 1 { printf "%s", b; skip = 1; next }
-      skip && index($0, end) == 1 { skip = 0; next }
-      !skip { print }
-    ' "$file"
-  else
-    awk -v blk="$blk" -v after="$after" '
-      BEGIN { while ((getline l < blk) > 0) b = b l "\n" }
-      function put() { if (after > 0) print ""; printf "%s", b; pending = 1 }
-      after == 0 && NR == 1 { put() }
-      {
-        if (pending) { if ($0 != "") print ""; pending = 0 }
-        print
-      }
-      NR == after { put() }
-      END { }
-    ' "$file"
-  fi
+  awk -v blk="$blk" -v after="$after" '
+    BEGIN { while ((getline l < blk) > 0) b = b l "\n" }
+    function put() { if (after > 0) print ""; printf "%s", b; pending = 1 }
+    after == 0 && NR == 1 { put() }
+    {
+      if (pending) { if ($0 != "") print ""; pending = 0 }
+      print
+    }
+    NR == after { put() }
+  ' "$file"
 }
 
 CHANGED=0
@@ -115,25 +117,31 @@ apply "$DIR/DISCLAIMER.md" "$WORK/DISCLAIMER.md"
 # 2. README.md — under the title. A centered <div>/<p> header block is kept
 #    whole: the notice goes after it closes.
 if [ -f "$DIR/README.md" ]; then
-  if head -1 "$DIR/README.md" | grep -qE '^<(div|p)[ >]'; then
-    AFTER=$(grep -nE '^</(div|p)>' "$DIR/README.md" | head -1 | cut -d: -f1)
+  strip "$DIR/README.md" > "$WORK/README.stripped"
+  if head -1 "$WORK/README.stripped" | grep -qE '^<(div|p)[ >]'; then
+    AFTER=$(grep -nE '^</(div|p)>' "$WORK/README.stripped" | head -1 | cut -d: -f1)
   else
-    AFTER=$(grep -nE '^# ' "$DIR/README.md" | head -1 | cut -d: -f1)
+    AFTER=$(grep -nE '^# ' "$WORK/README.stripped" | head -1 | cut -d: -f1)
   fi
-  upsert "$DIR/README.md" readme-notice.md "${AFTER:-0}" > "$WORK/README.md"
+  insert "$WORK/README.stripped" readme-notice.md "${AFTER:-0}" > "$WORK/README.md"
   apply "$DIR/README.md" "$WORK/README.md"
 else
   log_warn "$REPO has no README.md; skipping the README notice"
 fi
 
-# 3. SKILL.md at the root or in skill/ — right after the YAML frontmatter.
+# 3. SKILL.md at the root or in skill/ — under the skill's title, so the file
+#    still opens with its H1 (markdownlint MD041). With no title, right after
+#    the YAML frontmatter.
 for SKILL in "$DIR/SKILL.md" "$DIR/skill/SKILL.md"; do
   [ -f "$SKILL" ] && [ ! -L "$SKILL" ] || continue
-  AFTER=0
-  if [ "$(head -1 "$SKILL")" = "---" ]; then
-    AFTER=$(awk 'NR > 1 && $0 == "---" { print NR; exit }' "$SKILL")
-  fi
-  upsert "$SKILL" skill-notice.md "${AFTER:-0}" > "$WORK/SKILL.md"
+  strip "$SKILL" > "$WORK/SKILL.stripped"
+  AFTER=$(awk '
+    NR == 1 && $0 == "---" { fm = 1; next }
+    fm && $0 == "---" { fm = 0; end = NR; next }
+    !fm && /^# / { print NR; found = 1; exit }
+    END { if (!found) print end + 0 }
+  ' "$WORK/SKILL.stripped")
+  insert "$WORK/SKILL.stripped" skill-notice.md "${AFTER:-0}" > "$WORK/SKILL.md"
   apply "$SKILL" "$WORK/SKILL.md"
 done
 

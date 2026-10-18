@@ -71,8 +71,33 @@ describe('Shared disclaimer', () => {
       expect(disc).toMatch(/^# Disclaimer — Access to Safety/);
       expect(readme.split('\n')[0]).toBe('# Sample Tool');
       expect(readme.indexOf('BEGIN DISCLAIMER')).toBeLessThan(readme.indexOf('Intro paragraph.'));
-      expect(skill.startsWith('---\nname: sample\ndescription: A sample.\n---\n\n<!-- BEGIN DISCLAIMER')).toBe(true);
+      expect(skill.startsWith('---\nname: sample\ndescription: A sample.\n---\n\n# Sample Skill\n\n<!-- BEGIN DISCLAIMER')).toBe(true);
       expect(readme).not.toContain('{{TITLE}}');
+    });
+
+    test('keeps the H1 as the first line after frontmatter (markdownlint MD041)', () => {
+      run(['access-to-safety', dir]);
+      const skill = fs.readFileSync(path.join(dir, 'SKILL.md'), 'utf-8');
+      const body = skill.replace(/^---\n[\s\S]*?\n---\n/, '').trimStart();
+      expect(body.startsWith('# Sample Skill')).toBe(true);
+    });
+
+    test('moves a block found in an old position to the canonical one', () => {
+      run(['access-to-safety', dir]);
+      const f = path.join(dir, 'SKILL.md');
+      const canonical = fs.readFileSync(f, 'utf-8');
+      const block = canonical.match(/<!-- BEGIN DISCLAIMER[\s\S]*?<!-- END DISCLAIMER -->\n\n/)[0];
+      const old = SKILL.replace('---\n\n', `---\n\n${block}`);
+      fs.writeFileSync(f, old);
+      expect(run(['--check', 'access-to-safety', dir]).status).toBe(1);
+      run(['access-to-safety', dir]);
+      expect(fs.readFileSync(f, 'utf-8')).toBe(canonical);
+    });
+
+    test('a skill without a title gets the notice right after its frontmatter', () => {
+      fs.writeFileSync(path.join(dir, 'SKILL.md'), '---\nname: x\n---\n\nNo title here.\n');
+      run(['access-to-safety', dir]);
+      expect(fs.readFileSync(path.join(dir, 'SKILL.md'), 'utf-8')).toMatch(/^---\nname: x\n---\n\n<!-- BEGIN DISCLAIMER[\s\S]*END DISCLAIMER -->\n\nNo title here\.\n$/);
     });
 
     test('keeps everything outside its markers, including topic disclaimers', () => {

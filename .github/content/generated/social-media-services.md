@@ -1,6 +1,6 @@
 # Services — Social Media Copy
 
-> Generated from repos.json + content.json | 2026-04-10
+> Generated from repos.json + content.json | 2026-10-18
 
 ## Twitter/X (280 chars)
 
@@ -11,7 +11,7 @@ Connecting people to the services they need, faster. Free, open-source Claude Sk
 Screen a client for eligibility across multiple benefit programs — now possible with a free AI skill. Access To Services gives social workers a domain expert in their pocket. https://dougdevitre.org #OpenSource
 
 ### Stats Post
-6 pillars. 7 projects. 400+ modules. 114 Missouri counties. One mission: close the access gap. https://dougdevitre.org #AccessTo
+15 pillars. 18 projects. 400+ modules. 114 Missouri counties. One mission: close the access gap. https://dougdevitre.org #AccessTo
 
 ### Connection Post
 Services doesn't work alone. It connects to Jobs because real problems cross boundaries. That's the Access To difference. #CivicTech
@@ -35,7 +35,7 @@ What you can do:
 2. Build a coordinated service plan spanning housing, health, and employment
 3. Navigate TANF recertification requirements step by step
 
-It's part of the Access To ecosystem — 6 pillars, 7 projects, all open source.
+It's part of the Access To ecosystem — 15 pillars, 18 projects, all open source.
 
 Try it: github.com/dougdevitre/access-to-services
 Learn more: https://dougdevitre.org

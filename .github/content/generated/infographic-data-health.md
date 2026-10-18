@@ -1,6 +1,6 @@
 # Health — Infographic Data
 
-> Generated from repos.json + content.json | 2026-04-10
+> Generated from repos.json + content.json | 2026-10-18
 
 ## Header
 
@@ -15,8 +15,8 @@
 
 ## Ecosystem Stats
 
-- 6 pillars of human access
-- 7 active projects
+- 15 pillars of human access
+- 18 active projects
 - 400+ modules of domain content
 - 114 Missouri counties served
 

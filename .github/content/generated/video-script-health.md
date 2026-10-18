@@ -1,6 +1,6 @@
 # Health — Video Script (2-3 min)
 
-> Generated from repos.json + content.json | 2026-04-10
+> Generated from repos.json + content.json | 2026-10-18
 
 ## HOOK (0:00 - 0:15)
 
@@ -53,7 +53,7 @@ Each conversation is grounded in domain expertise — not generic AI."
 **Visual:** Hub-and-spokes diagram
 
 **Voiceover:**
-"Access To Health is part of a larger ecosystem — 6 pillars, 7 projects, 400+ modules. And because people don't face one challenge at a time, Health connects directly to Safety, Services."
+"Access To Health is part of a larger ecosystem — 15 pillars, 18 projects, 400+ modules. And because people don't face one challenge at a time, Health connects directly to Safety, Services."
 
 ---
 

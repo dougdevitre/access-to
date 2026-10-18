@@ -1,6 +1,6 @@
 # Health — Podcast Episode Outline (20-30 min)
 
-> Generated from repos.json + content.json | 2026-04-10
+> Generated from repos.json + content.json | 2026-10-18
 
 ## Episode Title
 
@@ -54,7 +54,7 @@ A deep dive into how AI-powered Claude Skills are closing the health access gap 
 
 ## Segment 5: The Bigger Picture (5 min)
 
-- The Access To ecosystem: 6 pillars, 7 projects
+- The Access To ecosystem: 15 pillars, 18 projects
 - Founded by Doug Devitre (CoTrackPro)
 - Open source model: why free matters for civic tech
 - Social proof: AFCC, Missouri Bar, NASW, EAPA, Justice Technology Association

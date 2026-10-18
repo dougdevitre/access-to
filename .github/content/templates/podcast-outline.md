@@ -40,7 +40,7 @@ A deep dive into how AI-powered Claude Skills are closing the {{PILLAR_LOWER}} a
 - The Access To ecosystem: {{BRAND_STATS_PILLARS}} pillars, {{BRAND_STATS_PROJECTS}} projects
 - Founded by {{FOUNDER}} (CoTrackPro)
 - Open source model: why free matters for civic tech
-- Social proof: {{SOCIAL_PROOF}}
+- Built for: {{BRAND_AUDIENCES}}
 
 ## Segment 6: How to Get Started (3 min)
 

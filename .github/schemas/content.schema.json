@@ -37,15 +37,14 @@
         },
         "stats": {
           "type": "object",
+          "description": "Configured facts only. Pillar, project, and open-source counts are derived from repos.json.",
           "properties": {
-            "pillars": { "type": "integer" },
-            "projects": { "type": "integer" },
-            "modules": { "type": "integer" },
             "counties": { "type": "integer" }
           }
         },
-        "social_proof": {
+        "audiences": {
           "type": "array",
+          "description": "Roles the tools are built for. Name an organization only with its permission.",
           "items": { "type": "string" }
         }
       }

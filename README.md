@@ -321,7 +321,7 @@ A Claude Skill is a <code>SKILL.md</code> file that teaches Claude a specialized
 <details>
 <summary><strong>Does this cost anything?</strong></summary>
 <br>
-The tools themselves are free and open source under MIT. You do need a <a href="https://claude.ai">Claude.ai</a> account (free or paid) to use the skills. A paid Claude Pro plan is recommended for longer conversations and higher usage limits.
+The public tools are free and open source (MIT or Apache 2.0; see each repo's LICENSE). You do need a <a href="https://claude.ai">Claude.ai</a> account (free or paid) to use the skills. A paid Claude Pro plan is recommended for longer conversations and higher usage limits.
 </details>
 
 <details>
@@ -351,8 +351,8 @@ They're independent but complementary. A person navigating one access gap often 
 <!-- BEGIN GENERATED:impact -->
 | | | | |
 |:---:|:---:|:---:|:---:|
-| **15** | **18** | **400+** | **114** |
-| Pillars | Projects | Modules | MO Counties Served |
+| **15** | **18** | **15** | **114** |
+| Pillars | Projects | Open-Source Repos | MO Counties Covered |
 <!-- END GENERATED:impact -->
 
 </div>

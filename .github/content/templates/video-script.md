@@ -53,7 +53,7 @@ Each conversation is grounded in domain expertise — not generic AI."
 **Visual:** Hub-and-spokes diagram
 
 **Voiceover:**
-"Access To {{PILLAR_NAME}} is part of a larger ecosystem — {{BRAND_STATS_PILLARS}} pillars, {{BRAND_STATS_PROJECTS}} projects, {{BRAND_STATS_MODULES}}+ modules. And because people don't face one challenge at a time, {{PILLAR_NAME}} connects directly to {{CONNECTIONS_PROSE}}."
+"Access To {{PILLAR_NAME}} is part of a larger ecosystem — {{BRAND_STATS_PILLARS}} pillars, {{BRAND_STATS_PROJECTS}} projects, {{BRAND_STATS_OPEN_SOURCE}} of them open source. And because people don't face one challenge at a time, {{PILLAR_NAME}} connects directly to {{CONNECTIONS_PROSE}}."
 
 ---
 

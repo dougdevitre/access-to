@@ -66,10 +66,10 @@
 }
 
 [data-theme="dark"] .social-proof-logos span {
-  color: var(--color-border);
+  color: var(--color-muted);
 }
 [data-theme="dark"] .social-proof-logos span:hover {
-  color: var(--color-muted);
+  color: var(--color-text);
 }
 
 [data-theme="dark"] .badge-row img {

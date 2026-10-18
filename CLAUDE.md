@@ -34,6 +34,9 @@ Root files are the static landing site (HTML/CSS, vanilla JS, no build step).
 # Test validation in JSON log mode
 LOG_FORMAT=json .github/scripts/validate-config.sh .github/config
 
+# Regenerate hub cards/counters from repos.json (or --check for drift)
+.github/scripts/render-hub.sh
+
 # Onboard a new repo
 .github/scripts/onboard-repo.sh <repo-name> <pillar> [scope]
 
@@ -50,5 +53,8 @@ open index.html
 - **Accessible.** All HTML must include ARIA labels, work with keyboard navigation, and support dark mode.
 - **Idempotent.** All sync scripts must be safe to re-run.
 - **Exit codes matter.** Scripts exit 1 on errors — don't mask failures.
-- When editing `repos.json`, valid pillars are: `hub`, `housing`, `jobs`, `health`, `business`, `services`, `education`, `safety`. Valid scopes: `missouri`, `nationwide`, `global`. Valid roles: `hub`, `pillar`, `tool`, `docs`.
+- When editing `repos.json`, valid pillars are: `hub`, `housing`, `jobs`, `health`, `business`, `services`, `education`, `safety`, `justice`, `peace`, `civics`, `community`, `food`, `energy`, `care`, `mobility`. Valid scopes: `missouri`, `nationwide`, `global`. Valid roles: `hub`, `pillar`, `tool`, `docs`. Optional site fields: `title`, `status` (`live`, `beta`, `skill`, `pre-pilot`, `spec`), `visibility` (`public`, `private`), `listed` (default `true`), `live_url`, `page`.
+- **Hub cards are generated, not fetched.** After any `repos.json` change, run `.github/scripts/render-hub.sh` and commit the updated `index.html`. CI runs `render-hub.sh --check` and fails if they drift. Never hand-edit between `<!-- BEGIN GENERATED:* -->` markers.
+- A new pillar needs: an enum value in `repos.schema.json` and `validate-config.sh`, a `pillar:<name>` label in `labels.json`, and an icon in `.github/config/icons.json`.
+- Private repos stay `listed` with a "Coming soon" card and no repo link; set `"listed": false` to hide one entirely.
 - `connects_to` entries must reference repo names that exist in the registry.

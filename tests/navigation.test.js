@@ -88,13 +88,58 @@ describe('Navigation', () => {
       expect(link.length).toBe(1);
     });
 
-    test('pillar cards section exists and JS renders from repos.json', () => {
-      const pillarsSection = $('#pillars');
-      expect(pillarsSection.length).toBe(1);
-      // Cards are rendered dynamically via fetch from .github/config/repos.json
-      const scripts = $('script').text();
-      expect(scripts).toContain('renderPillars');
-      expect(scripts).toContain('repos.json');
+    describe('project cards (static, generated from repos.json by render-hub.sh)', () => {
+      const registry = JSON.parse(
+        fs.readFileSync(path.join(ROOT, '.github/config/repos.json'), 'utf-8')
+      );
+      const listed = registry.repos.filter((r) => r.role !== 'hub' && r.listed !== false);
+
+      test('pillars section exists', () => {
+        expect($('#pillars').length).toBe(1);
+      });
+
+      test('cards are in the HTML itself, not fetched at runtime', () => {
+        const scripts = $('script').text();
+        expect(scripts).not.toContain('renderPillars');
+        expect(scripts).not.toContain("fetch('.github/config/repos.json')");
+        expect($('#pillars .pillar-card').length).toBeGreaterThan(0);
+      });
+
+      test('one card per listed project in repos.json', () => {
+        expect($('#pillars .pillar-card').length).toBe(listed.length);
+      });
+
+      test('every listed project has a card with its pillar and title', () => {
+        const cards = $('#pillars .pillar-card').toArray().map((el) => ({
+          pillar: $(el).attr('data-pillar'),
+          title: $(el).find('h2').text(),
+        }));
+        listed.forEach((repo) => {
+          const match = cards.find((c) => c.pillar === repo.pillar && c.title === (repo.title || c.title));
+          expect(match).toBeDefined();
+        });
+      });
+
+      test('public repos link to GitHub; private repos do not', () => {
+        listed.forEach((repo) => {
+          const url = `https://github.com/${registry.owner}/${repo.name}`;
+          const linked = $(`#pillars a[href="${url}"]`).length > 0;
+          expect(linked).toBe((repo.visibility || 'public') === 'public');
+        });
+      });
+
+      test('external links open safely (rel=noopener)', () => {
+        $('#pillars a[target="_blank"]').each((_, a) => {
+          expect($(a).attr('rel')).toContain('noopener');
+        });
+      });
+
+      test('stat counters show real numbers without JavaScript', () => {
+        $('#stats .stat-number').each((_, el) => {
+          expect($(el).text().trim()).not.toBe('0');
+        });
+        expect($('#stats .stat-number').eq(1).text().trim()).toBe(String(listed.length));
+      });
     });
   });
 

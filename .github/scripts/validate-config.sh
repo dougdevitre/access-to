@@ -10,6 +10,8 @@ set -euo pipefail
 #   - repos.json: required fields, valid pillars, connects_to references exist
 #   - labels.json: required fields, valid hex colors, no duplicate names
 #   - Cross-file: pillar labels exist for each pillar in repos.json
+#   - i18n/<lang>.json + journey.<lang>.json: same keys, ids and counts as the
+#     English source, Spanish copy for every listed project, crisis lines kept
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/lib-log.sh"
@@ -275,6 +277,91 @@ for P in "${PILLARS[@]}"; do
     ((ERRORS++)) || true
   fi
 done
+
+# --- Homepage languages: i18n/<lang>.json + journey.<lang>.json ---
+# English is the source. Every other language must translate the same keys,
+# every listed project and every journey item, and keep the crisis lines.
+I18N_DIR="$CONFIG_DIR/i18n"
+JOURNEY_FILE="$CONFIG_DIR/journey.json"
+if [ -d "$I18N_DIR" ]; then
+  log_info "Validating homepage languages (i18n/)..."
+  EN_FILE="$I18N_DIR/en.json"
+  if [ ! -f "$EN_FILE" ] || ! jq empty "$EN_FILE" 2>/dev/null; then
+    log_error "i18n/en.json is missing or not valid JSON"
+    ((ERRORS++)) || true
+  else
+    for F in "$I18N_DIR"/*.json; do
+      L="$(basename "$F" .json)"
+      if ! jq empty "$F" 2>/dev/null; then
+        log_error "i18n/$L.json is not valid JSON"; ((ERRORS++)) || true; continue
+      fi
+      if [ "$(jq -r '.lang' "$F")" != "$L" ]; then
+        log_error "i18n/$L.json: \"lang\" must be \"$L\""; ((ERRORS++)) || true
+      fi
+      for FIELD in name url labels ui narration; do
+        if [ "$(jq "has(\"$FIELD\")" "$F")" != "true" ]; then
+          log_error "i18n/$L.json missing required field: $FIELD"; ((ERRORS++)) || true
+        fi
+      done
+      [ "$L" = "en" ] && continue
+
+      JF="$CONFIG_DIR/journey.$L.json"
+      if [ ! -f "$JF" ] || ! jq empty "$JF" 2>/dev/null; then
+        log_error "i18n/$L.json has no valid journey.$L.json"; ((ERRORS++)) || true; continue
+      fi
+      if [ "$(jq -r '.path' "$F")" != "$L/" ]; then
+        log_error "i18n/$L.json: \"path\" must be \"$L/\""; ((ERRORS++)) || true
+      fi
+      # Same keys as English, and the same {placeholders} in every ui string.
+      while IFS= read -r MSG; do
+        [ -n "$MSG" ] || continue
+        log_error "i18n/$L.json: $MSG"; ((ERRORS++)) || true
+      done < <(jq -r --slurpfile en "$EN_FILE" '
+        def ph: [scan("\\{\\w+\\}")] | sort;
+        . as $t | $en[0] as $e
+        | (["ui", "narration", "labels"][] as $k
+            | (($e[$k] | keys) - ($t[$k] // {} | keys))[] | "\($k).\(.) is missing"),
+          ((($e.labels.status | keys) - ($t.labels.status // {} | keys))[] | "labels.status.\(.) is missing"),
+          ((($e.labels.scope | keys) - ($t.labels.scope // {} | keys))[] | "labels.scope.\(.) is missing"),
+          ($e.ui | to_entries[] | select(($t.ui[.key] // "" | ph) != (.value | ph)) | "ui.\(.key) must use the placeholders \(.value | ph | join(" "))"),
+          (if ($t.page | type) != "object" or ([$t.page[] | type] | all(. == "object") | not)
+           then "page must be an object of sections, each mapping English to \("'"$L"'")" else empty end),
+          ([$t.page[]? | to_entries[] | select((.value | type) != "string" or .value == "") | .key][] | "page: empty translation for \"\(.)\"")
+      ' "$F")
+      # Every listed project has copy here; nothing extra.
+      while IFS= read -r MSG; do
+        [ -n "$MSG" ] || continue
+        log_error "i18n/$L.json: $MSG"; ((ERRORS++)) || true
+      done < <(jq -r --slurpfile r "$REPOS_FILE" '
+        ([$r[0].repos[] | select(.role != "hub" and (.listed // true))]) as $listed
+        | (.projects // {}) as $p
+        | ($listed[] | .name as $n | . as $repo
+            | if ($p[$n] | not) then "projects.\($n) is missing"
+              else (["description", "cta"][] | select(($p[$n][.] // "") == "") | "projects.\($n).\(.) is missing"),
+                   (if (($p[$n].audience // []) | length) != (($repo.audience // []) | length) then "projects.\($n).audience must have \(($repo.audience // []) | length) entries" else empty end)
+              end),
+          ((($p | keys) - ($listed | map(.name)))[] | "projects.\(.) is not a listed project")
+      ' "$F")
+      # journey.<lang>.json: same ids, counts and order as journey.json, every
+      # listed project adopted, and the crisis lines kept.
+      while IFS= read -r MSG; do
+        [ -n "$MSG" ] || continue
+        log_error "journey.$L.json: $MSG"; ((ERRORS++)) || true
+      done < <(jq -r --slurpfile en "$JOURNEY_FILE" --slurpfile r "$REPOS_FILE" '
+        . as $t | $en[0] as $e
+        | (if ($t.beacon | map(.letter)) != ($e.beacon | map(.letter)) then "beacon must have the letters \($e.beacon | map(.letter) | join(""))" else empty end),
+          (if ($t.virtues | length) != ($e.virtues | length) then "virtues must have \($e.virtues | length) entries" else empty end),
+          (if ($t.gates | length) != ($e.gates | length) then "gates must have \($e.gates | length) entries" else empty end),
+          (["roles", "needs", "places"][] as $k
+            | if ($t.finder[$k] | map(.id)) != ($e.finder[$k] | map(.id)) then "finder.\($k) ids must match journey.json, in order" else empty end),
+          (["911", "988"][] as $line | select(($t.finder.crisis_note // "") | contains($line) | not) | "finder.crisis_note must include \($line)"),
+          ([$r[0].repos[] | select(.role != "hub" and (.listed // true)) | .name][]
+            | select(($t.adoption[.].adopter // "") == "" or ($t.adoption[.].pilot // "") == "") | "adoption.\(.) needs an adopter and a pilot")
+      ' "$JF")
+      log_action "validate-language" "$L" "checked"
+    done
+  fi
+fi
 
 # --- Summary ---
 log_summary

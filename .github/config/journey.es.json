@@ -1,0 +1,89 @@
+{
+  "_readme": [
+    "Spanish homepage app content (es/index.html). A translation of journey.json: same ids, same order, same counts; only the words differ.",
+    "render-hub.sh merges it over journey.json, so structure (finder doors, crisis flags, role lenses) always comes from journey.json and cannot drift.",
+    "beacon, virtues and gates translate Distributed Virtue's canonical wording (dougdevitre/distributed-virtue, lib/beacon/). BEACON keeps its English letters.",
+    "DRAFT: written without a fluent reviewer. Every string here must be checked by a fluent Spanish speaker before the Spanish homepage launches."
+  ],
+  "catalyst": {
+    "title": "Catalizador de Desarrollo Comunitario",
+    "welcome": "Soy Doug Devitre. Creo herramientas gratuitas y abiertas para los lugares donde las personas se quedan sin ayuda: tribunales, seguridad, vivienda, salud, alimentos y trabajo. Luego ayudo a las comunidades a ponerlas en práctica. Cada proyecto aquí empieza de la misma manera: con una persona que está pasando por un momento difícil, no con la tecnología.",
+    "distribute": "Distribuir la virtud significa que el carácter puede difundirse como la información. La habilidad de una persona se convierte en la capacidad de toda una comunidad. Los líderes empiezan con poco: elija una virtud, elija una parte de su comunidad y dé un paso consciente esta semana.",
+    "blend": "Estos pilares se complementan entre sí. Una familia en crisis rara vez necesita una sola puerta, por eso cada proyecto señala los que funcionan a su lado."
+  },
+  "beacon": [
+    { "letter": "B", "title": "Empezar por la humanidad", "prompt": "¿Quién está sufriendo, confundido, excluido o abrumado?" },
+    { "letter": "E", "title": "Examinar el sistema", "prompt": "¿Cuáles son las instituciones, los recursos, las barreras y los flujos de información?" },
+    { "letter": "A", "title": "Aumentar la capacidad de las personas", "prompt": "¿La capacidad de quién aumenta con esto, y cómo?" },
+    { "letter": "C", "title": "Crear capacidad compartida", "prompt": "¿Qué recurso reutilizable sale de esto: una guía, una plantilla o un taller?" },
+    { "letter": "O", "title": "Abrir puertas", "prompt": "¿Quién no puede acceder a esto por el costo, la alfabetización, el idioma, una discapacidad o la desconfianza?" },
+    { "letter": "N", "title": "Nunca renunciar al criterio humano", "prompt": "¿Qué decisiones quedan aquí en manos de una persona con nombre y responsable?" }
+  ],
+  "virtues": [
+    { "name": "Sabiduría", "question": "¿Qué debemos hacer?", "practice": "Antes de decidir, pregunte a dos personas que estén más cerca del problema qué harían ellas." },
+    { "name": "Valentía", "question": "¿Qué estoy defendiendo?", "practice": "Nombre en voz alta una brecha de acceso en su próxima reunión." },
+    { "name": "Justicia", "question": "¿A quién estamos pasando por alto?", "practice": "Fíjese en quién falta en la sala y luego invite a una de esas personas." },
+    { "name": "Compasión", "question": "¿Quién necesita ser escuchado?", "practice": "Dedique diez minutos a escuchar a alguien a quien usted sirve, sin intentar resolver nada." },
+    { "name": "Humildad", "question": "¿Qué me falta aprender?", "practice": "Pregunte a un trabajador de primera línea qué hace mal su organización." },
+    { "name": "Templanza", "question": "¿Vale la pena amplificar esto?", "practice": "Pase su próxima publicación por los cuatro filtros antes de compartirla." },
+    { "name": "Honestidad", "question": "¿Estoy siendo transparente?", "practice": "Comparta una cifra que su equipo todavía está trabajando por mejorar." },
+    { "name": "Administración responsable", "question": "¿Qué haré con este poder?", "practice": "Convierta algo que usted sabe en una guía que otra persona pueda usar." },
+    { "name": "Esperanza", "question": "¿Qué futuro mejor podemos construir?", "practice": "Elija una herramienta de esta página y pruébela esta semana." }
+  ],
+  "gates": [
+    "¿Es verdad?",
+    "¿Es necesario?",
+    "¿Es constructivo?",
+    "¿Es proporcionado?"
+  ],
+  "finder": {
+    "intro": "¿No sabe por dónde empezar? Dígame tres cosas y le iluminaré las puertas indicadas.",
+    "roles": [
+      { "id": "leader", "label": "Dirijo una organización" },
+      { "id": "professional", "label": "Ayudo a personas en mi trabajo" },
+      { "id": "educator", "label": "Enseño o capacito" },
+      { "id": "neighbor", "label": "Soy vecino o voluntario" },
+      { "id": "self", "label": "Busco ayuda para mí o para mi familia" }
+    ],
+    "needs": [
+      { "id": "safety", "label": "Seguridad o maltrato" },
+      { "id": "court", "label": "Un asunto judicial o familiar" },
+      { "id": "housing", "label": "Vivienda o facturas de servicios" },
+      { "id": "work", "label": "Trabajo o ingresos" },
+      { "id": "health", "label": "Salud o beneficios" },
+      { "id": "food", "label": "Alimentos" },
+      { "id": "aging", "label": "Envejecimiento o cuidado de un familiar" },
+      { "id": "school", "label": "Los niños y la escuela" },
+      { "id": "business", "label": "Empezar un negocio" },
+      { "id": "community", "label": "Mi vecindario" },
+      { "id": "moving", "label": "Mudarme a otro país" }
+    ],
+    "places": [
+      { "id": "missouri", "label": "Missouri" },
+      { "id": "us", "label": "En otra parte de EE. UU." },
+      { "id": "abroad", "label": "Fuera de EE. UU." }
+    ],
+    "help_note": "Estas herramientas ofrecen información general y están en inglés. Para recibir ayuda cerca de usted hoy, marque 211 en la mayor parte de EE. UU.",
+    "crisis_note": "Si está en peligro, llame al 911. Para recibir apoyo, llame a la Línea Nacional sobre la Violencia Doméstica al 1-800-799-7233 (las 24 horas, con ayuda en español), o llame al 988 y marque 2 para español, o envíe AYUDA por mensaje de texto al 988."
+  },
+  "adoption": {
+    "access-to-justice": { "adopter": "la administración de los tribunales de circuito", "pilot": "tres métricas de transparencia en un circuito durante un trimestre" },
+    "access-to-peace": { "adopter": "mediadores, coordinadores de crianza y servicios de los tribunales de familia", "pilot": "las derivaciones de crianza compartida de un programa durante sesenta días" },
+    "access-to-safety": { "adopter": "programas de apoyo a víctimas de violencia doméstica", "pilot": "preparar a las personas que acompañan a las víctimas para conversaciones sobre planes de seguridad en una oficina" },
+    "access-to-services": { "adopter": "agencias de servicios sociales y clínicas de salud", "pilot": "la evaluación y derivación en un mostrador de admisión" },
+    "access-to-jobs": { "adopter": "centros de empleo y juntas de desarrollo laboral", "pilot": "la evaluación de elegibilidad para WIOA en un centro" },
+    "access-to-health": { "adopter": "orientadores de salud y centros de salud comunitarios", "pilot": "el apoyo para inscribirse en beneficios en un lugar" },
+    "access-to-education": { "adopter": "distritos escolares", "pilot": "la alineación con los estándares en un grupo de grados" },
+    "access-to-housing": { "adopter": "corredurías inmobiliarias y consejeros de vivienda", "pilot": "un análisis de mercado que respete la ley de Vivienda Justa en una oficina" },
+    "access-to-business": { "adopter": "centros de desarrollo para pequeñas empresas", "pilot": "un grupo de nuevos emprendedores" },
+    "access-for-seniors": { "adopter": "agencias locales para personas mayores", "pilot": "llamadas de seguimiento contra el aislamiento para un grupo de casos" },
+    "access-to-food": { "adopter": "bancos de alimentos y redes de alimentos", "pilot": "el mapa de despensas y los eventos de una red" },
+    "access-to-civics": { "adopter": "maestros y bibliotecas", "pilot": "una unidad en un salón de clases" },
+    "access-to-crew": { "adopter": "asociaciones de vecinos y servicios de la ciudad", "pilot": "dos jornadas de limpieza a partir de reportes al 311" },
+    "access-to-energy": { "adopter": "agencias de acción comunitaria", "pilot": "la canalización de ayuda con las facturas de servicios en un condado" },
+    "access-to-care": { "adopter": "familiares cuidadores y administradores de cuidados", "pilot": "el primer plan de cuidado vivo de una familia" },
+    "access-to-freedom": { "adopter": "personas que apoyan a quienes se mudan a otro país", "pilot": "el plan de doce meses de una familia" },
+    "access-to-experts": { "adopter": "redes de profesionales", "pilot": "la metodología de un profesional convertida en una guía paso a paso" },
+    "access-to-hr": { "adopter": "pequeños empleadores", "pilot": "las preguntas sobre políticas de un lugar de trabajo" }
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "_readme": [
+    "Spanish homepage (es/index.html). render-hub.sh builds it from index.html: every English string in page is replaced by its Spanish, then the doors and the app data are rendered in Spanish from this file, journey.es.json and repos.json.",
+    "page: English text exactly as it appears in index.html (entities included) -> Spanish. Grouped by section for review only; the groups are flattened.",
+    "keep: English strings that stay the same in Spanish (names). Project titles are brand names and stay in English.",
+    "ui, labels and narration have exactly the keys of i18n/en.json. projects has a description, cta and audience for every listed project in repos.json.",
+    "Crisis lines verified 2026-10-18: 988 (988lifeline.org/get-help: dial 988 then press 2 for Spanish; text AYUDA to 988) and the National Domestic Violence Hotline 1-800-799-7233 (24/7; espanol.thehotline.org).",
+    "DRAFT: written without a fluent reviewer. A fluent Spanish speaker must check every string here and in journey.es.json before the Spanish homepage launches."
+  ],
+  "lang": "es",
+  "name": "Español",
+  "path": "es/",
+  "url": "https://dougdevitre.org/es/",
+  "review": "draft: needs a fluent Spanish reviewer before launch",
+  "keep": ["Doug Devitre", "GitHub", "LinkedIn"],
+  "page": {
+    "head": {
+      "Doug Devitre — Access To: open doors for every community": "Doug Devitre — Access To: puertas abiertas para cada comunidad",
+      "Free, open tools for the places people fall through the cracks, from Doug Devitre, Community Development Catalyst. Choose a door, hear how it works, and take one mindful step.": "Herramientas gratuitas y abiertas para los lugares donde las personas se quedan sin ayuda, de Doug Devitre, Catalizador de Desarrollo Comunitario. Elija una puerta, escuche cómo funciona y dé un paso consciente.",
+      "Free, open tools for the places people fall through the cracks. Choose a door, hear how it works, and take one mindful step.": "Herramientas gratuitas y abiertas para los lugares donde las personas se quedan sin ayuda. Elija una puerta, escuche cómo funciona y dé un paso consciente.",
+      "Free, open tools for the places people fall through the cracks: courts, safety, housing, health, food and work.": "Herramientas gratuitas y abiertas para los lugares donde las personas se quedan sin ayuda: tribunales, seguridad, vivienda, salud, alimentos y trabajo."
+    },
+    "header": {
+      "Skip to main content": "Saltar al contenido principal",
+      "Community Development Catalyst": "Catalizador de Desarrollo Comunitario",
+      "Sound on. Turn sound off": "Sonido activado. Desactivar el sonido",
+      "Switch between light and dark mode": "Cambiar entre modo claro y oscuro"
+    },
+    "welcome": {
+      "Find the door your community needs.": "Encuentre la puerta que su comunidad necesita.",
+      "Free, open tools for the places people fall through the cracks: courts, safety, housing, health, food and work. Choose a door to hear how it helps and how to bring it home.": "Herramientas gratuitas y abiertas para los lugares donde las personas se quedan sin ayuda: tribunales, seguridad, vivienda, salud, alimentos y trabajo. Elija una puerta para escuchar cómo ayuda y cómo llevarla a su comunidad.",
+      "Hear Doug's welcome": "Escuche la bienvenida de Doug",
+      "Choose a door": "Elija una puerta",
+      "Read the welcome": "Lea la bienvenida"
+    },
+    "finder": {
+      "Find my door": "Encontrar mi puerta",
+      "Not sure where to start? Tell me three things, and I'll light the doors that fit.": "¿No sabe por dónde empezar? Dígame tres cosas y le iluminaré las puertas indicadas.",
+      "Listen": "Escuchar",
+      "Back": "Atrás",
+      "Your doors": "Sus puertas",
+      "See all doors": "Ver todas las puertas",
+      "Start over": "Empezar de nuevo",
+      "This guide needs JavaScript. Every door below still works.": "Esta guía necesita JavaScript. Todas las puertas de abajo siguen funcionando."
+    },
+    "doors": {
+      "Each door is a free tool. They blend into one another, so every door shows the ones it works beside.": "Cada puerta es una herramienta gratuita. Se complementan entre sí, así que cada puerta muestra las que funcionan a su lado."
+    },
+    "practice": {
+      "Distribute virtue": "Distribuir la virtud",
+      "Character spreads the way information does. Build one mindful step for this week in three taps.": "El carácter se difunde como la información. Arme un paso consciente para esta semana en tres toques.",
+      "Pick a virtue": "Elija una virtud",
+      "Virtues": "Virtudes",
+      "Pick a door": "Elija una puerta",
+      "Doors": "Puertas",
+      "Pass the four gates": "Pase los cuatro filtros",
+      "Before you act or share, tap each gate you can honestly pass.": "Antes de actuar o compartir, toque cada filtro que pueda pasar con honestidad.",
+      "Why four gates": "Por qué cuatro filtros",
+      "Your mindful step": "Su paso consciente",
+      "Share this step": "Compartir este paso",
+      "This builder needs JavaScript. Every door above still works.": "Este creador necesita JavaScript. Todas las puertas de arriba siguen funcionando."
+    },
+    "beacon": {
+      "How a community adopts any of these": "Cómo una comunidad adopta cualquiera de estas herramientas",
+      "BEACON, from Distributed Virtue: six questions, in order, that keep a new tool human.": "BEACON (por sus siglas en inglés), de Distributed Virtue: seis preguntas, en orden, que mantienen humana una herramienta nueva."
+    },
+    "work": {
+      "Bring a door home": "Lleve una puerta a su comunidad",
+      "Every tool here is free to use on your own. If your court, agency, school or neighborhood wants help with readiness, a first pilot, training or measuring what changed, Doug can lead that work with you.": "Cada herramienta aquí es gratuita para usarla por su cuenta. Si su tribunal, agencia, escuela o vecindario quiere ayuda para prepararse, con un primer piloto, con capacitación o para medir lo que cambió, Doug puede dirigir ese trabajo con ustedes.",
+      "Talk with Doug": "Hable con Doug",
+      "About Access To": "Acerca de Access To (en inglés)"
+    },
+    "disclaimer": {
+      "Please read before use": "Lea esto antes de usar las herramientas",
+      "These tools offer general educational information only. They are not legal, medical, mental health, financial or safety advice, and using them creates no professional relationship.": "Estas herramientas ofrecen solo información educativa general. No son asesoramiento legal, médico, de salud mental, financiero ni de seguridad, y usarlas no crea ninguna relación profesional.",
+      "In danger now?": "¿Está en peligro ahora?",
+      "Call 911. For crisis support, call or text 988.": "Llame al 911. Para apoyo en una crisis, llame al 988 y marque 2 para español, o envíe AYUDA por mensaje de texto al 988. Para la Línea Nacional sobre la Violencia Doméstica, llame al 1-800-799-7233 (las 24 horas, con ayuda en español).",
+      "Information and AI output can be wrong or out of date. Confirm anything important with the official source or a licensed professional.": "La información y las respuestas de la IA pueden estar equivocadas o desactualizadas. Confirme todo lo importante con la fuente oficial o con un profesional con licencia.",
+      "Leave out names, case numbers and anything else that identifies a person.": "No incluya nombres, números de caso ni nada que identifique a una persona.",
+      "Not affiliated with or endorsed by any court, agency or organization named here. Provided as is, without warranty.": "Sin afiliación con ningún tribunal, agencia u organización que se mencione aquí, ni respaldo de ellos. Se ofrece tal cual, sin garantía."
+    },
+    "sheet": {
+      "Close": "Cerrar",
+      "Read along": "Lea el texto",
+      "Adopt it with BEACON": "Adóptela con BEACON",
+      "Blends with": "Se complementa con",
+      "Educational information only, not legal, medical or safety advice. In danger, call 911.": "Solo información educativa; no es asesoramiento legal, médico ni de seguridad. Si está en peligro, llame al 911."
+    },
+    "footer": {
+      "More from Access To": "Más de Access To",
+      "All project details": "Todos los detalles de los proyectos (en inglés)",
+      "Disclaimer": "Aviso legal",
+      "&copy; 2026 Doug Devitre. Open source under MIT or Apache 2.0.": "&copy; 2026 Doug Devitre. Código abierto bajo MIT o Apache 2.0.",
+      "Back to top": "Volver arriba"
+    }
+  },
+  "labels": {
+    "language_nav": "Idioma",
+    "status": { "live": "Disponible", "beta": "Beta", "skill": "Lista para usar", "pre-pilot": "Prepiloto", "spec": "En diseño" },
+    "coming_soon": "Próximamente",
+    "scope": { "missouri": "Missouri", "nationwide": "En todo EE. UU.", "global": "Global" },
+    "cta": "Abrir la aplicación"
+  },
+  "ui": {
+    "q_role": "¿Quién es usted?",
+    "q_need": "¿Qué está pasando?",
+    "q_place": "¿Dónde está?",
+    "sound_on": "Sonido activado. Desactivar el sonido",
+    "sound_off": "Sonido desactivado. Activar el sonido",
+    "listen_to": "Escuchar {title}",
+    "status_scope": "{status}, {scope}",
+    "fact_adopter": "Quién la adopta",
+    "fact_pilot": "Un primer piloto",
+    "fact_audience": "A quién sirve",
+    "beacon_start": " Empiece con {audience}.",
+    "beacon_here": " Aquí: {adopter}.",
+    "explore": "Explorar {title} (en inglés)",
+    "view_source": "Ver el código en GitHub (en inglés)",
+    "private_note": "Próximamente. El código se publicará cuando esté listo para uso público.",
+    "links_note": "La herramienta y las páginas enlazadas están en inglés.",
+    "bring_it": "Llévela a su comunidad",
+    "mail_subject": "Llevar {title} a nuestra comunidad",
+    "adopt_note": "Toque una puerta para ver quién la adopta, un primer piloto y cómo se complementa con las demás.",
+    "missouri_note": " Se crearon para Missouri; el enfoque también se aplica donde usted esté.",
+    "pilot_why": "Un primer piloto: {pilot}.",
+    "built_for_missouri": "Creada para Missouri",
+    "step": "{virtue}: {practice} Luego llévelo a {door}",
+    "step_pilot": ", empezando por {pilot}.",
+    "step_end": ".",
+    "share_title": "Mi paso consciente",
+    "share_from": " (de dougdevitre.org/es)",
+    "share": "Compartir este paso",
+    "copied": "Copiado"
+  },
+  "narration": {
+    "gates_intro": "Antes de compartir cualquier cosa, pásela por cuatro filtros.",
+    "gates_outro": "Si no pasa uno, haga una pausa y revísela.",
+    "built_for": "Está pensada para {adopter}.",
+    "first_step": "Un buen primer paso es {pilot}.",
+    "alongside": "Funciona junto con {with}.",
+    "coming_soon": "Llegará pronto.",
+    "and": "y"
+  },
+  "projects": {
+    "access-to-housing": {
+      "description": "Inteligencia inmobiliaria (PropTech), análisis de mercado y cumplimiento de la ley de Vivienda Justa",
+      "cta": "Empezar a analizar propiedades",
+      "audience": ["profesionales de bienes raíces", "inversionistas", "consejeros de vivienda"]
+    },
+    "access-to-jobs": {
+      "description": "Orientación sobre WIOA y búsqueda de empleo en los 114 condados de Missouri",
+      "cta": "Explorar programas de empleo",
+      "audience": ["personal de desarrollo laboral", "personas que buscan empleo", "orientadores vocacionales"]
+    },
+    "access-to-health": {
+      "description": "Orientación en servicios de salud, inscripción en beneficios, Medicaid y Medicare",
+      "cta": "Explorar el acceso a la salud",
+      "audience": ["orientadores de salud", "trabajadores sociales", "consejeros de beneficios"]
+    },
+    "access-to-business": {
+      "description": "Guía para emprender, apoyo a emprendedores y lanzamiento de negocios",
+      "cta": "Lanzar su negocio",
+      "audience": ["futuros emprendedores", "dueños de pequeñas empresas", "mentores de emprendimiento"]
+    },
+    "access-to-services": {
+      "description": "Orientación en servicios sociales, búsqueda de beneficios y desarrollo laboral",
+      "cta": "Conectar a clientes con servicios",
+      "audience": ["trabajadores sociales", "administradores de casos", "consejeros de beneficios"]
+    },
+    "access-to-education": {
+      "description": "Alineación con los estándares, planificación de clases y desarrollo docente para escuelas K-12 de Missouri",
+      "cta": "Planificar clases alineadas con los estándares",
+      "audience": ["educadores", "directores de currículo", "asesores pedagógicos"]
+    },
+    "access-to-safety": {
+      "description": "Planes de seguridad, evaluación de riesgos, órdenes de protección y recursos para crisis",
+      "cta": "Crear un plan de seguridad",
+      "audience": ["defensores de víctimas de violencia doméstica", "consejeros de crisis", "abogados de asistencia legal"]
+    },
+    "access-to-justice": {
+      "description": "Marco de transparencia cívica para los tribunales de familia de Missouri: 72 métricas protegidas por gobernanza, una carpeta para la OSCA y un catálogo interactivo de métricas",
+      "cta": "Leer el marco",
+      "audience": ["administradores de tribunales", "formadores judiciales", "investigadores de derecho de familia"]
+    },
+    "access-to-peace": {
+      "description": "Orientación en resolución de conflictos con enfoque en el trauma, mediación, desescalada en la crianza compartida y prácticas restaurativas",
+      "cta": "Empezar un plan de desescalada",
+      "audience": ["mediadores", "padres y madres que crían por separado", "profesionales de prácticas restaurativas"]
+    },
+    "access-to-civics": {
+      "description": "Charter: un juego de educación cívica para niños de 8 a 14 años basado en el texto original de las constituciones de los 50 estados de EE. UU.",
+      "cta": "Jugar Charter",
+      "audience": ["maestros", "estudiantes", "familias"]
+    },
+    "access-to-crew": {
+      "description": "Sistema de voluntariado cívico en St. Louis que convierte las quejas al 311 en jornadas de limpieza, con un clasificador de seguridad para voluntarios de nivel 0",
+      "cta": "Ver cómo funciona Block Crew",
+      "audience": ["vecinos", "coordinadores de voluntarios", "personal de la ciudad"]
+    },
+    "access-to-food": {
+      "description": "Plataforma de acceso a alimentos en St. Louis: mapa de despensas, eventos de distribución, orientación sobre SNAP, un asistente de IA y herramientas para voluntarios",
+      "cta": "Buscar alimentos cerca de usted",
+      "audience": ["familias", "personal de despensas", "voluntarios"]
+    },
+    "access-to-energy": {
+      "description": "La energía como deber cívico: dirige a los residentes a programas de ahorro, producción y ayuda con las facturas de servicios en los 114 condados de Missouri",
+      "cta": "Buscar ayuda con la energía",
+      "audience": ["residentes", "agencias de acción comunitaria", "defensores de la energía"]
+    },
+    "access-to-care": {
+      "description": "Ayuda a una familia a pasar de no haber hablado del tema a tener un plan de cuidado vivo, diseñado para que lo entiendan un niño de 10 años y una persona mayor con baja visión",
+      "cta": "Empezar un plan de cuidado",
+      "audience": ["familiares cuidadores", "administradores de cuidados", "personas mayores"]
+    },
+    "access-for-seniors": {
+      "description": "Conexión para personas mayores y orientación en servicios para el envejecimiento: detección temprana del aislamiento, conexión con la familia y canalización a beneficios",
+      "cta": "Explorar las herramientas para personas mayores",
+      "audience": ["agencias locales para personas mayores", "personal de residencias para personas mayores", "atención de salud en el hogar"]
+    },
+    "access-to-freedom": {
+      "description": "Guía tranquila y con enfoque en el trauma para personas que planean mudarse a otro país, desde la primera idea hasta un plan concreto de 12 meses",
+      "cta": "Crear un plan de mudanza",
+      "audience": ["personas y familias que se mudan", "personas que las apoyan"]
+    },
+    "access-to-experts": {
+      "description": "Especificación de una plataforma para convertir la metodología de profesionales verificados en guías prácticas paso a paso",
+      "cta": "Leer la especificación",
+      "audience": ["profesionales", "consultores", "conferencistas"]
+    },
+    "access-to-hr": {
+      "description": "Orientación en recursos humanos: derechos laborales, protecciones en el trabajo y guía sobre procesos de recursos humanos",
+      "cta": "Explorar la guía de recursos humanos",
+      "audience": ["empleados", "generalistas de recursos humanos", "pequeños empleadores"]
+    }
+  }
+}

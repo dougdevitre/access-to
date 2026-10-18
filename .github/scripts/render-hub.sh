@@ -2,13 +2,19 @@
 set -euo pipefail
 
 # Renders project listings from repos.json into the hub page about.html (cards,
-# counters, share text), the homepage app index.html (doors, plus the embedded
-# data app.js reads: projects, journey.json, narration transcripts) and README.md
-# (badges, ecosystem diagram, pillars, project directory, impact numbers), so
-# nothing can drift from the registry and every page works without JavaScript.
+# counters, share text), the homepage app index.html (doors, language switch,
+# hreflang links, plus the embedded data app.js reads: projects, journey.json,
+# narration transcripts, UI words) and README.md (badges, ecosystem diagram,
+# pillars, project directory, impact numbers), so nothing can drift from the
+# registry and every page works without JavaScript.
+#
+# Each other language (.github/config/i18n/<lang>.json + journey.<lang>.json)
+# gets <lang>/index.html, generated whole from index.html: the same page and
+# app, with its English strings replaced from the i18n page map. Never edit
+# <lang>/index.html by hand.
 #
 # Usage:
-#   ./render-hub.sh                 # rewrite about.html, index.html and README.md
+#   ./render-hub.sh                 # rewrite about.html, index.html, README.md and <lang>/index.html
 #   ./render-hub.sh --check         # exit 1 if any of them is out of date
 #
 # Generated regions in both files are wrapped in marker comments:
@@ -200,70 +206,151 @@ cat > "$WORK_DIR/readme_impact" <<EOF
 | Pillars | Projects | Open-Source Repos | MO Counties Covered |
 EOF
 
-# --- Homepage app: one door (big touch button) per project ---
-# Works without JavaScript: each door is a real link. app.js upgrades a tap into
-# the project's detail sheet.
-jq -r --slurpfile icons "$ICONS_FILE" "
-  ($PROJECTS_JQ) as \$projects
-  | .owner as \$owner
-  | {live:\"Live\", beta:\"Beta\", skill:\"Ready to use\", \"pre-pilot\":\"Pre-pilot\", spec:\"In design\"} as \$labels
-  | \$projects[]
-  | (.visibility // \"public\") as \$vis
-  | (.title // .name) as \$title
-  | (if .live_url then .live_url
-     elif .page then .page
-     elif \$vis == \"public\" then \"https://github.com/\" + \$owner + \"/\" + .name
-     else \"about.html#pillars\" end) as \$href
-  | ((\$href | startswith(\"https://\"))) as \$external
-  | \"      <li><a class=\\\"door\\\" href=\\\"\" + (\$href | @html) + \"\\\" data-id=\\\"\" + .name + \"\\\" style=\\\"--c:#\" + (.color // \"5A8AAB\") + \"\\\"\"
-    + (if \$external then \" target=\\\"_blank\\\" rel=\\\"noopener\\\"\" else \"\" end) + \">\"
-    + \"<span class=\\\"door-icon\\\" aria-hidden=\\\"true\\\"><svg viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\">\" + (\$icons[0][.icon // .pillar] // \"\") + \"</svg></span>\"
-    + \"<span class=\\\"door-name\\\">\" + (\$title | @html) + \"</span>\"
-    + \"<span class=\\\"door-status\\\">\" + (if \$vis == \"private\" then \"Coming soon\" else \$labels[.status // \"skill\"] end) + \"</span>\"
-    + \"</a></li>\"
-" "$REPOS_FILE" > "$WORK_DIR/doors"
+# --- Homepage app, once per language ---
+# English is index.html. Every other language with .github/config/i18n/<lang>.json
+# and journey.<lang>.json gets <lang>/index.html, built from index.html itself:
+# its English strings are swapped for the i18n page map, links are pointed up a
+# level, and the doors and embedded data are rendered from that language's words.
+I18N_DIR="$ROOT/.github/config/i18n"
+[ -f "$I18N_DIR/en.json" ] || { log_error "Required file not found: $I18N_DIR/en.json"; exit 1; }
+OTHER_LANGS=()
+for F in "$I18N_DIR"/*.json; do
+  L="$(basename "$F" .json)"
+  [ "$L" = "en" ] && continue
+  [ -f "$ROOT/.github/config/journey.$L.json" ] || { log_error "i18n/$L.json has no journey.$L.json"; exit 1; }
+  OTHER_LANGS+=("$L")
+done
+ALL_LANGS=(en ${OTHER_LANGS[@]+"${OTHER_LANGS[@]}"})
 
-# --- Homepage app: embedded data (projects + journey + narration transcripts) ---
+CLIPS_JSON="$("$SCRIPT_DIR/narration-clips.sh" "$ROOT/.github/config")"
+
+# journey.json with a language's words laid over it. Structure (ids, finder
+# doors, crisis flags, role lenses) always comes from journey.json.
+merged_journey() {  # $1 lang -> stdout
+  if [ "$1" = "en" ]; then cat "$JOURNEY_FILE"; return; fi
+  jq --slurpfile tr "$ROOT/.github/config/journey.$1.json" '
+    $tr[0] as $t
+    | def by_id($x): map(. as $e | $e + ((($x // []) | map(select(.id == $e.id)))[0] // {}));
+      def by_index($x): to_entries | map(.value + (($x // [])[.key] // {}));
+    . + {
+      catalyst: (.catalyst + ($t.catalyst // {})),
+      beacon: (.beacon | by_index($t.beacon)),
+      virtues: (.virtues | by_index($t.virtues)),
+      gates: ($t.gates // .gates),
+      finder: (.finder + ($t.finder // {} | {intro, help_note, crisis_note} | with_entries(select(.value != null)))
+               + { roles: (.finder.roles | by_id($t.finder.roles)),
+                   needs: (.finder.needs | by_id($t.finder.needs)),
+                   places: (.finder.places | by_id($t.finder.places)) }),
+      adoption: (.adoption | with_entries(.value += (($t.adoption // {})[.key] // {})))
+    }' "$JOURNEY_FILE"
+}
+
+# Path from a page in language $1 to the site root: "" for English, "../" otherwise.
+root_of() { if [ "$1" = "en" ]; then echo ""; else echo "../"; fi; }
+
+# One door (big touch button) per project. Works without JavaScript: each door
+# is a real link. app.js upgrades a tap into the project's detail sheet.
+render_doors() {  # $1 lang -> stdout
+  jq -r --slurpfile icons "$ICONS_FILE" --slurpfile t "$I18N_DIR/$1.json" --arg root "$(root_of "$1")" "
+    ($PROJECTS_JQ) as \$projects
+    | .owner as \$owner
+    | \$t[0].labels as \$labels
+    | \$projects[]
+    | (.visibility // \"public\") as \$vis
+    | (.title // .name) as \$title
+    | (if .live_url then .live_url
+       elif .page then \$root + .page
+       elif \$vis == \"public\" then \"https://github.com/\" + \$owner + \"/\" + .name
+       else \$root + \"about.html#pillars\" end) as \$href
+    | ((\$href | startswith(\"https://\"))) as \$external
+    | \"      <li><a class=\\\"door\\\" href=\\\"\" + (\$href | @html) + \"\\\" data-id=\\\"\" + .name + \"\\\" style=\\\"--c:#\" + (.color // \"5A8AAB\") + \"\\\"\"
+      + (if \$external then \" target=\\\"_blank\\\" rel=\\\"noopener\\\"\" else \"\" end) + \">\"
+      + \"<span class=\\\"door-icon\\\" aria-hidden=\\\"true\\\"><svg viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\">\" + (\$icons[0][.icon // .pillar] // \"\") + \"</svg></span>\"
+      + \"<span class=\\\"door-name\\\">\" + (\$title | @html) + \"</span>\"
+      + \"<span class=\\\"door-status\\\">\" + ((if \$vis == \"private\" then \$labels.coming_soon else \$labels.status[.status // \"skill\"] end) | @html) + \"</span>\"
+      + \"</a></li>\"
+  " "$REPOS_FILE"
+}
+
+# Embedded data (projects + journey + narration transcripts + UI words).
 # Embedded rather than fetched so the app works offline and never shows an
 # empty state. "</" is escaped so the JSON can't close its <script> element.
-CLIPS_JSON="$("$SCRIPT_DIR/narration-clips.sh" "$ROOT/.github/config")"
-{
+render_app_data() {  # $1 lang -> stdout
+  local lang="$1" suffix=""
+  [ "$lang" = "en" ] || suffix="-$lang"
+  merged_journey "$lang" > "$WORK_DIR/journey.$lang.json"
   printf '  <script type="application/json" id="app-data">'
-  jq -c --slurpfile icons "$ICONS_FILE" --slurpfile journey "$JOURNEY_FILE" --argjson clips "$CLIPS_JSON" "
+  jq -c --slurpfile icons "$ICONS_FILE" --slurpfile journey "$WORK_DIR/journey.$lang.json" \
+        --slurpfile t "$I18N_DIR/$lang.json" --argjson clips "$CLIPS_JSON" \
+        --arg lang "$lang" --arg suffix "$suffix" --arg root "$(root_of "$lang")" "
     ($PROJECTS_JQ) as \$projects
     | .owner as \$owner
     | (\$projects | map(.name)) as \$listed
-    | {live:\"Live\", beta:\"Beta\", skill:\"Ready to use\", \"pre-pilot\":\"Pre-pilot\", spec:\"In design\"} as \$labels
-    | {missouri:\"Missouri\", nationwide:\"Nationwide\", global:\"Global\"} as \$scopes
+    | \$t[0].labels as \$labels
+    | (\$t[0].projects // {}) as \$copy
     | {
+        lang: \$lang,
+        root: \$root,
+        url: \$t[0].url,
         projects: [ \$projects[]
           | (.visibility // \"public\") as \$vis
           | (\$journey[0].adoption[.name] // {}) as \$a
+          | (\$copy[.name] // {}) as \$c
           | {
               id: .name,
               title: (.title // .name),
               pillar: .pillar,
               color: (\"#\" + (.color // \"5A8AAB\")),
               icon: (\$icons[0][.icon // .pillar] // \"\"),
-              description: .description,
-              status: (if \$vis == \"private\" then \"Coming soon\" else \$labels[.status // \"skill\"] end),
-              scope: (\$scopes[.scope] // .scope),
+              description: (\$c.description // .description),
+              status: (if \$vis == \"private\" then \$labels.coming_soon else \$labels.status[.status // \"skill\"] end),
+              stage: (.status // \"skill\"),
+              scope: (\$labels.scope[.scope] // .scope),
+              region: .scope,
               private: (\$vis == \"private\"),
               live: (.live_url // null),
-              cta: (.cta // \"Open the app\"),
-              page: (.page // null),
+              cta: (\$c.cta // .cta // \$labels.cta),
+              page: (if .page then \$root + .page else null end),
               repo: (if \$vis == \"public\" then \"https://github.com/\" + \$owner + \"/\" + .name else null end),
-              audience: (.audience // []),
+              audience: (\$c.audience // .audience // []),
               adopter: (\$a.adopter // null),
               pilot: (\$a.pilot // null),
-              connects: [ (.connects_to // [])[] | select(. as \$c | \$listed | index(\$c)) ]
+              connects: [ (.connects_to // [])[] | select(. as \$x | \$listed | index(\$x)) ]
             } ],
         journey: (\$journey[0] | del(._readme, .adoption)),
-        clips: (\$clips | map({key: .id, value: .text}) | from_entries)
+        clips: (\$clips | map(select(.lang == \$lang) | {key: (.id | if \$suffix == \"\" then . else .[:-(\$suffix | length)] end), value: .text}) | from_entries),
+        ui: \$t[0].ui
       }
   " "$REPOS_FILE" | sed 's#</#<\\/#g'
   printf '</script>\n'
-} > "$WORK_DIR/app_data"
+}
+
+# hreflang alternates: the same list on every language's page.
+jq -rn --slurpfile en "$I18N_DIR/en.json" '
+  ([$en[0]] + [inputs]) as $all
+  | ($all[] | "  <link rel=\"alternate\" hreflang=\"\(.lang)\" href=\"\(.url)\">"),
+    "  <link rel=\"alternate\" hreflang=\"x-default\" href=\"\($en[0].url)\">"
+' $(for L in ${OTHER_LANGS[@]+"${OTHER_LANGS[@]}"}; do echo "$I18N_DIR/$L.json"; done) < /dev/null > "$WORK_DIR/hreflang"
+
+# Language switch (EN | ES), written for the page in language $1.
+render_lang_switch() {  # $1 lang -> stdout
+  jq -rn --arg cur "$1" --arg root "$(root_of "$1")" --slurpfile en "$I18N_DIR/en.json" '
+    ([$en[0]] + [inputs]) as $all
+    | ($all[] | select(.lang == $cur) | .labels.language_nav) as $nav
+    | "      <nav class=\"lang-switch\" aria-label=\"\($nav | @html)\">",
+      ($all[] | (.lang | ascii_upcase) as $code
+        | (if .lang == $cur then "index.html" else "\($root)\(.path)index.html" end) as $href
+        | "        <a href=\"\($href)\" lang=\"\(.lang)\" hreflang=\"\(.lang)\" aria-label=\"\($code), \(.name | @html)\""
+          + (if .lang == $cur then " aria-current=\"page\"" else "" end) + ">\($code)</a>"),
+      "      </nav>"
+  ' $(for L in ${OTHER_LANGS[@]+"${OTHER_LANGS[@]}"}; do echo "$I18N_DIR/$L.json"; done) < /dev/null
+}
+
+for L in "${ALL_LANGS[@]}"; do
+  render_doors "$L" > "$WORK_DIR/doors.$L"
+  render_app_data "$L" > "$WORK_DIR/app_data.$L"
+  render_lang_switch "$L" > "$WORK_DIR/lang_switch.$L"
+done
 
 # --- Splice each block between its markers ---
 splice() {
@@ -294,30 +381,66 @@ render_file() {
 }
 
 render_file "$INDEX_FILE"  "pillars:pillars" "stats:stats" "share:share"
-render_file "$APP_FILE"    "doors:doors" "app-data:app_data"
+render_file "$APP_FILE"    "hreflang:hreflang" "lang-switch:lang_switch.en" "doors:doors.en" "app-data:app_data.en"
 render_file "$README_FILE" "badges:readme_badges" "ecosystem:readme_ecosystem" "pillars:readme_pillars" \
                            "directory:readme_directory" "impact:readme_impact"
+TARGETS=("$INDEX_FILE" "$APP_FILE" "$README_FILE")
+declare -A RENDERED=(["$INDEX_FILE"]="$WORK_DIR/about.html.rendered" ["$APP_FILE"]="$WORK_DIR/index.html.rendered"
+                     ["$README_FILE"]="$WORK_DIR/README.md.rendered")
+
+# --- Other languages: <lang>/index.html from the rendered English homepage ---
+for L in ${OTHER_LANGS[@]+"${OTHER_LANGS[@]}"}; do
+  T="$I18N_DIR/$L.json"
+  OUT="$ROOT/$L/index.html"
+  # Empty the generated blocks (they are re-rendered in this language below),
+  # then translate the hand-written English and point relative links up a level.
+  awk '/<!-- BEGIN GENERATED:/ { print; skip = 1; next } /<!-- END GENERATED:/ { skip = 0 } !skip' \
+    "$WORK_DIR/index.html.rendered" > "$WORK_DIR/$L.base"
+  jq -Rrs --slurpfile t "$T" '
+    $t[0] as $t
+    | ($t.page | [.[] | to_entries[]] | from_entries) as $map
+    | def tr: $map[.] // .;
+    gsub(">(?<pre>\\s*)(?<s>[^<>]*?)(?<post>\\s*)<"; ">\(.pre)\(.s | tr)\(.post)<")
+    | gsub("(?<a>\\s(?:content|aria-label|title|alt|placeholder)=\")(?<v>[^\"]*)\""; "\(.a)\(.v | tr)\"")
+    | gsub("(?<a>\"description\": \")(?<v>[^\"]*)\""; "\(.a)\(.v | tr)\"")
+    | sub("<html lang=\"en\">"; "<html lang=\"\($t.lang)\">")
+    | sub("rel=\"canonical\" href=\"[^\"]*\""; "rel=\"canonical\" href=\"\($t.url)\"")
+    | sub("property=\"og:url\" content=\"[^\"]*\""; "property=\"og:url\" content=\"\($t.url)\"")
+    | gsub("(?<a>(?:href|src)=\")(?<u>(?!https?:|mailto:|#|/|\\.\\./|index\\.html)[^\"]+)\""; "\(.a)../\(.u)\"")
+  ' "$WORK_DIR/$L.base" > "$WORK_DIR/$L.translated"
+  # Warn about translations that no longer match anything on the English page.
+  jq -r --rawfile html "$WORK_DIR/$L.base" '.page | [.[] | keys[]] | .[] | select(. as $k | $html | contains($k) | not)' "$T" \
+    | while IFS= read -r K; do log_warn "i18n/$L.json: page string no longer in index.html: $K"; done
+  cp "$WORK_DIR/$L.translated" "$WORK_DIR/$L.0"
+  for pair in "hreflang:hreflang" "lang-switch:lang_switch.$L" "doors:doors.$L" "app-data:app_data.$L"; do
+    splice "${pair%%:*}" "$WORK_DIR/${pair#*:}" "$WORK_DIR/$L.0" "$WORK_DIR/$L.1" "$L/index.html"
+    mv "$WORK_DIR/$L.1" "$WORK_DIR/$L.0"
+  done
+  [ "$MODE" = "--check" ] || mkdir -p "$ROOT/$L"
+  TARGETS+=("$OUT")
+  RENDERED["$OUT"]="$WORK_DIR/$L.0"
+done
 
 STALE=0
-for TARGET in "$INDEX_FILE" "$APP_FILE" "$README_FILE"; do
-  NAME="$(basename "$TARGET")"
-  if diff -q "$TARGET" "$WORK_DIR/$NAME.rendered" >/dev/null; then
+for TARGET in "${TARGETS[@]}"; do
+  NAME="${TARGET#"$ROOT"/}"
+  if diff -q "$TARGET" "${RENDERED[$TARGET]}" >/dev/null 2>&1; then
     [ "$MODE" = "--check" ] || log_info "$NAME already up to date"
     continue
   fi
   if [ "$MODE" = "--check" ]; then
     log_error "$NAME is out of date with repos.json. Run .github/scripts/render-hub.sh and commit the result."
-    diff -u "$TARGET" "$WORK_DIR/$NAME.rendered" | head -40 || true
+    diff -u "$TARGET" "${RENDERED[$TARGET]}" | head -40 || true
     STALE=1
   else
-    cp "$WORK_DIR/$NAME.rendered" "$TARGET"
+    cp "${RENDERED[$TARGET]}" "$TARGET"
     log_action "render-hub" "$NAME" "updated"
   fi
 done
 
 if [ "$MODE" = "--check" ]; then
   [ "$STALE" -eq 0 ] || exit 1
-  log_success "about.html, index.html and README.md are in sync with repos.json ($PROJECT_COUNT projects, $PILLAR_COUNT pillars)"
+  log_success "${TARGETS[*]#"$ROOT"/} are in sync with the config ($PROJECT_COUNT projects, $PILLAR_COUNT pillars, languages: ${ALL_LANGS[*]})"
   exit 0
 fi
 log_success "Rendered $PROJECT_COUNT projects across $PILLAR_COUNT pillars"

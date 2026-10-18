@@ -1,7 +1,7 @@
 name: Generate Narration
 
-# Speaks the homepage app's scripts in Doug Devitre's ElevenLabs voice and
-# commits the MP3s to audio/. Only clips whose words or voice settings changed
+# Speaks the homepage app's scripts (English, and Spanish clips ending -es) in
+# Doug Devitre's ElevenLabs voice and commits the MP3s to audio/. Only clips whose words or voice settings changed
 # are regenerated, so re-running is free.
 #
 # One-time setup: Settings → Secrets and variables → Actions → New repository
@@ -13,6 +13,8 @@ on:
     branches: [main]
     paths:
       - '.github/config/journey.json'
+      - '.github/config/journey.*.json'
+      - '.github/config/i18n/**'
       - '.github/config/narration.json'
       - '.github/config/repos.json'
       - '.github/scripts/narration-clips.sh'

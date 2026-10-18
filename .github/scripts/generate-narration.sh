@@ -7,6 +7,10 @@
 # change (tracked by a sha256 in the manifest), so re-running costs nothing.
 # Clips that no longer exist are removed.
 #
+# Every language uses the same voice and model. Non-English clips (ids ending
+# -<lang>, e.g. welcome-es) need a multilingual model; eleven_multilingual_v2
+# detects the language from the text and takes no language hint.
+#
 # Usage:
 #   ELEVENLABS_API_KEY=... ./generate-narration.sh        # generate what changed
 #   ./generate-narration.sh --dry-run                     # list changes + characters, no key needed
@@ -44,6 +48,13 @@ if ! [[ "$VOICE_ID" =~ ^[A-Za-z0-9]{20}$ ]]; then
 fi
 
 CLIPS=$("$SCRIPT_DIR/narration-clips.sh" "$ROOT/.github/config")
+
+# An English-only model would read Spanish with English phonetics.
+OTHER_LANGS=$(echo "$CLIPS" | jq -r '[.[].lang | select(. != "en")] | unique | join(" ")')
+if [ -n "$OTHER_LANGS" ] && ! [[ "$MODEL_ID" =~ multilingual|_v2_5$|_v3$ ]]; then
+  log_error "narration.json model_id '$MODEL_ID' is not multilingual, but clips exist in: $OTHER_LANGS"
+  exit 1
+fi
 mkdir -p "$OUT_DIR"
 [ -f "$MANIFEST" ] || echo '{"clips":{}}' > "$MANIFEST"
 

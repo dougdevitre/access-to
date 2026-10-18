@@ -219,11 +219,10 @@ describe('Navigation', () => {
   });
 
   describe('internal links reference pages that exist', () => {
-    const existingFiles = new Set(
-      fs.readdirSync(ROOT).filter((f) => f.endsWith('.html'))
-    );
+    // Resolved from the page's own folder, so es/index.html's ../about.html counts.
+    const exists = (page, href) => fs.existsSync(path.join(ROOT, path.dirname(page), href));
 
-    const allMainPages = ['index.html', 'about.html', ...PILLAR_PAGES, '404.html'];
+    const allMainPages = ['index.html', 'es/index.html', 'about.html', ...PILLAR_PAGES, '404.html'];
 
     allMainPages.forEach((page) => {
       test(`${page} — all internal .html links resolve to existing files`, () => {
@@ -233,7 +232,7 @@ describe('Navigation', () => {
           // Only check relative .html links (no anchors, no external, no mailto)
           if (href && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('mailto:') && href.includes('.html')) {
             const filePart = href.split('#')[0];
-            expect(existingFiles.has(filePart)).toBe(true);
+            expect(`${page}: ${filePart} ${exists(page, filePart) ? 'exists' : 'missing'}`).toBe(`${page}: ${filePart} exists`);
           }
         });
       });

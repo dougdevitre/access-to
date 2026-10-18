@@ -1,8 +1,9 @@
 {
   "_readme": [
     "Spoken narration for the homepage app, in Doug Devitre's ElevenLabs voice.",
-    "The words come from journey.json and repos.json (see .github/scripts/narration-clips.sh); this file holds only how they are performed.",
+    "The words come from repos.json, journey.json, journey.<lang>.json and i18n/<lang>.json (see .github/scripts/narration-clips.sh); this file holds only how they are performed.",
     "Voice settings match Distributed Virtue Season One (profile warm-v2) so both sites sound like the same person.",
+    "One voice for every language: eleven_multilingual_v2 detects the language from the text. The API's language_code hint is not supported for multilingual_v2 models, so none is sent; Spanish clips (ids ending -es) are spoken from the Spanish text alone.",
     "The voice id is not a secret. The API key is: it lives only in the ELEVENLABS_API_KEY repository secret."
   ],
   "voice_id": "2ydcbtd5sJZRYFMNgMVZ",
@@ -14,6 +15,5 @@
     "style": 0.22,
     "speed": 0.88,
     "use_speaker_boost": true
-  },
-  "gates_intro": "Before you share anything, pass it through four gates."
+  }
 }

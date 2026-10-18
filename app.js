@@ -2,8 +2,11 @@
  *
  * Everything the app shows comes from the JSON that render-hub.sh embeds in
  * index.html (#app-data): the projects (repos.json), the journey content
- * (journey.json) and the narration transcripts. Narration MP3s are optional:
- * a play button appears only when audio/manifest.json lists its clip.
+ * (journey.json), the narration transcripts and the words the app writes at
+ * runtime (i18n/<lang>.json "ui"). The same script runs every language's page
+ * (es/index.html embeds Spanish data), so nothing here is in English.
+ * Narration MP3s are optional: a play button appears only when
+ * audio/manifest.json lists its clip (Spanish clip ids end in -es).
  * Without JavaScript every door is still a working link.
  */
 (function () {
@@ -16,6 +19,10 @@
   var BY_ID = {};
   PROJECTS.forEach(function (p, i) { p.index = i; BY_ID[p.id] = p; });
   var J = DATA.journey;
+  var T = DATA.ui;                                   // this page's words
+  var ROOT = DATA.root || '';                        // '' on /, '../' on /es/
+  var SUFFIX = DATA.lang && DATA.lang !== 'en' ? '-' + DATA.lang : '';   // clip ids
+  function fmt(s, v) { return String(s).replace(/\{(\w+)\}/g, function (m, k) { return v[k] != null ? v[k] : m; }); }
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -50,7 +57,7 @@
   var soundBtn = $('#sound-toggle');
   function renderSoundBtn() {
     soundBtn.setAttribute('aria-pressed', String(soundOn));
-    soundBtn.setAttribute('aria-label', soundOn ? 'Sound on. Turn sound off' : 'Sound off. Turn sound on');
+    soundBtn.setAttribute('aria-label', soundOn ? T.sound_on : T.sound_off);
   }
   renderSoundBtn();
   soundBtn.addEventListener('click', function () {
@@ -104,11 +111,11 @@
     if (text) $('p', d).textContent = text;
   });
 
-  fetch('audio/manifest.json', { cache: 'no-cache' })
+  fetch(ROOT + 'audio/manifest.json', { cache: 'no-cache' })
     .then(function (r) { return r.ok ? r.json() : { clips: {} }; })
     .then(function (m) {
       CLIPS = (m && m.clips) || {};
-      $all('[data-clip]').forEach(function (b) { if (CLIPS[b.getAttribute('data-clip')]) b.hidden = false; });
+      $all('[data-clip]').forEach(function (b) { if (CLIPS[b.getAttribute('data-clip') + SUFFIX]) b.hidden = false; });
     })
     .catch(function () { /* no narration yet: buttons stay hidden */ });
 
@@ -119,11 +126,11 @@
     narrating = false;
   }
   function playClip(id, btn) {
-    var clip = CLIPS[id];
+    var clip = CLIPS[id + SUFFIX];
     if (!clip) return;
     if (playingBtn === btn) { stopNarration(); return; }
     stopNarration();
-    player = new Audio(clip.file);
+    player = new Audio(ROOT + clip.file);
     playingBtn = btn;
     narrating = true;
     btn.setAttribute('data-playing', 'true');
@@ -170,20 +177,20 @@
     sheet.style.setProperty('--c', p.color);
     $('.sheet-icon svg', sheet).innerHTML = p.icon;                   // trusted: icons.json
     $('#sheet-title').textContent = p.title;
-    $('.sheet-meta', sheet).textContent = p.status + ', ' + p.scope;
+    $('.sheet-meta', sheet).textContent = fmt(T.status_scope, { status: p.status, scope: p.scope });
     $('.sheet-desc', sheet).textContent = p.description + '.';
 
     var listen = $('.sheet-listen', sheet);
-    listen.hidden = !CLIPS[p.id];
+    listen.hidden = !CLIPS[p.id + SUFFIX];
     listen.setAttribute('data-playing', 'false');
-    $('.big-btn-text', listen).textContent = 'Listen to ' + p.title;
+    $('.big-btn-text', listen).textContent = fmt(T.listen_to, { title: p.title });
     var tr = $('.sheet-transcript', sheet);
     tr.open = false;
     $('p', tr).textContent = DATA.clips[p.id] || '';
 
     var facts = $('.sheet-facts', sheet);
     facts.textContent = '';
-    [['Who adopts it', p.adopter], ['A first pilot', p.pilot], ['Who it serves', p.audience.join(', ')]]
+    [[T.fact_adopter, p.adopter], [T.fact_pilot, p.pilot], [T.fact_audience, p.audience.join(', ')]]
       .forEach(function (f) {
         if (!f[1]) return;
         var row = el('div');
@@ -200,8 +207,8 @@
       var span = el('span');
       span.appendChild(el('strong', {}, s.title + '. '));
       var prompt = s.prompt;
-      if (i === 0 && p.audience.length) prompt += ' Start with ' + p.audience.join(', ') + '.';
-      if (i === 2 && p.adopter) prompt += ' Here: ' + p.adopter + '.';
+      if (i === 0 && p.audience.length) prompt += fmt(T.beacon_start, { audience: p.audience.join(', ') });
+      if (i === 2 && p.adopter) prompt += fmt(T.beacon_here, { adopter: p.adopter });
       span.appendChild(document.createTextNode(prompt));
       li.appendChild(span);
       steps.appendChild(li);
@@ -229,11 +236,12 @@
     var links = $('.sheet-links', sheet);
     links.textContent = '';
     if (p.live) links.appendChild(link(p.live, p.cta, true, true));
-    if (p.page) links.appendChild(link(p.page, 'Explore ' + p.title, !p.live, false));
-    if (p.repo) links.appendChild(link(p.repo, 'View the source on GitHub', !p.live && !p.page, true));
-    if (p.private) links.appendChild(el('p', { class: 'step-note' }, 'Coming soon. The source opens when it is ready for public use.'));
-    links.appendChild(link('mailto:dougdevitre@gmail.com?subject=' + encodeURIComponent('Bringing ' + p.title + ' to our community'),
-      'Bring it to your community', false, false));
+    if (p.page) links.appendChild(link(p.page, fmt(T.explore, { title: p.title }), !p.live, false));
+    if (p.repo) links.appendChild(link(p.repo, T.view_source, !p.live && !p.page, true));
+    if (p.private) links.appendChild(el('p', { class: 'step-note' }, T.private_note));
+    else if (T.links_note) links.appendChild(el('p', { class: 'step-note' }, T.links_note));
+    links.appendChild(link('mailto:dougdevitre@gmail.com?subject=' + encodeURIComponent(fmt(T.mail_subject, { title: p.title })),
+      T.bring_it, false, false));
   }
 
   function openSheet(id, fromBlend) {
@@ -287,9 +295,9 @@
   var F = J.finder;
   if (F) {
     var QUESTIONS = [
-      { key: 'role', text: 'Who are you?', options: F.roles },
-      { key: 'need', text: "What's going on?", options: F.needs },
-      { key: 'place', text: 'Where are you?', options: F.places }
+      { key: 'role', text: T.q_role, options: F.roles },
+      { key: 'need', text: T.q_need, options: F.needs },
+      { key: 'place', text: T.q_place, options: F.places }
     ];
     var answers = {};
     var stepIndex = 0;
@@ -326,8 +334,8 @@
       var helpLens = role && role.lens === 'help';
       var all = need.doors.map(function (id) { return BY_ID[id]; }).filter(Boolean);
       // Someone seeking help today needs a tool that works today.
-      var usable = helpLens ? all.filter(function (p) { return !p.private && p.status !== 'In design'; }) : all;
-      var local = answers.place === 'missouri' ? usable : usable.filter(function (p) { return p.scope !== 'Missouri'; });
+      var usable = helpLens ? all.filter(function (p) { return !p.private && p.stage !== 'spec'; }) : all;
+      var local = answers.place === 'missouri' ? usable : usable.filter(function (p) { return p.region !== 'missouri'; });
       var chosen = (local.length ? local : usable.length ? usable : all).slice(0, 3);
       return { need: need, helpLens: helpLens, doors: chosen, missouriOnly: !local.length && answers.place !== 'missouri' };
     };
@@ -352,10 +360,10 @@
         icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + p.icon + '</svg>';
         var text = el('span', { class: 'match-text' });
         text.appendChild(el('span', { class: 'match-name' }, p.title));
-        var why = r.helpLens || !p.pilot ? p.description + '.' : 'A first pilot: ' + p.pilot + '.';
+        var why = r.helpLens || !p.pilot ? p.description + '.' : fmt(T.pilot_why, { pilot: p.pilot });
         text.appendChild(el('span', { class: 'match-why' }, why));
-        if (p.private || p.status === 'In design') text.appendChild(el('span', { class: 'match-flag' }, p.status));
-        else if (p.scope === 'Missouri' && answers.place !== 'missouri') text.appendChild(el('span', { class: 'match-flag' }, 'Built for Missouri'));
+        if (p.private || p.stage === 'spec') text.appendChild(el('span', { class: 'match-flag' }, p.status));
+        else if (p.region === 'missouri' && answers.place !== 'missouri') text.appendChild(el('span', { class: 'match-flag' }, T.built_for_missouri));
         b.appendChild(icon);
         b.appendChild(text);
         b.addEventListener('click', function () { haptic(); openSheet(p.id); });
@@ -363,8 +371,8 @@
         list.appendChild(li);
       });
 
-      var note = r.helpLens ? F.help_note : 'Tap a door to see who adopts it, a first pilot, and how it blends with the others.';
-      if (r.missouriOnly) note += ' These were built for Missouri; the approach still applies where you are.';
+      var note = r.helpLens ? F.help_note : T.adopt_note;
+      if (r.missouriOnly) note += T.missouri_note;
       $('#finder-note').textContent = note;
 
       // Light the matching doors in the grid until the guide is restarted.
@@ -463,8 +471,8 @@
     box.hidden = !complete;
     if (!complete) { wasComplete = false; return; }
     var d = pick.door;
-    var text = pick.virtue.name + ': ' + pick.virtue.practice + ' Then bring it to ' + d.title +
-      (d.pilot ? ', starting with ' + d.pilot + '.' : '.');
+    var text = fmt(T.step, { virtue: pick.virtue.name, practice: pick.virtue.practice, door: d.title }) +
+      (d.pilot ? fmt(T.step_pilot, { pilot: d.pilot }) : T.step_end);
     $('#my-step-text').textContent = text;
     if (!wasComplete) {                                                // a resolved chord, once
       [0, 2, 4].forEach(function (k, n) { tone(SCALE[k] * 2, 1.6, 0.06, n * 0.09); });
@@ -474,14 +482,14 @@
   }
 
   $('#share-step').addEventListener('click', function () {
-    var text = $('#my-step-text').textContent + ' (from dougdevitre.org)';
+    var text = $('#my-step-text').textContent + T.share_from;
     var btn = this;
     if (navigator.share) {
-      navigator.share({ title: 'My mindful step', text: text, url: 'https://dougdevitre.org/' }).catch(function () {});
+      navigator.share({ title: T.share_title, text: text, url: DATA.url }).catch(function () {});
     } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(text + ' https://dougdevitre.org/').then(function () {
-        btn.textContent = 'Copied';
-        setTimeout(function () { btn.textContent = 'Share this step'; }, 1800);
+      navigator.clipboard.writeText(text + ' ' + DATA.url).then(function () {
+        btn.textContent = T.copied;
+        setTimeout(function () { btn.textContent = T.share; }, 1800);
       });
     }
   });

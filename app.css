@@ -91,6 +91,20 @@ section + section { border-top: 1px solid var(--line); }
 .lamp { position: relative; padding-top: 44px; isolation: isolate; }
 .lamp h1 { font-size: clamp(2.4rem, 10vw, 3.6rem); max-width: 14ch; letter-spacing: -0.01em; }
 .lamp-lead { margin: 16px 0 24px; max-width: 46ch; font-size: 1.125rem; }
+
+/* Language switch (EN | ES), rendered by render-hub.sh from i18n/*.json.
+   Text is --muted on --surface (7.3:1 light, 7.1:1 dark); the current
+   language is --bg on --ink (14.5:1 light, 14.7:1 dark). */
+.lang-switch { display: flex; justify-content: flex-end; margin: -24px 0 16px; }
+.lang-switch a {
+  min-width: 52px; min-height: 44px; padding: 0 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+  font: 700 0.95rem/1 var(--sans); letter-spacing: 0.04em; text-decoration: none;
+}
+.lang-switch a:first-child { border-radius: 999px 0 0 999px; }
+.lang-switch a:last-child { border-radius: 0 999px 999px 0; border-left: 0; }
+.lang-switch a[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
 .beam {
   position: absolute; z-index: -1; pointer-events: none;
   top: -40px; right: -60px; width: 420px; height: 420px;

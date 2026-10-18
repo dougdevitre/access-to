@@ -77,7 +77,7 @@ describe('Homepage app', () => {
 
     test('transcripts match exactly what the narration generator speaks', () => {
       const clips = JSON.parse(execFileSync(path.join(ROOT, '.github/scripts/narration-clips.sh'), { encoding: 'utf-8' }));
-      const expected = Object.fromEntries(clips.map((c) => [c.id, c.text]));
+      const expected = Object.fromEntries(clips.filter((c) => c.lang === 'en').map((c) => [c.id, c.text]));
       expect(data.clips).toEqual(expected);
     });
 

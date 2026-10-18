@@ -1,0 +1,57 @@
+{
+  "_readme": [
+    "English strings for the homepage app that are not written in index.html itself: words app.js shows at runtime (ui), the labels render-hub.sh prints on doors (labels), and the joining words narration-clips.sh uses to compose project scripts (narration).",
+    "English is the source language. The homepage text is index.html itself; each other language has an i18n/<lang>.json with the same keys plus a page map, and a journey.<lang>.json."
+  ],
+  "lang": "en",
+  "name": "English",
+  "path": "",
+  "url": "https://dougdevitre.org/",
+  "labels": {
+    "language_nav": "Language",
+    "status": { "live": "Live", "beta": "Beta", "skill": "Ready to use", "pre-pilot": "Pre-pilot", "spec": "In design" },
+    "coming_soon": "Coming soon",
+    "scope": { "missouri": "Missouri", "nationwide": "Nationwide", "global": "Global" },
+    "cta": "Open the app"
+  },
+  "ui": {
+    "q_role": "Who are you?",
+    "q_need": "What's going on?",
+    "q_place": "Where are you?",
+    "sound_on": "Sound on. Turn sound off",
+    "sound_off": "Sound off. Turn sound on",
+    "listen_to": "Listen to {title}",
+    "status_scope": "{status}, {scope}",
+    "fact_adopter": "Who adopts it",
+    "fact_pilot": "A first pilot",
+    "fact_audience": "Who it serves",
+    "beacon_start": " Start with {audience}.",
+    "beacon_here": " Here: {adopter}.",
+    "explore": "Explore {title}",
+    "view_source": "View the source on GitHub",
+    "private_note": "Coming soon. The source opens when it is ready for public use.",
+    "links_note": "",
+    "bring_it": "Bring it to your community",
+    "mail_subject": "Bringing {title} to our community",
+    "adopt_note": "Tap a door to see who adopts it, a first pilot, and how it blends with the others.",
+    "missouri_note": " These were built for Missouri; the approach still applies where you are.",
+    "pilot_why": "A first pilot: {pilot}.",
+    "built_for_missouri": "Built for Missouri",
+    "step": "{virtue}: {practice} Then bring it to {door}",
+    "step_pilot": ", starting with {pilot}.",
+    "step_end": ".",
+    "share_title": "My mindful step",
+    "share_from": " (from dougdevitre.org)",
+    "share": "Share this step",
+    "copied": "Copied"
+  },
+  "narration": {
+    "gates_intro": "Before you share anything, pass it through four gates.",
+    "gates_outro": "If it fails one, pause and revise.",
+    "built_for": "It is built for {adopter}.",
+    "first_step": "A good first step is {pilot}.",
+    "alongside": "It works alongside {with}.",
+    "coming_soon": "It is coming soon.",
+    "and": "and"
+  }
+}

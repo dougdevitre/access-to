@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dougdevitre/access-to/schemas/i18n.schema.json",
+  "title": "Access To Homepage Language",
+  "description": "One language of the homepage app (.github/config/i18n/<lang>.json). en.json is the source; every other language also has a page map, project copy and a journey.<lang>.json, and render-hub.sh builds <lang>/index.html from them. validate-config.sh checks the cross-file rules (same keys as en.json, every listed project, journey ids and crisis lines).",
+  "type": "object",
+  "required": ["lang", "name", "path", "url", "labels", "ui", "narration"],
+  "properties": {
+    "_readme": { "type": "array", "items": { "type": "string" } },
+    "lang": { "type": "string", "pattern": "^[a-z]{2}$", "description": "ISO 639-1 code; must match the file name" },
+    "name": { "type": "string", "description": "The language's own name (English, Español), used in the language switch" },
+    "path": { "type": "string", "pattern": "^([a-z]{2}/)?$", "description": "Folder of this language's homepage: \"\" for English, \"<lang>/\" otherwise" },
+    "url": { "type": "string", "format": "uri", "description": "Canonical URL of this language's homepage (hreflang, canonical, og:url, share links)" },
+    "review": { "type": "string", "description": "Translation review status" },
+    "keep": { "type": "array", "items": { "type": "string" }, "description": "English strings on index.html that stay the same (names)" },
+    "page": {
+      "type": "object",
+      "description": "Sections of English text exactly as written in index.html -> translation",
+      "additionalProperties": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } }
+    },
+    "labels": {
+      "type": "object",
+      "required": ["language_nav", "status", "coming_soon", "scope", "cta"],
+      "properties": {
+        "language_nav": { "type": "string" },
+        "status": {
+          "type": "object",
+          "required": ["live", "beta", "skill", "pre-pilot", "spec"],
+          "additionalProperties": { "type": "string" }
+        },
+        "coming_soon": { "type": "string" },
+        "scope": {
+          "type": "object",
+          "required": ["missouri", "nationwide", "global"],
+          "additionalProperties": { "type": "string" }
+        },
+        "cta": { "type": "string" }
+      }
+    },
+    "ui": {
+      "type": "object",
+      "description": "Words app.js writes at runtime. {name} placeholders must match en.json.",
+      "additionalProperties": { "type": "string" }
+    },
+    "narration": {
+      "type": "object",
+      "required": ["gates_intro", "gates_outro", "built_for", "first_step", "alongside", "coming_soon", "and"],
+      "description": "Joining phrases narration-clips.sh uses to compose spoken scripts",
+      "additionalProperties": { "type": "string" }
+    },
+    "projects": {
+      "type": "object",
+      "description": "Per listed project (repos.json name): translated description, call to action and audience. Titles are brand names and are not translated.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["description", "cta", "audience"],
+        "properties": {
+          "description": { "type": "string", "minLength": 1 },
+          "cta": { "type": "string", "minLength": 1 },
+          "audience": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

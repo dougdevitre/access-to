@@ -38,7 +38,9 @@
 #     repos-file defaults to .github/config/repos.json
 #
 # Output: a table through lib-log (one JSON row per repo with LOG_FORMAT=json),
-# plus the markdown report on GITHUB_STEP_SUMMARY when set. The report opens
+# plus the markdown report on GITHUB_STEP_SUMMARY when set. Warnings and errors
+# raised inside the per-repo checks go to stderr, so stdout stays one JSON
+# object per line. The report opens
 # with  <!-- ecosystem-drift findings=N errors=N skipped=N -->  for workflows.
 #
 # Exit codes: 0 clean (skips allowed), 1 any repo drifted, missing or stale
@@ -73,6 +75,26 @@ RESULTS="$WORK/results.jsonl"
 FINDINGS=0
 ERRORS=0
 SKIPPED=0
+
+# check_disclaimer, check_package and check_install print their result as JSON
+# on stdout and are called via $(...), so they run in a subshell: a log line on
+# that stdout would corrupt the JSON, and a counter bumped there is lost when
+# the subshell exits. They log through sub_warn / sub_error instead, which
+# write to stderr and tally into a file; fold_tally adds the tally to ERRORS
+# and to lib-log's warning/error counts before the report and the exit code.
+TALLY="$WORK/tally"
+: > "$TALLY"
+sub_warn()  { log_warn "$1" >&2;  echo warn >> "$TALLY"; }
+sub_error() { log_error "$1" >&2; echo error >> "$TALLY"; }
+fold_tally() {
+  local w e
+  w=$(grep -c '^warn$' "$TALLY" || true)
+  e=$(grep -c '^error$' "$TALLY" || true)
+  ERRORS=$((ERRORS + e))
+  _LOG_WARN_COUNT=$((_LOG_WARN_COUNT + w))
+  _LOG_ERROR_COUNT=$((_LOG_ERROR_COUNT + e))
+  : > "$TALLY"
+}
 
 # --- fetch layer: the only place that talks to GitHub ------------------------
 
@@ -142,8 +164,7 @@ check_disclaimer() {
     | sed -E "s/.*: $repo\/([^ ]+) is out of date/\1/" | sort -u \
     | jq -Rsc --arg pkg "$PKG_SKILL_LABEL" 'split("\n") | map(select(. != "") | if . == "SKILL.md" and $pkg != "" then $pkg else . end)')
   if [ "$files" = "[]" ]; then
-    log_error "$repo: sync-disclaimer.sh --check failed without naming a file: $out"
-    ERRORS=$((ERRORS + 1))
+    sub_error "$repo: sync-disclaimer.sh --check failed without naming a file: $out"
   fi
   jq -nc --argjson f "$files" '{disclaimer: "drifted", drifted_files: $f}'
 }
@@ -158,7 +179,7 @@ check_package() {
   local entries comps=() prefix p d pkg_date content_date="" newest="" status
   [ -e "$pkg" ] || fetch_entry "$repo" "$tree" "$name" "$pkg"
   if ! entries=$(list_package "$pkg") || [ -z "$entries" ]; then
-    log_warn "$repo/$name is neither a zip nor a tarball; cannot list its contents"
+    sub_warn "$repo/$name is neither a zip nor a tarball; cannot list its contents"
     jq -nc --arg f "$name" '{file: $f, status: "unreadable"}'
     return
   fi
@@ -223,8 +244,7 @@ check_install() {
     if grep -q 'HTTP 404' "$WORK/err"; then
       jq -nc --arg a "$asset" '{status: "missing release", asset: $a}'
     else
-      log_error "$repo: could not read the skill-latest release: $(cat "$WORK/err")"
-      ERRORS=$((ERRORS + 1))
+      sub_error "$repo: could not read the skill-latest release: $(cat "$WORK/err")"
       jq -nc --arg a "$asset" '{status: "error", asset: $a}'
     fi
     return
@@ -377,6 +397,8 @@ done
 
 # --- output ------------------------------------------------------------------
 
+fold_tally
+
 short() { printf '%s' "${1:0:10}"; }
 
 # Table: one row per repo.
@@ -447,6 +469,7 @@ render_report() {
     echo "### Errors"
     echo ""
     jq -r 'select(.disclaimer == "error") | "- \(.repo): could not be read (see the run log)"' "$RESULTS"
+    jq -r 'select(.install.status? == "error") | "- \(.repo): could not read the skill-latest release (see the run log)"' "$RESULTS"
     echo ""
   fi
 }

@@ -12,7 +12,8 @@
  *                               "commits": { "<path>": "<ISO date>" },
  *                               "releases": { "<tag>": { "assets": ["<name>"], "date": "<ISO date of the tagged commit>" } } }
  *
- * A tag without a release answers 404, like GitHub.
+ * A tag without a release answers 404, like GitHub. A release given as
+ * { "error": "<message>" } fails with that message instead (e.g. an HTTP 500).
  *
  * A repo without a fixture directory answers 404, like a private repo the
  * token cannot read. Tree and blob shas encode the fixture-relative path.
@@ -67,6 +68,7 @@ if (rest === '') {
   const tag = rest.slice('releases/tags/'.length);
   const rel = (meta.releases || {})[tag];
   if (!rel) fail('Not Found (HTTP 404)');
+  if (rel.error) fail(rel.error);
   out({ tag_name: tag, assets: rel.assets.map((name) => ({ name })) });
 } else if (rest.startsWith('commits/')) {
   const ref = rest.slice('commits/'.length);

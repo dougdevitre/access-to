@@ -433,6 +433,60 @@ describe('ecosystem-drift.sh', () => {
     });
   });
 
+  describe('logging inside functions whose output is captured as JSON', () => {
+    // check_package, check_disclaimer and check_install print their result as
+    // JSON on stdout and are called via $(...). A log line on that stdout
+    // corrupts the JSON, and a counter bumped in that subshell is lost.
+    const all = (r) => r.stdout + r.stderr;
+    const summary = (r) => r.stdout.split('\n').filter((l) => l.startsWith('{')).map((l) => JSON.parse(l))
+      .find((o) => o.msg === 'Run complete');
+
+    test('a warning inside check_package keeps the JSON parseable and still shows the warning', () => {
+      const dir = repo('access-to-jobs', { files: { 'README.md': README, 'SKILL.md': SKILL, 'broken.skill': 'not a package\n' } });
+      stamp('access-to-jobs', dir);
+      const r = runDrift(['access-to-jobs']);
+      expect(r.rows['access-to-jobs']).toBeDefined();
+      expect(r.rows['access-to-jobs'].packages).toEqual([{ file: 'broken.skill', status: 'unreadable' }]);
+      expect(all(r)).toMatch(/::warning::access-to-jobs\/broken\.skill is neither a zip nor a tarball/);
+      expect(summary(r).warnings).toBeGreaterThanOrEqual(1);
+      expect(r.status).toBe(0);
+    });
+
+    test('the same holds in text mode', () => {
+      const dir = repo('access-to-jobs', { files: { 'README.md': README, 'SKILL.md': SKILL, 'broken.skill': 'not a package\n' } });
+      stamp('access-to-jobs', dir);
+      const r = runDrift(['access-to-jobs'], { LOG_FORMAT: 'text' });
+      expect(r.stdout).toMatch(/access-to-jobs\s+in sync\s+-\s+broken\.skill: unreadable/);
+      expect(all(r)).toMatch(/::warning::access-to-jobs\/broken\.skill/);
+      expect(r.status).toBe(0);
+    });
+
+    test('an error inside check_install reaches the report header and the exit code', () => {
+      const dir = repo('access-to-jobs', {
+        files: { 'README.md': README, 'SKILL.md': SKILL },
+        commits: { 'SKILL.md': OLD },
+        releases: { 'skill-latest': { error: 'Server Error (HTTP 500)' } },
+      });
+      stamp('access-to-jobs', dir);
+      const r = runDrift([{ name: 'access-to-jobs', install_zip: 'access-to-jobs.zip' }]);
+      expect(r.rows['access-to-jobs'].install).toEqual({ status: 'error', asset: 'access-to-jobs.zip' });
+      expect(all(r)).toMatch(/::error::access-to-jobs: could not read the skill-latest release/);
+      expect(r.report.split('\n')[0]).toBe('<!-- ecosystem-drift findings=0 errors=1 skipped=0 -->');
+      expect(summary(r).errors).toBeGreaterThanOrEqual(1);
+      expect(r.report).toContain('- access-to-jobs: could not read the skill-latest release');
+      expect(r.status).toBe(1);
+    });
+
+    test('captured check_* functions log only through sub_warn / sub_error', () => {
+      const src = fs.readFileSync(SCRIPT, 'utf-8');
+      const bodies = [...src.matchAll(/^(check_\w+)\(\) \{\n([\s\S]*?)^\}/gm)];
+      expect(bodies.map((m) => m[1])).toEqual(['check_disclaimer', 'check_package', 'check_install']);
+      bodies.forEach(([, name, body]) => {
+        expect({ name, bare: body.match(/^\s*log_\w+/gm) }).toEqual({ name, bare: null });
+      });
+    });
+  });
+
   test('text mode prints a table row per repo', () => {
     stamp('access-to-safety', repo('access-to-safety', { files: { 'README.md': README } }));
     const r = runDrift(['access-to-safety'], { LOG_FORMAT: 'text' });

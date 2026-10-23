@@ -31,6 +31,16 @@ if [ ${#REPOS[@]} -eq 0 ]; then
   exit 1
 fi
 
+# gh_retry prints gh's output on stdout and is called via $(...) or a pipe
+# into jq, so it runs in a subshell and its stdout is the captured value: a log
+# line there would corrupt the project id or a repo's failure detail, and a
+# counter bumped there is lost when the subshell exits. It logs through
+# sub_info instead, which writes to stderr, as ecosystem-drift.sh's sub_warn /
+# sub_error do. log_info is not counted by lib-log, so no tally is needed; a
+# warning or error raised inside gh_retry would also need the tally file and
+# fold_tally that ecosystem-drift.sh keeps.
+sub_info() { log_info "$1" >&2; }
+
 # Retry wrapper for gh commands
 gh_retry() {
   local attempt=1
@@ -42,7 +52,7 @@ gh_retry() {
     fi
     if [ $attempt -lt "$MAX_RETRIES" ]; then
       local wait=$((RETRY_DELAY ** attempt))
-      log_info "Retry $attempt/$MAX_RETRIES in ${wait}s..."
+      sub_info "Retry $attempt/$MAX_RETRIES in ${wait}s..."
       sleep "$wait"
     fi
     ((attempt++)) || true
@@ -73,7 +83,7 @@ for REPO in "${REPOS[@]}"; do
 
   if OUTPUT=$(gh_retry project item-add "$PROJECT_NUMBER" \
     --owner "$OWNER" \
-    --url "$REPO_URL" 2>&1); then
+    --url "$REPO_URL"); then
     log_action "sync-repo" "$REPO" "added"
     DETAILS+="| $REPO | Added |"$'\n'
     ((ADDED++)) || true

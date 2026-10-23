@@ -50,8 +50,11 @@ PROJECTS_JQ='
       .order)
 '
 
+# How to upload a skill zip in claude.ai (linked from every "Install in Claude").
+INSTALL_HELP_URL="https://support.claude.com/en/articles/12512180-use-skills-in-claude"
+
 # --- Block: project cards ---
-jq -r --slurpfile icons "$ICONS_FILE" "
+jq -r --slurpfile icons "$ICONS_FILE" --arg install_help "$INSTALL_HELP_URL" "
   ($PROJECTS_JQ) as \$projects
   | .owner as \$owner
   | {missouri:\"Missouri\", nationwide:\"Nationwide\", global:\"Global\"} as \$scopes
@@ -75,6 +78,16 @@ jq -r --slurpfile icons "$ICONS_FILE" "
       end
     ) as \$primary
   | (
+      if .install_zip and \$vis == \"public\" then
+        (if (.install_zip | startswith(\"https://\")) then .install_zip
+         else \$repo_url + \"/releases/download/skill-latest/\" + .install_zip end) as \$zip
+        | \"      <div class=\\\"install\\\"><a href=\\\"\" + (\$zip | @html) + \"\\\" class=\\\"install-link\\\" aria-label=\\\"Install in Claude: \" + (\$title | @html) + \" skill (downloads a zip file)\\\" aria-describedby=\\\"install-help-\" + .name + \"\\\">\"
+          + \"<svg class=\\\"install-icon\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\" aria-hidden=\\\"true\\\"><path d=\\\"M12 3v12\\\"/><path d=\\\"m7 10 5 5 5-5\\\"/><path d=\\\"M5 21h14\\\"/></svg> Install in Claude</a>\"
+          + \"<p class=\\\"install-help\\\" id=\\\"install-help-\" + .name + \"\\\">Download, don&rsquo;t unzip, then Claude &rarr; Customize &rarr; Skills &rarr; + &rarr; Upload a skill. \"
+          + \"<a href=\\\"\" + \$install_help + \"\\\" target=\\\"_blank\\\" rel=\\\"noopener\\\" aria-label=\\\"How to use skills in Claude (opens in a new tab)\\\">How to use skills</a></p></div>\"
+      else \"\" end
+    ) as \$install
+  | (
       if \$vis == \"public\" then
         \"      <ul class=\\\"repo-list\\\"><li><a href=\\\"\" + \$repo_url + \"\\\" target=\\\"_blank\\\" rel=\\\"noopener\\\" aria-label=\\\"\" + .name + \" on GitHub (opens in a new tab)\\\"><svg class=\\\"repo-icon\\\" viewBox=\\\"0 0 16 16\\\" fill=\\\"currentColor\\\" aria-hidden=\\\"true\\\"><path d=\\\"M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z\\\"/></svg> \" + .name + \" <span class=\\\"repo-arrow\\\" aria-hidden=\\\"true\\\">&#8599;</span></a></li></ul>\"
       else
@@ -88,6 +101,7 @@ jq -r --slurpfile icons "$ICONS_FILE" "
       \"      <p class=\\\"pillar-desc\\\">\" + (.description | @html) + \"</p>\",
       \"      <div class=\\\"tag-row\\\"><span class=\\\"tag\\\">\" + \$types[\$st] + \"</span><span class=\\\"tag\\\">\" + (\$scopes[.scope] // .scope) + \"</span>\" + (if \$st == \"skill\" and \$vis == \"public\" then \"<span class=\\\"tag tag-time\\\">5 min setup</span>\" else \"\" end) + \"</div>\",
       \$primary,
+      \$install,
       \$repo,
       \"      <span class=\\\"pillar-status\\\">\" + (if \$vis == \"private\" then \"In development\" else \$statuses[\$st] end) + \"</span>\",
       \"    </article>\"
@@ -253,6 +267,10 @@ CLIPS_JSON="$("$SCRIPT_DIR/narration-clips.sh" "$ROOT/.github/config")"
               cta: (.cta // \"Open the app\"),
               page: (.page // null),
               repo: (if \$vis == \"public\" then \"https://github.com/\" + \$owner + \"/\" + .name else null end),
+              install: (if .install_zip and \$vis == \"public\" then
+                          (if (.install_zip | startswith(\"https://\")) then .install_zip
+                           else \"https://github.com/\" + \$owner + \"/\" + .name + \"/releases/download/skill-latest/\" + .install_zip end)
+                        else null end),
               audience: (.audience // []),
               adopter: (\$a.adopter // null),
               pilot: (\$a.pilot // null),

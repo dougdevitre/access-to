@@ -2,12 +2,17 @@
 /**
  * A stand-in for `gh api`, so the ecosystem-drift tests need no network.
  *
- * It serves the four GitHub REST endpoints ecosystem-drift.sh reads, from
+ * It serves the GitHub REST endpoints ecosystem-drift.sh reads (repo, git
+ * trees, git blobs, commits by path, a commit by ref, a release by tag), from
  * fixture directories under $FAKE_GH_ROOT:
  *
  *   <root>/<repo>/files/...   the repo's default-branch tree (real files,
  *                             directories and symlinks)
- *   <root>/<repo>/meta.json   { "private": bool, "commits": { "<path>": "<ISO date>" } }
+ *   <root>/<repo>/meta.json   { "private": bool,
+ *                               "commits": { "<path>": "<ISO date>" },
+ *                               "releases": { "<tag>": { "assets": ["<name>"], "date": "<ISO date of the tagged commit>" } } }
+ *
+ * A tag without a release answers 404, like GitHub.
  *
  * A repo without a fixture directory answers 404, like a private repo the
  * token cannot read. Tree and blob shas encode the fixture-relative path.
@@ -58,6 +63,16 @@ if (rest === '') {
     .map(([, d]) => d)
     .sort();
   out(dates.length ? [{ commit: { committer: { date: dates[dates.length - 1] } } }] : []);
+} else if (rest.startsWith('releases/tags/')) {
+  const tag = rest.slice('releases/tags/'.length);
+  const rel = (meta.releases || {})[tag];
+  if (!rel) fail('Not Found (HTTP 404)');
+  out({ tag_name: tag, assets: rel.assets.map((name) => ({ name })) });
+} else if (rest.startsWith('commits/')) {
+  const ref = rest.slice('commits/'.length);
+  const rel = (meta.releases || {})[ref];
+  if (!rel) fail('No commit found for SHA: ' + ref + ' (HTTP 422)');
+  out({ sha: Buffer.from(ref).toString('hex'), commit: { committer: { date: rel.date } } });
 } else {
   fail(`unsupported endpoint: ${endpoint}`);
 }

@@ -117,6 +117,11 @@
             "type": "string",
             "pattern": "^[a-z0-9-]+\\.html$",
             "description": "Local pillar page on the hub site"
+          },
+          "install_zip": {
+            "type": "string",
+            "pattern": "^(https://\\S+|[A-Za-z0-9._-]+\\.zip)$",
+            "description": "claude.ai install file: an asset filename on the repo's skill-latest release, or a full https URL. Public repos only."
           }
         },
         "additionalProperties": false

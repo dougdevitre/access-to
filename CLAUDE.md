@@ -19,6 +19,8 @@ Access To is a hub-and-spokes ecosystem of open-source Claude Skills. This repo 
 │   ├── sync-templates.sh    # Push issue templates → child repos
 │   ├── health-check.sh      # Ecosystem dashboard (includes the drift report)
 │   ├── ecosystem-drift.sh   # Read-only disclaimer-drift + stale .skill + install-zip check across all repos
+│   ├── ecosystem-zip-check.sh # Read-only completeness check of every published install zip (layout, references, disclaimer, frontmatter)
+│   ├── check-skill-frontmatter.py # claude.ai SKILL.md frontmatter rules, used by ecosystem-zip-check.sh
 │   └── onboard-repo.sh      # New repo setup
 ├── workflows/               # GitHub Actions (thin orchestration calling scripts)
 └── ISSUE_TEMPLATE/          # Shared issue templates
@@ -51,6 +53,9 @@ LOG_FORMAT=json .github/scripts/validate-config.sh .github/config
 # Check every repo (read-only) for disclaimer drift, stale .skill packages and missing/stale install zips; exit 1 on findings
 .github/scripts/ecosystem-drift.sh [--report drift.md]
 
+# Download every published install zip (read-only) and check it is complete; exit 1 on findings
+.github/scripts/ecosystem-zip-check.sh [--report zip.md]
+
 # Onboard a new repo
 .github/scripts/onboard-repo.sh <repo-name> <pillar> [scope]
 
@@ -78,5 +83,6 @@ open index.html
 - **Every app shows the disclaimer** (educational only, 911/988, verify with official sources, no identifying details, no endorsement or warranty).
 - **The disclaimer wording lives once, in `.github/disclaimer/`.** `sync-disclaimer.sh <repo> <dir>` stamps it into a checkout: `DISCLAIMER.md`, a notice under the README title, and a once-per-conversation notice in `SKILL.md` (between `BEGIN/END DISCLAIMER` markers; repo-specific disclaimers outside the markers stay). To change the wording, edit the templates, then re-run the script for every repo and open a PR in each. Never edit a synced block in a child repo. Every hub page carries a `.footer-notice` (or `#disclaimer` on the homepage); `tests/disclaimer.test.js` enforces both.
 - **Ecosystem drift is checked monthly.** `ecosystem-drift.sh` fetches each repo's disclaimer files through `gh api` and runs `sync-disclaimer.sh --check` on them (a repo whose SKILL.md exists only inside a root `*.skill` package has that copy read out of the package and checked), flags any root `*.skill` package whose last commit is older than the newest commit to the paths it contains (or to its `skill_package_sources`, when set), and, for every repo with `install_zip`, flags a missing `skill-latest` release or asset, or a release whose tagged commit is older than the newest main commit touching `SKILL.md`, `references/`, `templates/`, `modules/`, `skill/`, `locales/` or a root `*.skill` (fix: `gh workflow run skill-package.yml -R dougdevitre/<repo> --ref main`). It never writes to a child repo. `.github/workflows/ecosystem-drift.yml` (monthly + manual, not on PRs) keeps one issue, "Ecosystem drift (monthly check)", open with the fix command per repo and closes it when clean. To cover private repos it needs the `ECOSYSTEM_READ_TOKEN` secret: a fine-grained token with Contents and Metadata read-only on the Access To repos; without it, private repos are skipped with a warning. When you rebuild a `.skill` package or re-stamp the disclaimer, run the script to confirm. `tests/ecosystem-drift.test.js` uses a fake `gh` (`tests/helpers/fake-gh.js`), so it needs no network.
+- **Install zips are checked for completeness monthly too.** `ecosystem-zip-check.sh` (same workflow, same issue) downloads each `install_zip` asset through `gh api`, unzips it and checks: one top-level folder named after the skill with `SKILL.md` in it; every relative path `SKILL.md` references (markdown links, backticked paths, routing-table cells, globs) exists in the zip, resolving as written or under any folder of the zip; the shared disclaimer passes `sync-disclaimer.sh --check` on the zip's `SKILL.md`, `DISCLAIMER.md` and `README.md`; the frontmatter passes `check-skill-frontmatter.py` (name and description limits, folder name = skill name). A `SKILL.md` line that says its paths are not shipped (phrases in `.github/config/zip-check.json`), or a section whose heading says so, is exempt; the exempt count is reported. The fix is always in the child repo (ship the file, fix the path, or say it is not shipped), then `gh workflow run skill-package.yml -R dougdevitre/<repo> --ref main`. It needs `python3` with PyYAML. `tests/ecosystem-zip-check.test.js` uses the same fake `gh`, which also streams release assets.
 - **CI runs Jest** (`.github/workflows/test.yml`) on every PR.
 - **Links are checked** by `.github/workflows/link-check.yml` (lychee over the root `*.html` and `*.md`, not CLAUDE.md, `audio/` or `node_modules`): PRs that touch pages or docs fail on a broken link; the monthly run keeps one "Broken links (monthly check)" issue. Every `.lycheeignore` entry needs a comment saying why. Fix a broken link only with a replacement you have confirmed loads; never delete crisis, legal or benefits information to make it pass.

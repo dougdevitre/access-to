@@ -16,6 +16,12 @@
  * A tag without a release answers 404, like GitHub. A release given as
  * { "error": "<message>" } fails with that message instead (e.g. an HTTP 500).
  *
+ * Release assets are listed with an id, and `releases/assets/<id>` streams
+ * the asset's bytes (ecosystem-zip-check.sh downloads install zips that way).
+ * An asset given as a name is read from <root>/<repo>/assets/<name>; one
+ * given as { "name": "<name>", "file": "<path relative to <root>/<repo>>" }
+ * is read from that file. An asset with no file answers 404 on download.
+ *
  * A repo without a fixture directory answers 404, like a private repo the
  * token cannot read. Tree and blob shas encode the fixture-relative path.
  *
@@ -108,7 +114,15 @@ if (rest === '') {
   const rel = (meta.releases || {})[tag];
   if (!rel) fail('Not Found (HTTP 404)');
   if (rel.error) fail(rel.error);
-  out({ tag_name: tag, assets: rel.assets.map((name) => ({ name })) });
+  const assets = rel.assets.map((a) => {
+    const { name, file } = typeof a === 'string' ? { name: a, file: path.posix.join('assets', a) } : a;
+    return { name, id: enc(file), url: `https://api.github.com/repos/dougdevitre/${repo}/releases/assets/${enc(file)}` };
+  });
+  out({ tag_name: tag, assets });
+} else if (rest.startsWith('releases/assets/')) {
+  const full = path.join(repoDir, dec(rest.slice('releases/assets/'.length)));
+  if (!fs.existsSync(full)) fail('Not Found (HTTP 404)');
+  process.stdout.write(fs.readFileSync(full));
 } else if (rest.startsWith('commits/')) {
   const ref = rest.slice('commits/'.length);
   const rel = (meta.releases || {})[ref];

@@ -142,11 +142,11 @@ flowchart LR
         access_to_peace["<b>access-to-peace</b><br/>Access to Peace"]
         access_to_energy["<b>access-to-energy</b><br/>Access to Energy<br/><i>coming soon</i>"]
         access_for_seniors["<b>access-for-seniors</b><br/>Access for Seniors"]
+        access_to_experts["<b>access-to-experts</b><br/>Access to Experts"]
     end
     HUB --> SKILLS
     subgraph DESIGN ["In design"]
         direction TB
-        access_to_experts["<b>access-to-experts</b><br/>Access to Experts"]
         access_to_hr["<b>access-to-hr</b><br/>Access to HR"]
     end
     HUB --> DESIGN
@@ -220,7 +220,7 @@ flowchart LR
 | [access-to-peace](https://github.com/dougdevitre/access-to-peace) | Peace | Nationwide | Trauma-informed conflict resolution, mediation, co-parenting de-escalation, and restorative practice navigation | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
 | access-to-energy | Energy | Missouri | Energy as civic duty: routes residents to conservation, production, and utility-assistance programs across all 114 Missouri counties | ![Coming soon](https://img.shields.io/badge/-Coming_soon-6B6B6B?style=flat-square) |
 | [access-for-seniors](https://github.com/dougdevitre/access-for-seniors) | Care | Nationwide | Senior connection and aging-services navigation: early isolation detection, family connection, and benefits routing | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
-| [access-to-experts](https://github.com/dougdevitre/access-to-experts) | Business | Global | Platform spec for packaging vetted practitioner methodology into guided, executable playbooks | ![In design](https://img.shields.io/badge/-In_design-6B6B6B?style=flat-square) |
+| [access-to-experts](https://github.com/dougdevitre/access-to-experts) | Business | Global | Platform spec for packaging vetted practitioner methodology into guided, executable playbooks | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
 | [access-to-hr](https://github.com/dougdevitre/access-to-hr) | Jobs | Nationwide | Human resources navigation: employment rights, workplace protections, and HR process guidance | ![In design](https://img.shields.io/badge/-In_design-6B6B6B?style=flat-square) |
 <!-- END GENERATED:directory -->
 

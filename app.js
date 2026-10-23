@@ -239,7 +239,7 @@
         'Download, don’t unzip, then Claude → Customize → Skills → + → Upload a skill.'));
     }
     if (p.repo) links.appendChild(link(p.repo, 'View the source on GitHub', !p.live && !p.page && !p.install, true));
-    if (p.private) links.appendChild(el('p', { class: 'step-note' }, 'Coming soon. The source opens when it is ready for public use.'));
+    if (p.note) links.appendChild(el('p', { class: 'step-note' }, p.note));
     links.appendChild(link('mailto:dougdevitre@gmail.com?subject=' + encodeURIComponent('Bringing ' + p.title + ' to our community'),
       'Bring it to your community', false, false));
   }

@@ -349,7 +349,7 @@
       "description": "Platform spec for packaging vetted practitioner methodology into guided, executable playbooks",
       "scope": "global",
       "role": "tool",
-      "status": "spec",
+      "status": "skill",
       "visibility": "public",
       "install_zip": "access-to-experts.zip",
       "connects_to": ["access-to-business"],

@@ -65,16 +65,15 @@ jq -r --slurpfile icons "$ICONS_FILE" --arg install_help "$INSTALL_HELP_URL" "
   | (.visibility // \"public\") as \$vis
   | (.title // (\"Access to \" + (.pillar[:1] | ascii_upcase) + .pillar[1:])) as \$title
   | (\$icons[0][.icon // .pillar] // \"\") as \$svg
+  | (if \$vis == \"private\" then (if \$st == \"beta\" then \"Private beta\" else \"Coming soon\" end) else \$statuses[\$st] end) as \$label
   | (\"https://github.com/\" + \$owner + \"/\" + .name) as \$repo_url
   | (
       if .live_url then
         \"      <a href=\\\"\" + (.live_url | @html) + \"\\\" class=\\\"pillar-link\\\" target=\\\"_blank\\\" rel=\\\"noopener\\\">\" + ((.cta // \"Open\") | @html) + \" &#8599;</a>\"
       elif .page then
         \"      <a href=\\\"\" + (.page | @html) + \"\\\" class=\\\"pillar-link\\\">Explore projects &#8594;</a>\"
-      elif \$vis == \"public\" then
-        \"\"
       else
-        \"      <span class=\\\"pillar-link pillar-link-pending\\\">Coming soon</span>\"
+        \"\"
       end
     ) as \$primary
   | (
@@ -99,11 +98,12 @@ jq -r --slurpfile icons "$ICONS_FILE" --arg install_help "$INSTALL_HELP_URL" "
       \"      <div class=\\\"pillar-icon\\\" aria-hidden=\\\"true\\\"><svg width=\\\"22\\\" height=\\\"22\\\" viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\">\" + \$svg + \"</svg></div>\",
       \"      <h2>\" + (\$title | @html) + \"</h2>\",
       \"      <p class=\\\"pillar-desc\\\">\" + (.description | @html) + \"</p>\",
-      \"      <div class=\\\"tag-row\\\"><span class=\\\"tag\\\">\" + \$types[\$st] + \"</span><span class=\\\"tag\\\">\" + (\$scopes[.scope] // .scope) + \"</span>\" + (if \$st == \"skill\" and \$vis == \"public\" then \"<span class=\\\"tag tag-time\\\">5 min setup</span>\" else \"\" end) + \"</div>\",
+      \"      <div class=\\\"tag-row\\\">\" + (if \$vis == \"private\" and \$st == \"beta\" then \"\" else \"<span class=\\\"tag\\\">\" + \$types[\$st] + \"</span>\" end) + \"<span class=\\\"tag\\\">\" + (\$scopes[.scope] // .scope) + \"</span>\" + (if \$st == \"skill\" and \$vis == \"public\" then \"<span class=\\\"tag tag-time\\\">5 min setup</span>\" else \"\" end) + \"</div>\",
       \$primary,
       \$install,
       \$repo,
-      \"      <span class=\\\"pillar-status\\\">\" + (if \$vis == \"private\" then \"In development\" else \$statuses[\$st] end) + \"</span>\",
+      \"      <span class=\\\"pillar-status\\\">\" + \$label + \"</span>\",
+      (if \$vis == \"private\" and \$st == \"beta\" then \"      <p class=\\\"pillar-note\\\">Invite-only for now.</p>\" else \"\" end),
       \"    </article>\"
     ]
   | map(select(. != \"\"))
@@ -233,7 +233,7 @@ jq -r --slurpfile icons "$ICONS_FILE" "
     + (if \$external then \" target=\\\"_blank\\\" rel=\\\"noopener\\\"\" else \"\" end) + \">\"
     + \"<span class=\\\"door-icon\\\" aria-hidden=\\\"true\\\"><svg viewBox=\\\"0 0 24 24\\\" fill=\\\"none\\\" stroke=\\\"currentColor\\\" stroke-width=\\\"2\\\" stroke-linecap=\\\"round\\\" stroke-linejoin=\\\"round\\\">\" + (\$icons[0][.icon // .pillar] // \"\") + \"</svg></span>\"
     + \"<span class=\\\"door-name\\\">\" + (\$title | @html) + \"</span>\"
-    + \"<span class=\\\"door-status\\\">\" + (if \$vis == \"private\" then \"Coming soon\" else \$labels[.status // \"skill\"] end) + \"</span>\"
+    + \"<span class=\\\"door-status\\\">\" + (if \$vis == \"private\" then (if .status == \"beta\" then \"Private beta\" else \"Coming soon\" end) else \$labels[.status // \"skill\"] end) + \"</span>\"
     + \"</a></li>\"
 " "$REPOS_FILE" > "$WORK_DIR/doors"
 
@@ -260,9 +260,12 @@ CLIPS_JSON="$("$SCRIPT_DIR/narration-clips.sh" "$ROOT/.github/config")"
               color: (\"#\" + (.color // \"5A8AAB\")),
               icon: (\$icons[0][.icon // .pillar] // \"\"),
               description: .description,
-              status: (if \$vis == \"private\" then \"Coming soon\" else \$labels[.status // \"skill\"] end),
+              status: (if \$vis == \"private\" then (if .status == \"beta\" then \"Private beta\" else \"Coming soon\" end) else \$labels[.status // \"skill\"] end),
               scope: (\$scopes[.scope] // .scope),
               private: (\$vis == \"private\"),
+              note: (if \$vis != \"private\" then null
+                     elif .status == \"beta\" then \"Invite-only for now. The source opens when it is ready for public use.\"
+                     else \"The source opens when it is ready for public use.\" end),
               live: (.live_url // null),
               cta: (.cta // \"Open the app\"),
               page: (.page // null),

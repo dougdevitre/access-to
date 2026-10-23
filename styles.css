@@ -685,6 +685,11 @@ header {
   cursor: default;
 }
 .pillar-card .pillar-link-pending:hover { gap: 0.4rem; }
+.pillar-card .pillar-note {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin: 0;
+}
 .repo-list li .repo-private {
   display: flex;
   align-items: center;

@@ -138,6 +138,11 @@
       "status": "skill",
       "visibility": "public",
       "install_zip": "access-to-services.zip",
+      "skill_package_sources": [
+        "mo-resources.json",
+        "SCHEMA.md",
+        "eval-results.md"
+      ],
       "page": "services.html"
     },
     {

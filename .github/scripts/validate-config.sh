@@ -146,6 +146,26 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
     fi
   fi
 
+  # skill_package_sources: a non-empty, duplicate-free list of relative repo
+  # paths (no leading /, no . or .. segments) that feed the repo's *.skill package.
+  if [ "$(jq ".repos[$i] | has(\"skill_package_sources\")" "$REPOS_FILE")" = "true" ]; then
+    if [ "$(jq ".repos[$i].skill_package_sources | type == \"array\" and length > 0 and all(.[]; type == \"string\")" "$REPOS_FILE")" != "true" ]; then
+      log_error "repos[$i] ($NAME): skill_package_sources must be a non-empty array of paths"
+      ((ERRORS++)) || true
+    else
+      if [ "$(jq ".repos[$i].skill_package_sources | length == (unique | length)" "$REPOS_FILE")" != "true" ]; then
+        log_error "repos[$i] ($NAME): skill_package_sources has duplicate paths"
+        ((ERRORS++)) || true
+      fi
+      while IFS= read -r SRC; do
+        if ! [[ "$SRC" =~ ^[A-Za-z0-9_][A-Za-z0-9._-]*(/[A-Za-z0-9_][A-Za-z0-9._-]*)*$ ]]; then
+          log_error "repos[$i] ($NAME): skill_package_sources path '$SRC' must be relative, with no leading /, . or .. segments"
+          ((ERRORS++)) || true
+        fi
+      done < <(jq -r ".repos[$i].skill_package_sources[]" "$REPOS_FILE")
+    fi
+  fi
+
   # Referential integrity: connects_to must reference existing repo names
   mapfile -t CONNECTIONS < <(jq -r ".repos[$i].connects_to // [] | .[]" "$REPOS_FILE")
   for CONN in "${CONNECTIONS[@]}"; do

@@ -59,6 +59,26 @@ function zip(dest, src, entries) {
   if (r.status !== 0) throw new Error(r.stderr);
 }
 
+/**
+ * Build a gzipped tarball package the way access-to-services does: every
+ * entry under one top-level folder. files: { pathInsideFolder: content }.
+ * With stampSkill, SKILL.md is stamped with the shared disclaimer first.
+ */
+function tarPackage(dest, top, files, { stampSkill = false } = {}) {
+  const src = fs.mkdtempSync(path.join(tmp, 'pkgsrc-'));
+  const folder = path.join(src, top);
+  Object.entries(files).forEach(([rel, content]) => {
+    fs.mkdirSync(path.dirname(path.join(folder, rel)), { recursive: true });
+    fs.writeFileSync(path.join(folder, rel), content);
+  });
+  if (stampSkill) {
+    stamp('access-to-services', folder);
+    fs.rmSync(path.join(folder, 'DISCLAIMER.md'));
+  }
+  const r = spawnSync('tar', ['-czf', dest, '-C', src, top], { encoding: 'utf-8' });
+  if (r.status !== 0) throw new Error(r.stderr);
+}
+
 function registry(names) {
   const f = path.join(tmp, 'repos.json');
   fs.writeFileSync(f, JSON.stringify({ owner: 'dougdevitre', repos: names.map((n) => (typeof n === 'string' ? { name: n } : n)) }));
@@ -133,6 +153,52 @@ describe('ecosystem-drift.sh', () => {
       expect(r.stdout).toMatch(/::warning::.*access-to-energy/);
     });
 
+    describe('SKILL.md that lives only inside a root *.skill package (access-to-services)', () => {
+      const PKG = 'access-to-services.skill';
+      function svc(pkgBuilder) {
+        const dir = repo('access-to-services', { files: { 'README.md': README, 'eval-results.md': 'r\n' } });
+        stamp('access-to-services', dir);
+        pkgBuilder(path.join(dir, PKG));
+        return dir;
+      }
+
+      test('an unstamped SKILL.md inside a gzipped tarball is drifted, named by package', () => {
+        svc((f) => tarPackage(f, 'access-to-services', { 'SKILL.md': SKILL }));
+        const r = runDrift(['access-to-services']);
+        expect(r.rows['access-to-services'].disclaimer).toBe('drifted');
+        expect(r.rows['access-to-services'].drifted_files).toEqual([`${PKG}:access-to-services/SKILL.md`]);
+        expect(r.status).toBe(1);
+        expect(r.report).toContain(`${PKG}:access-to-services/SKILL.md`);
+        expect(r.report).toContain('rebuild');
+      });
+
+      test('an unstamped SKILL.md at the root of a zip package is drifted', () => {
+        svc((f) => {
+          const src = fs.mkdtempSync(path.join(tmp, 'zipsrc-'));
+          fs.writeFileSync(path.join(src, 'SKILL.md'), SKILL);
+          zip(f, src, ['SKILL.md']);
+        });
+        const r = runDrift(['access-to-services']);
+        expect(r.rows['access-to-services'].disclaimer).toBe('drifted');
+        expect(r.rows['access-to-services'].drifted_files).toEqual([`${PKG}:SKILL.md`]);
+      });
+
+      test('a stamped SKILL.md inside the package is in sync', () => {
+        svc((f) => tarPackage(f, 'access-to-services', { 'SKILL.md': SKILL }, { stampSkill: true }));
+        const r = runDrift(['access-to-services']);
+        expect(r.rows['access-to-services'].disclaimer).toBe('in sync');
+        expect(r.status).toBe(0);
+      });
+
+      test('a root SKILL.md is what gets checked; the package copy is not', () => {
+        const dir = repo('access-to-jobs', { files: { 'README.md': README, 'SKILL.md': SKILL } });
+        stamp('access-to-jobs', dir);
+        tarPackage(path.join(dir, 'access-to-jobs.skill'), 'access-to-jobs', { 'SKILL.md': SKILL });
+        const r = runDrift(['access-to-jobs']);
+        expect(r.rows['access-to-jobs'].disclaimer).toBe('in sync');
+      });
+    });
+
     test('never writes to the fixture (read-only)', () => {
       const dir = repo('access-to-peace', { files: { 'README.md': README } });
       runDrift(['access-to-peace']);
@@ -183,6 +249,54 @@ describe('ecosystem-drift.sh', () => {
       spawnSync('tar', ['-czf', path.join(dir, 'access-to-services.skill'), '-C', path.join(tmp, 'pkg'), 'access-to-services']);
       stamp('access-to-services', dir);
       const r = runDrift(['access-to-services']);
+      expect(r.rows['access-to-services'].packages[0]).toMatchObject({ status: 'stale', newest_path: 'eval-results.md' });
+    });
+  });
+
+  describe('skill_package_sources (repos.json) names the paths that feed a package', () => {
+    // Like access-to-services: the package carries its own README.md (meant to
+    // differ from the repo's), and scripts/build-skill.sh copies only
+    // mo-resources.json, SCHEMA.md and eval-results.md into it, two of them
+    // under data/.
+    const SOURCES = ['mo-resources.json', 'SCHEMA.md', 'eval-results.md'];
+    const SVC = { name: 'access-to-services', skill_package_sources: SOURCES };
+    const MID = '2026-07-01T00:00:00Z';
+
+    function svcRepo(commits, files = {}) {
+      const dir = repo('access-to-services', {
+        files: { 'README.md': README, 'mo-resources.json': '{}\n', 'SCHEMA.md': 'S\n', 'eval-results.md': 'r\n', ...files },
+        commits: { 'access-to-services.skill': MID, 'README.md': OLD, 'mo-resources.json': OLD, 'SCHEMA.md': OLD, 'eval-results.md': OLD, ...commits },
+      });
+      tarPackage(path.join(dir, 'access-to-services.skill'), 'access-to-services', {
+        'SKILL.md': SKILL,
+        'README.md': '# Skill readme\n',
+        'eval-results.md': 'r\n',
+        'data/mo-resources.json': '{}\n',
+        'data/SCHEMA.md': 'S\n',
+      }, { stampSkill: true });
+      stamp('access-to-services', dir);
+      return dir;
+    }
+
+    test('a repo-root README edit does not make the package stale', () => {
+      svcRepo({ 'README.md': NEW });
+      const r = runDrift([SVC]);
+      expect(r.rows['access-to-services'].packages[0]).toMatchObject({ status: 'fresh', paths: SOURCES, content_date: OLD });
+      expect(r.status).toBe(0);
+    });
+
+    test('a change to a configured source the package renames (mo-resources.json -> data/) is stale', () => {
+      svcRepo({ 'mo-resources.json': NEW });
+      const r = runDrift([SVC]);
+      expect(r.rows['access-to-services'].packages[0]).toMatchObject({ status: 'stale', newest_path: 'mo-resources.json', content_date: NEW, package_date: MID });
+      expect(r.status).toBe(1);
+    });
+
+    test('a configured source missing from the repo is a warning, and the rest still count', () => {
+      const dir = svcRepo({ 'eval-results.md': NEW });
+      fs.rmSync(path.join(dir, 'SCHEMA.md'));
+      const r = runDrift([SVC]);
+      expect(r.stdout).toMatch(/::warning::.*access-to-services.*SCHEMA\.md/);
       expect(r.rows['access-to-services'].packages[0]).toMatchObject({ status: 'stale', newest_path: 'eval-results.md' });
     });
   });
@@ -250,6 +364,18 @@ describe('ecosystem-drift.sh', () => {
       ]);
       expect(r.rows['access-to-experts'].install).toMatchObject({ status: 'stale', newest_path: 'skill' });
       expect(r.rows['access-to-services'].install).toMatchObject({ status: 'stale', newest_path: 'access-to-services.skill' });
+    });
+
+    test('locales/ counts as a source (access-to-peace ships locales/es/ in its zip)', () => {
+      const dir = repo('access-to-peace', {
+        files: { 'README.md': README, 'SKILL.md': SKILL, 'locales/es/SKILL.md': SKILL },
+        commits: { 'SKILL.md': OLD, 'locales/es/SKILL.md': NEW },
+        releases: { 'skill-latest': { assets: ['access-to-peace.zip'], date: MID } },
+      });
+      stamp('access-to-peace', dir);
+      const r = runDrift([{ name: 'access-to-peace', install_zip: 'access-to-peace.zip' }]);
+      expect(r.rows['access-to-peace'].install).toMatchObject({ status: 'stale', newest_path: 'locales', release_date: MID, content_date: NEW });
+      expect(r.status).toBe(1);
     });
 
     test('a repo with none of the source paths is n/a, not fresh', () => {

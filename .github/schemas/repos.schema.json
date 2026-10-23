@@ -122,6 +122,16 @@
             "type": "string",
             "pattern": "^(https://\\S+|[A-Za-z0-9._-]+\\.zip)$",
             "description": "claude.ai install file: an asset filename on the repo's skill-latest release, or a full https URL. Public repos only."
+          },
+          "skill_package_sources": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_][A-Za-z0-9._-]*(/[A-Za-z0-9_][A-Za-z0-9._-]*)*$"
+            },
+            "description": "Repo paths (relative, no ..) that a build copies into the repo's root *.skill package. ecosystem-drift.sh compares the package's last commit with these instead of mapping package entries to repo paths by name."
           }
         },
         "additionalProperties": false

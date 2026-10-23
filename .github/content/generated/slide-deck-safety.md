@@ -1,6 +1,6 @@
 # Safety — Slide Deck
 
-> Generated from repos.json + content.json | 2026-10-18
+> Generated from repos.json + content.json | 2026-10-23
 
 ---
 

@@ -1,6 +1,6 @@
 # Safety — Social Media Copy
 
-> Generated from repos.json + content.json | 2026-10-18
+> Generated from repos.json + content.json | 2026-10-23
 
 ## Twitter/X (280 chars)
 

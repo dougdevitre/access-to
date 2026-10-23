@@ -1,6 +1,6 @@
 # Health — Video Script (2-3 min)
 
-> Generated from repos.json + content.json | 2026-10-18
+> Generated from repos.json + content.json | 2026-10-23
 
 ## HOOK (0:00 - 0:15)
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * A stand-in for `gh api`, so the ecosystem-drift tests need no network.
+ * A stand-in for `gh api` (and `gh project`, below), so the ecosystem-drift
+ * and sync-repos tests need no network.
  *
  * It serves the GitHub REST endpoints ecosystem-drift.sh reads (repo, git
  * trees, git blobs, commits by path, a commit by ref, a release by tag), from
@@ -17,6 +18,19 @@
  *
  * A repo without a fixture directory answers 404, like a private repo the
  * token cannot read. Tree and blob shas encode the fixture-relative path.
+ *
+ * For sync-repos.sh it also serves `gh project list --owner <o> --format json`
+ * and `gh project item-add <n> --owner <o> --url <url>` from
+ * <root>/project.json:
+ *
+ *   { "projects": [{ "number": 1, "id": "PVT_x" }],
+ *     "items": ["<url already in the project>"],
+ *     "fail": { "list": <n>, "<url>": <n> } }
+ *
+ * "fail" makes the next n calls of that command (list, or item-add of that
+ * url) fail with "HTTP 502", as a transient error would; each failure is
+ * counted down in project.json, so a retry can then succeed. An item already
+ * in "items" fails with "already exists", like GitHub.
  */
 const fs = require('fs');
 const path = require('path');
@@ -24,6 +38,31 @@ const path = require('path');
 const root = process.env.FAKE_GH_ROOT;
 const [cmd, endpoint] = process.argv.slice(2);
 const fail = (msg) => { process.stderr.write(`gh: ${msg}\n`); process.exit(1); };
+
+if (cmd === 'project') {
+  const file = path.join(root, 'project.json');
+  const state = JSON.parse(fs.readFileSync(file, 'utf-8'));
+  const args = process.argv.slice(3);
+  const flag = (name) => args[args.indexOf(name) + 1];
+  const key = endpoint === 'list' ? 'list' : endpoint === 'item-add' ? flag('--url') : null;
+  if (!key) fail(`fake gh supports only "project list" and "project item-add", got: ${args.join(' ')}`);
+  const fails = state.fail || {};
+  if (fails[key] > 0) {
+    fails[key] -= 1;
+    fs.writeFileSync(file, JSON.stringify({ ...state, fail: fails }));
+    fail('Bad Gateway (HTTP 502)');
+  }
+  if (key === 'list') {
+    process.stdout.write(JSON.stringify(state.projects || []));
+    process.exit(0);
+  }
+  const items = state.items || [];
+  if (items.includes(key)) fail('Content already exists in this project');
+  fs.writeFileSync(file, JSON.stringify({ ...state, items: [...items, key] }));
+  process.stdout.write(JSON.stringify({ id: `PVTI_${items.length}` }));
+  process.exit(0);
+}
+
 if (cmd !== 'api' || !endpoint) fail(`fake gh supports only "gh api <endpoint>", got: ${process.argv.slice(2).join(' ')}`);
 
 const [route, query = ''] = endpoint.split('?');

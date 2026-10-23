@@ -157,8 +157,8 @@ README_JQ_DEFS='
 
 # Badges under the banner
 cat > "$WORK_DIR/readme_badges" <<EOF
-[![Projects](https://img.shields.io/badge/Projects-$PROJECT_COUNT-5B7A3A?style=for-the-badge)](https://dougdevitre.org/#pillars)
-[![Pillars](https://img.shields.io/badge/Pillars-$PILLAR_COUNT-2D5A7B?style=for-the-badge)](https://dougdevitre.org/#pillars)
+[![Projects](https://img.shields.io/badge/Projects-$PROJECT_COUNT-5B7A3A?style=for-the-badge)](https://dougdevitre.org/about.html#pillars)
+[![Pillars](https://img.shields.io/badge/Pillars-$PILLAR_COUNT-2D5A7B?style=for-the-badge)](https://dougdevitre.org/about.html#pillars)
 EOF
 
 # Ecosystem diagram: hub -> projects grouped by maturity

@@ -3,8 +3,13 @@ name: Ecosystem Drift
 # Monthly, read-only check of every repo in .github/config/repos.json:
 #   - is the stamped shared disclaimer still in sync with .github/disclaimer/?
 #   - is any packaged skill (*.skill) older than the sources it contains?
+#   - is any install zip (skill-latest release) missing or stale?
+#   - is every install zip complete: one folder named after the skill, every
+#     path SKILL.md references inside it, the disclaimer stamped, frontmatter
+#     within the claude.ai limits? (ecosystem-zip-check.sh)
 # It keeps ONE issue, "Ecosystem drift (monthly check)", open while anything is
-# drifted or stale (listing the fix command for each) and closes it once clean.
+# drifted, stale or incomplete (listing the fix for each) and closes it once
+# clean; both reports go into that issue.
 # It does not run on pull requests: its result depends on other repos.
 #
 # Token. GITHUB_TOKEN can read the public repos but not the private ones
@@ -58,19 +63,39 @@ jobs:
           .github/scripts/ecosystem-drift.sh --report "$RUNNER_TEMP/drift.md"
           echo "rc=$?" >> "$GITHUB_OUTPUT"
 
+      - name: Check every published install zip
+        id: zip
+        env:
+          GH_TOKEN: ${{ secrets.ECOSYSTEM_READ_TOKEN || github.token }}
+        run: |
+          python3 -I -c 'import yaml' 2>/dev/null || pip3 install --quiet --user pyyaml
+          set +e
+          .github/scripts/ecosystem-zip-check.sh --report "$RUNNER_TEMP/zip.md"
+          echo "rc=$?" >> "$GITHUB_OUTPUT"
+
       - name: Open, update or close the tracking issue
         env:
           GH_TOKEN: ${{ github.token }}
           RC: ${{ steps.drift.outputs.rc }}
+          ZIP_RC: ${{ steps.zip.outputs.rc }}
         run: |
           REPORT="$RUNNER_TEMP/drift.md"
+          ZIP_REPORT="$RUNNER_TEMP/zip.md"
           if [ ! -s "$REPORT" ]; then
             echo "::error::The drift check stopped before writing its report (exit $RC); see the step above."
             exit 1
           fi
-          MARK=$(head -1 "$REPORT")
-          FINDINGS=$(sed -nE 's/.*findings=([0-9]+).*/\1/p' <<<"$MARK")
-          ERRORS=$(sed -nE 's/.*errors=([0-9]+).*/\1/p' <<<"$MARK")
+          if [ ! -s "$ZIP_REPORT" ]; then
+            echo "::error::The zip check stopped before writing its report (exit $ZIP_RC); see the step above."
+            exit 1
+          fi
+          # Each report opens with <!-- <check> findings=N errors=N skipped=N -->;
+          # the issue is one body with both, counted together.
+          count() { sed -nE "s/.*$1=([0-9]+).*/\1/p" <<<"$(head -1 "$2")"; }
+          FINDINGS=$(( $(count findings "$REPORT") + $(count findings "$ZIP_REPORT") ))
+          ERRORS=$(( $(count errors "$REPORT") + $(count errors "$ZIP_REPORT") ))
+          printf '\n' >> "$REPORT"
+          tail -n +2 "$ZIP_REPORT" >> "$REPORT"
           RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           printf '\n_Run: %s_\n' "$RUN_URL" >> "$REPORT"
 
@@ -90,5 +115,5 @@ jobs:
             echo "Everything is clean; closed issue #$NUMBER"
           fi
 
-          # The run itself stays red while anything is drifted, stale or unreadable.
-          exit "$RC"
+          # The run itself stays red while anything is drifted, stale, incomplete or unreadable.
+          if [ "$RC" -ne 0 ] || [ "$ZIP_RC" -ne 0 ]; then exit 1; fi

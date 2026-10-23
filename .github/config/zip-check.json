@@ -1,0 +1,13 @@
+{
+  "$comment": "Settings for .github/scripts/ecosystem-zip-check.sh. not_shipped_phrases: a SKILL.md line that contains one of these (case-insensitive) is telling Claude the paths on it are deliberately not in the install zip, so they are not findings; a heading that contains one exempts its whole section. path_extensions: a backticked token or a table cell is treated as a file reference when it has a slash or ends with one of these.",
+  "not_shipped_phrases": [
+    "not part of the installed skill",
+    "not in the installed skill",
+    "only in a clone",
+    "exists only in a clone",
+    "GitHub repo only",
+    "GitHub repository only",
+    "not shipped"
+  ],
+  "path_extensions": ["md", "json", "yml", "yaml", "txt", "csv", "html", "htm", "js", "mjs", "ts", "py", "sh", "pdf", "png", "svg", "skill", "xml", "toml", "mmd"]
+}

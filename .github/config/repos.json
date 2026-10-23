@@ -41,6 +41,7 @@
       "title": "Access to Housing",
       "status": "skill",
       "visibility": "public",
+      "install_zip": "access-to-housing.zip",
       "page": "housing.html"
     },
     {
@@ -64,6 +65,7 @@
       "title": "Access to Jobs",
       "status": "skill",
       "visibility": "public",
+      "install_zip": "access-to-jobs.zip",
       "page": "jobs.html"
     },
     {
@@ -87,6 +89,7 @@
       "title": "Access to Health",
       "status": "skill",
       "visibility": "public",
+      "install_zip": "access-to-health.zip",
       "page": "health.html"
     },
     {
@@ -110,6 +113,7 @@
       "title": "Access to Business",
       "status": "skill",
       "visibility": "public",
+      "install_zip": "access-to-business.zip",
       "page": "business.html"
     },
     {
@@ -133,6 +137,7 @@
       "title": "Access to Services",
       "status": "skill",
       "visibility": "public",
+      "install_zip": "access-to-services.zip",
       "page": "services.html"
     },
     {
@@ -156,6 +161,7 @@
       "title": "Access to Education",
       "status": "skill",
       "visibility": "public",
+      "install_zip": "access-to-education.zip",
       "page": "education.html"
     },
     {
@@ -179,6 +185,7 @@
       "title": "Access to Safety",
       "status": "skill",
       "visibility": "public",
+      "install_zip": "access-to-safety.zip",
       "page": "safety.html"
     },
     {
@@ -207,6 +214,7 @@
       "role": "pillar",
       "status": "skill",
       "visibility": "public",
+      "install_zip": "access-to-peace.zip",
       "connects_to": ["access-to-safety", "access-to-justice"],
       "tagline": "Calmer conversations when the stakes are high",
       "color": "5B7A8A",
@@ -343,6 +351,7 @@
       "role": "tool",
       "status": "spec",
       "visibility": "public",
+      "install_zip": "access-to-experts.zip",
       "connects_to": ["access-to-business"],
       "tagline": "Expertise delivered as guided outcomes, not files",
       "color": "006b75",

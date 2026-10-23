@@ -2,9 +2,10 @@
  * Ecosystem drift check.
  *
  * ecosystem-drift.sh reads every repo in repos.json (read-only) and reports
- * two kinds of silent rot: a child repo whose stamped disclaimer no longer
- * matches the shared wording, and a packaged skill (*.skill) older than the
- * sources it contains. These tests replace `gh` with tests/helpers/fake-gh.js,
+ * three kinds of silent rot: a child repo whose stamped disclaimer no longer
+ * matches the shared wording, a packaged skill (*.skill) older than the
+ * sources it contains, and an install zip (install_zip in repos.json) whose
+ * skill-latest release or asset is missing or older than the skill sources. These tests replace `gh` with tests/helpers/fake-gh.js,
  * which serves fixture directories, so they need no network.
  */
 const fs = require('fs');
@@ -35,14 +36,14 @@ beforeEach(() => {
 afterEach(() => fs.rmSync(tmp, { recursive: true, force: true }));
 
 /** Create a fixture repo. files: { relPath: content }, commits: { relPath: date } */
-function repo(name, { files = {}, commits = {}, priv = false } = {}) {
+function repo(name, { files = {}, commits = {}, priv = false, releases = {} } = {}) {
   const dir = path.join(fixtures, name, 'files');
   fs.mkdirSync(dir, { recursive: true });
   Object.entries(files).forEach(([rel, content]) => {
     fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
     fs.writeFileSync(path.join(dir, rel), content);
   });
-  fs.writeFileSync(path.join(fixtures, name, 'meta.json'), JSON.stringify({ private: priv, commits }));
+  fs.writeFileSync(path.join(fixtures, name, 'meta.json'), JSON.stringify({ private: priv, commits, releases }));
   return dir;
 }
 
@@ -60,7 +61,7 @@ function zip(dest, src, entries) {
 
 function registry(names) {
   const f = path.join(tmp, 'repos.json');
-  fs.writeFileSync(f, JSON.stringify({ owner: 'dougdevitre', repos: names.map((name) => ({ name })) }));
+  fs.writeFileSync(f, JSON.stringify({ owner: 'dougdevitre', repos: names.map((n) => (typeof n === 'string' ? { name: n } : n)) }));
   return f;
 }
 
@@ -183,6 +184,126 @@ describe('ecosystem-drift.sh', () => {
       stamp('access-to-services', dir);
       const r = runDrift(['access-to-services']);
       expect(r.rows['access-to-services'].packages[0]).toMatchObject({ status: 'stale', newest_path: 'eval-results.md' });
+    });
+  });
+
+  describe('install zips (install_zip in repos.json)', () => {
+    const MID = '2026-07-01T00:00:00Z';
+    const JOBS = { name: 'access-to-jobs', install_zip: 'access-to-jobs.zip' };
+    const ZIP_URL = 'https://github.com/dougdevitre/access-to-jobs/releases/download/skill-latest/access-to-jobs.zip';
+
+    function installRepo({ releases, commits }) {
+      const dir = repo('access-to-jobs', {
+        files: { 'README.md': README, 'SKILL.md': SKILL, 'references/a.md': 'A\n', 'templates/t.md': 'T\n', 'docs/unrelated.md': 'x\n' },
+        commits,
+        releases,
+      });
+      stamp('access-to-jobs', dir);
+      return dir;
+    }
+    const release = (date, assets = ['access-to-jobs.zip']) => ({ 'skill-latest': { assets, date } });
+
+    test('a release built after the newest source change is fresh, and the run exits 0', () => {
+      installRepo({ releases: release(NEW), commits: { 'SKILL.md': OLD, 'references/a.md': MID } });
+      const r = runDrift([JOBS]);
+      expect(r.rows['access-to-jobs'].install).toMatchObject({ status: 'fresh', asset: 'access-to-jobs.zip', release_date: NEW, content_date: MID, newest_path: 'references' });
+      expect(r.status).toBe(0);
+    });
+
+    test('a release older than a change to references/ or templates/ is stale, with both dates and the republish command', () => {
+      installRepo({ releases: release(OLD), commits: { 'SKILL.md': OLD, 'templates/t.md': NEW } });
+      const r = runDrift([JOBS]);
+      expect(r.rows['access-to-jobs'].install).toMatchObject({ status: 'stale', release_date: OLD, content_date: NEW, newest_path: 'templates' });
+      expect(r.status).toBe(1);
+      expect(r.report).toContain('gh workflow run skill-package.yml -R dougdevitre/access-to-jobs --ref main');
+      expect(r.report).toContain(OLD.slice(0, 10));
+      expect(r.report).toContain(NEW.slice(0, 10));
+    });
+
+    test('changes outside the skill sources (docs/, README.md) do not make it stale', () => {
+      installRepo({ releases: release(MID), commits: { 'SKILL.md': OLD, 'docs/unrelated.md': NEW, 'README.md': NEW } });
+      const r = runDrift([JOBS]);
+      expect(r.rows['access-to-jobs'].install.status).toBe('fresh');
+      expect(r.status).toBe(0);
+    });
+
+    test('skill/ and a root *.skill package count as sources (access-to-experts, access-to-services)', () => {
+      const dir = repo('access-to-experts', {
+        files: { 'README.md': README, 'skill/SKILL.md': SKILL },
+        commits: { 'skill/SKILL.md': NEW },
+        releases: { 'skill-latest': { assets: ['access-to-experts.zip'], date: OLD } },
+      });
+      stamp('access-to-experts', dir);
+      const svc = repo('access-to-services', {
+        files: { 'README.md': README },
+        commits: { 'access-to-services.skill': NEW },
+        releases: { 'skill-latest': { assets: ['access-to-services.zip'], date: OLD } },
+      });
+      const src = path.join(tmp, 'pkg-src');
+      fs.mkdirSync(src);
+      fs.writeFileSync(path.join(src, 'SKILL.md'), SKILL);
+      zip(path.join(svc, 'access-to-services.skill'), src, ['SKILL.md']);
+      stamp('access-to-services', svc);
+      const r = runDrift([
+        { name: 'access-to-experts', install_zip: 'access-to-experts.zip' },
+        { name: 'access-to-services', install_zip: 'access-to-services.zip' },
+      ]);
+      expect(r.rows['access-to-experts'].install).toMatchObject({ status: 'stale', newest_path: 'skill' });
+      expect(r.rows['access-to-services'].install).toMatchObject({ status: 'stale', newest_path: 'access-to-services.skill' });
+    });
+
+    test('a repo with none of the source paths is n/a, not fresh', () => {
+      const dir = repo('access-to-peace', {
+        files: { 'README.md': README },
+        commits: { 'README.md': NEW },
+        releases: { 'skill-latest': { assets: ['access-to-peace.zip'], date: OLD } },
+      });
+      stamp('access-to-peace', dir);
+      const r = runDrift([{ name: 'access-to-peace', install_zip: 'access-to-peace.zip' }]);
+      expect(r.rows['access-to-peace'].install.status).toBe('n/a');
+      expect(r.status).toBe(0);
+    });
+
+    test('a repo with install_zip but no skill-latest release is flagged: exit 1, fix in the report', () => {
+      installRepo({ releases: {}, commits: { 'SKILL.md': OLD } });
+      const r = runDrift([JOBS]);
+      expect(r.rows['access-to-jobs'].install).toMatchObject({ status: 'missing release', asset: 'access-to-jobs.zip' });
+      expect(r.status).toBe(1);
+      expect(r.report).toContain('No `skill-latest` release');
+      expect(r.report).toContain('skill-package.yml -R dougdevitre/access-to-jobs');
+    });
+
+    test('a release without the named asset is flagged', () => {
+      installRepo({ releases: release(NEW, ['something-else.zip']), commits: { 'SKILL.md': OLD } });
+      const r = runDrift([JOBS]);
+      expect(r.rows['access-to-jobs'].install).toMatchObject({ status: 'missing asset', asset: 'access-to-jobs.zip' });
+      expect(r.status).toBe(1);
+    });
+
+    test('a full release URL is checked the same way as a filename', () => {
+      installRepo({ releases: {}, commits: { 'SKILL.md': OLD } });
+      const r = runDrift([{ name: 'access-to-jobs', install_zip: ZIP_URL }]);
+      expect(r.rows['access-to-jobs'].install).toMatchObject({ status: 'missing release', asset: 'access-to-jobs.zip' });
+    });
+
+    test('a URL outside the skill-latest release is reported as external, not a finding', () => {
+      installRepo({ releases: {}, commits: { 'SKILL.md': OLD } });
+      const r = runDrift([{ name: 'access-to-jobs', install_zip: 'https://example.org/jobs.zip' }]);
+      expect(r.rows['access-to-jobs'].install.status).toBe('external');
+      expect(r.status).toBe(0);
+    });
+
+    test('a repo without install_zip is not checked for a release', () => {
+      installRepo({ releases: {}, commits: { 'SKILL.md': NEW } });
+      const r = runDrift(['access-to-jobs']);
+      expect(r.rows['access-to-jobs'].install.status).toBe('none');
+      expect(r.status).toBe(0);
+    });
+
+    test('text mode shows the install status column', () => {
+      installRepo({ releases: release(OLD), commits: { 'SKILL.md': NEW } });
+      const r = runDrift([JOBS], { LOG_FORMAT: 'text' });
+      expect(r.stdout).toMatch(/access-to-jobs\s+in sync\s+stale/);
     });
   });
 

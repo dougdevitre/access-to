@@ -15,9 +15,15 @@
 #      top-level paths:
 #        fresh | stale (both dates) | n/a (none of its paths are in the repo,
 #        so the package is the source) | unreadable
+#   3. Missing or stale install zips. For each repo with `install_zip` in
+#      repos.json, it reads the skill-latest release and compares the date of
+#      the commit its tag points at with the newest main commit touching
+#      SKILL.md, references/, templates/, modules/, skill/ or a root *.skill:
+#        fresh | stale (both dates) | n/a (no such paths) | missing release |
+#        missing asset | external (a URL outside skill-latest; not checked)
 #
 # Everything remote goes through `gh api` (repo, git trees, git blobs,
-# commits), and nothing is ever written to any repo. A repo the token cannot
+# commits, releases), and nothing is ever written to any repo. A repo the token cannot
 # read (a private repo without a suitable token) is skipped with a warning.
 #
 # Usage:
@@ -29,7 +35,8 @@
 # plus the markdown report on GITHUB_STEP_SUMMARY when set. The report opens
 # with  <!-- ecosystem-drift findings=N errors=N skipped=N -->  for workflows.
 #
-# Exit codes: 0 clean (skips allowed), 1 any repo drifted, missing or stale,
+# Exit codes: 0 clean (skips allowed), 1 any repo drifted, missing or stale
+# (including a missing or stale install zip),
 # or any repo that should have been readable could not be read.
 
 set -euo pipefail
@@ -157,6 +164,60 @@ check_package() {
     '{file: $f, status: $s, package_date: $pd, content_date: $cd, newest_path: $np, paths: $paths}'
 }
 
+# Paths whose changes go into a skill's install zip. A skill-latest release
+# built before the newest commit touching any of them is stale. Some repos
+# build the zip from skill/ (access-to-experts) or from a root *.skill package
+# (access-to-services); those count as sources too.
+INSTALL_SOURCES=(SKILL.md references templates modules skill)
+
+# check_install <repo> <branch> <tree-file> <install_zip> — prints one result:
+#   fresh | stale (both dates) | n/a (none of the source paths exist) |
+#   missing release | missing asset | external (a URL outside the repo's
+#   skill-latest release, which this cannot check) | error
+check_install() {
+  local repo="$1" branch="$2" tree="$3" zip="$4" asset rel rel_date p d content_date="" newest="" status
+  local sources=()
+  local prefix="https://github.com/$OWNER/$repo/releases/download/skill-latest/"
+  if [[ "$zip" == https://* ]]; then
+    if [[ "$zip" != "$prefix"* ]]; then
+      jq -nc --arg a "$zip" '{status: "external", asset: $a}'
+      return
+    fi
+    asset="${zip#"$prefix"}"
+  else
+    asset="$zip"
+  fi
+  if ! rel=$(api "repos/$OWNER/$repo/releases/tags/skill-latest" 2>"$WORK/err"); then
+    if grep -q 'HTTP 404' "$WORK/err"; then
+      jq -nc --arg a "$asset" '{status: "missing release", asset: $a}'
+    else
+      log_error "$repo: could not read the skill-latest release: $(cat "$WORK/err")"
+      ERRORS=$((ERRORS + 1))
+      jq -nc --arg a "$asset" '{status: "error", asset: $a}'
+    fi
+    return
+  fi
+  if ! jq -e --arg a "$asset" 'any(.assets[]?; .name == $a)' <<<"$rel" >/dev/null; then
+    jq -nc --arg a "$asset" '{status: "missing asset", asset: $a}'
+    return
+  fi
+  # The commit the skill-latest tag points at is what the zip was built from.
+  rel_date=$(api "repos/$OWNER/$repo/commits/skill-latest" | jq -r '.commit.committer.date // ""')
+  for p in "${INSTALL_SOURCES[@]}"; do
+    jq -e --arg n "$p" '.tree[] | select(.path == $n)' "$tree" >/dev/null && sources+=("$p")
+  done
+  mapfile -t -O "${#sources[@]}" sources < <(jq -r '.tree[] | select(.type == "blob" and (.path | endswith(".skill"))) | .path' "$tree")
+  for p in "${sources[@]}"; do
+    d=$(last_commit "$repo" "$branch" "$p")
+    if [ -n "$d" ] && [[ "$d" > "$content_date" ]]; then content_date="$d"; newest="$p"; fi
+  done
+  if [ -z "$content_date" ]; then status="n/a"
+  elif [[ "$content_date" > "$rel_date" ]]; then status="stale"
+  else status="fresh"; fi
+  jq -nc --arg s "$status" --arg a "$asset" --arg rd "$rel_date" --arg cd "$content_date" --arg np "$newest" \
+    '{status: $s, asset: $a, release_date: $rd, content_date: $cd, newest_path: $np}'
+}
+
 # has_build_script <repo> <tree-file> — true when scripts/build-skill.sh exists.
 has_build_script() {
   local sha
@@ -220,8 +281,17 @@ for REPO in "${REPOS[@]}"; do
     fi
   done
 
-  jq -nc --arg r "$REPO" --argjson d "$DISC" --argjson p "$PKGS" --argjson b "$BUILD" \
-    '{repo: $r} + $d + {packages: $p, build_script: $b}' >> "$RESULTS"
+  INSTALL='{"status": "none"}'
+  ZIP=$(jq -r --arg r "$REPO" '.repos[] | select(type == "object" and .name == $r) | .install_zip // empty' "$REPOS_FILE")
+  if [ -n "$ZIP" ]; then
+    INSTALL=$(check_install "$REPO" "$BRANCH" "$TREE" "$ZIP")
+    IS=$(jq -r '.status' <<<"$INSTALL")
+    log_action "install" "$REPO/$(jq -r '.asset' <<<"$INSTALL")" "$IS" "$(jq -r 'select(.release_date) | "release \(.release_date), sources \(.content_date) (\(.newest_path))"' <<<"$INSTALL")"
+    case "$IS" in stale|"missing release"|"missing asset") FINDINGS=$((FINDINGS + 1)) ;; esac
+  fi
+
+  jq -nc --arg r "$REPO" --argjson d "$DISC" --argjson p "$PKGS" --argjson b "$BUILD" --argjson i "$INSTALL" \
+    '{repo: $r} + $d + {packages: $p, build_script: $b, install: $i}' >> "$RESULTS"
 done
 
 # --- output ------------------------------------------------------------------
@@ -234,11 +304,12 @@ if [ "$LOG_FORMAT" = "json" ]; then
     _log_json "info" "result $(jq -r '.repo' <<<"$row")" "$(jq -c '.' <<<"$row" | sed 's/^{//; s/}$//')"
   done < "$RESULTS"
 else
-  log_info "$(printf '%-22s %-10s %s' REPO DISCLAIMER PACKAGES)"
+  log_info "$(printf '%-22s %-10s %-16s %s' REPO DISCLAIMER INSTALL PACKAGES)"
   while IFS= read -r row; do
-    log_info "$(printf '%-22s %-10s %s' \
+    log_info "$(printf '%-22s %-10s %-16s %s' \
       "$(jq -r '.repo' <<<"$row")" \
       "$(jq -r '.disclaimer' <<<"$row")" \
+      "$(jq -r '.install.status // "none" | if . == "none" then "-" else . end' <<<"$row")" \
       "$(jq -r '[.packages[] | "\(.file): \(.status)" + (if .status == "stale" then " (package \(.package_date[0:10]) < sources \(.content_date[0:10]))" else "" end)] | join("; ") | if . == "" then "-" else . end' <<<"$row")")"
   done < "$RESULTS"
 fi
@@ -250,15 +321,16 @@ render_report() {
   echo ""
   echo "_Checked $(date -u '+%Y-%m-%d %H:%M UTC') across ${#REPOS[@]} repos (read-only)._"
   echo ""
-  echo "| Repo | Disclaimer | Skill packages |"
-  echo "|------|------------|----------------|"
-  jq -r '"| \(.repo) | \(.disclaimer)\(if (.drifted_files | length) > 0 and .disclaimer == "drifted" then " (" + (.drifted_files | join(", ")) + ")" else "" end) | \([.packages[] | "`\(.file)` \(.status)" + (if .package_date and .status != "n/a" and .status != "unreadable" then " (package \(.package_date[0:10]), sources \(.content_date[0:10]))" else "" end)] | join("<br>") | if . == "" then "—" else . end) |"' "$RESULTS"
+  echo "| Repo | Disclaimer | Install zip | Skill packages |"
+  echo "|------|------------|-------------|----------------|"
+  jq -r '"| \(.repo) | \(.disclaimer)\(if (.drifted_files | length) > 0 and .disclaimer == "drifted" then " (" + (.drifted_files | join(", ")) + ")" else "" end) | \(.install // {status: "none"} | if .status == "none" then "—" else "`\(.asset)` \(.status)" + (if .status == "stale" then " (release \(.release_date[0:10]), sources \(.content_date[0:10]))" else "" end) end) | \([.packages[] | "`\(.file)` \(.status)" + (if .package_date and .status != "n/a" and .status != "unreadable" then " (package \(.package_date[0:10]), sources \(.content_date[0:10]))" else "" end)] | join("<br>") | if . == "" then "—" else . end) |"' "$RESULTS"
   echo ""
   if [ "$FINDINGS" -gt 0 ]; then
     echo "### How to fix"
     echo ""
     jq -r --arg owner "$OWNER" '
-      select(.disclaimer == "drifted" or .disclaimer == "missing" or any(.packages[]; .status == "stale")) |
+      select(.disclaimer == "drifted" or .disclaimer == "missing" or any(.packages[]; .status == "stale")
+             or ((.install.status // "none") | IN("stale", "missing release", "missing asset"))) |
       . as $root |
       "**\(.repo)**\n",
       (if .disclaimer == "drifted" or .disclaimer == "missing" then
@@ -268,6 +340,15 @@ render_report() {
         "- `\(.file)` is stale: last packaged \(.package_date[0:10]), but `\(.newest_path)` changed \(.content_date[0:10]). Rebuild it from the current sources" +
         (if $root.build_script then " (`./scripts/build-skill.sh \(.file)` in \($root.repo))" else "" end) +
         " and open a PR in \($root.repo)."),
+      (.install // {} | select(.status == "stale" or .status == "missing release" or .status == "missing asset") |
+        (if .status == "stale" then
+          "- Install zip `\(.asset)` is stale: the skill-latest release was built from a commit of \(.release_date[0:10]), but `\(.newest_path)` changed \(.content_date[0:10])."
+         elif .status == "missing release" then
+          "- No `skill-latest` release, so the hub'"'"'s \"Install in Claude\" link for `\(.asset)` is broken."
+         else
+          "- The `skill-latest` release has no `\(.asset)` asset, so the hub'"'"'s \"Install in Claude\" link is broken."
+         end) +
+        " Republish it:\n  ```bash\n  gh workflow run skill-package.yml -R \($owner)/\($root.repo) --ref main\n  ```\n  (or fix `install_zip` for \($root.repo) in repos.json)."),
       ""
     ' "$RESULTS"
   fi

@@ -645,6 +645,34 @@ header {
   font-size: 0.8rem;
 }
 
+/* "Install in Claude": the skill's claude.ai zip (install_zip in repos.json).
+   Text is --color-text on --color-bg like the repo link, so it keeps its
+   contrast in both themes; the pillar color only draws the border. */
+.install { margin-bottom: 0.75rem; }
+.install .install-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
+  border-radius: 6px;
+  border: 1px solid var(--pillar-color, var(--color-accent-primary));
+  background: var(--color-bg);
+  transition: background 0.15s;
+}
+.install .install-link:hover { background: var(--color-border); }
+.install .install-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.install .install-help {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin-top: 0.35rem;
+}
+.install .install-help a { color: var(--color-text); }
+
 .pillar-status {
   font-size: 0.78rem;
   color: var(--color-muted);

@@ -99,7 +99,7 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
     fi
   fi
 
-  # Optional hub-site fields: status, visibility, live_url, page
+  # Optional hub-site fields: status, visibility, live_url, page, install_zip
   STATUS=$(jq -r ".repos[$i].status // empty" "$REPOS_FILE")
   if [ -n "$STATUS" ]; then
     FOUND=false
@@ -130,6 +130,20 @@ for i in $(seq 0 $((REPO_COUNT - 1))); do
   if [ -n "$PAGE" ] && [ ! -f "$CONFIG_DIR/../../$PAGE" ]; then
     log_error "repos[$i] ($NAME): page '$PAGE' does not exist at the repo root"
     ((ERRORS++)) || true
+  fi
+
+  # install_zip: an asset filename on the skill-latest release, or a full https URL.
+  # Private repos' downloads only work for signed-in collaborators, so they get none.
+  INSTALL_ZIP=$(jq -r ".repos[$i].install_zip // empty" "$REPOS_FILE")
+  if [ -n "$INSTALL_ZIP" ]; then
+    if [[ "$INSTALL_ZIP" != https://* ]] && ! [[ "$INSTALL_ZIP" =~ ^[A-Za-z0-9._-]+\.zip$ ]]; then
+      log_error "repos[$i] ($NAME): install_zip must be a .zip asset filename or start with https://"
+      ((ERRORS++)) || true
+    fi
+    if [ "$VISIBILITY" = "private" ]; then
+      log_error "repos[$i] ($NAME): install_zip is set on a private repo; its download only works for collaborators"
+      ((ERRORS++)) || true
+    fi
   fi
 
   # Referential integrity: connects_to must reference existing repo names

@@ -319,6 +319,7 @@
       "role": "tool",
       "status": "skill",
       "visibility": "public",
+      "install_zip": "access-for-seniors.zip",
       "connects_to": ["access-to-care", "access-to-services"],
       "tagline": "Fewer isolated seniors, more connected families",
       "color": "7A4E6B",

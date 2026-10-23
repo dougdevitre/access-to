@@ -6,19 +6,25 @@
 #   1. Disclaimer drift. The shared disclaimer is stamped into each repo by
 #      sync-disclaimer.sh. This fetches the repo's DISCLAIMER.md, README.md,
 #      SKILL.md and skill/SKILL.md at its default branch into a temp dir and
-#      runs `sync-disclaimer.sh --check` on them:
+#      runs `sync-disclaimer.sh --check` on them. A repo with neither SKILL.md
+#      nor skill/SKILL.md but a root *.skill package (access-to-services) has
+#      its SKILL.md read out of the package instead, and a drifted copy is
+#      named "<package>:<entry>":
 #        in sync | drifted (files named) | missing (no DISCLAIMER.md)
 #   2. Stale skill packages. For each *.skill file (zip or tarball) at the repo
-#      root, it lists the package, maps its entries to repo paths (dropping a
-#      single top-level folder the repo doesn't have), and compares the
-#      package's last commit date with the newest commit touching any of those
-#      top-level paths:
+#      root, it compares the package's last commit date with the newest commit
+#      touching the repo paths that feed it. Those are the repo's
+#      `skill_package_sources` in repos.json when set (a source missing from
+#      the repo is a warning); otherwise the package's entries are mapped to
+#      repo top-level paths by name (dropping a single top-level folder the
+#      repo doesn't have):
 #        fresh | stale (both dates) | n/a (none of its paths are in the repo,
 #        so the package is the source) | unreadable
 #   3. Missing or stale install zips. For each repo with `install_zip` in
 #      repos.json, it reads the skill-latest release and compares the date of
 #      the commit its tag points at with the newest main commit touching
-#      SKILL.md, references/, templates/, modules/, skill/ or a root *.skill:
+#      SKILL.md, references/, templates/, modules/, skill/, locales/ or a root
+#      *.skill:
 #        fresh | stale (both dates) | n/a (no such paths) | missing release |
 #        missing asset | external (a URL outside skill-latest; not checked)
 #
@@ -100,9 +106,26 @@ list_package() {
   unzip -Z1 "$1" 2>/dev/null || tar -tzf "$1" 2>/dev/null || tar -tf "$1" 2>/dev/null
 }
 
+# extract_package_entry <file> <entry> — one entry's bytes on stdout.
+extract_package_entry() {
+  if unzip -Z1 "$1" >/dev/null 2>&1; then
+    unzip -p "$1" "$2"
+  else
+    tar -xzOf "$1" "$2" 2>/dev/null || tar -xOf "$1" "$2"
+  fi
+}
+
+# package_skill_md <file> — the package's SKILL.md entry (at the root or under
+# one top-level folder), or nothing.
+package_skill_md() {
+  list_package "$1" | grep -E '^(\./)?([^/]+/)?SKILL\.md$' | awk -F/ '{ print NF "\t" $0 }' | sort -n | head -1 | cut -f2-
+}
+
 # --- checks ------------------------------------------------------------------
 
 # check_disclaimer <repo> <dir> <tree-file> — prints {disclaimer, drifted_files}.
+# When PKG_SKILL_LABEL is set, the checkout's SKILL.md came out of a package
+# and is reported under that label.
 check_disclaimer() {
   local repo="$1" dir="$2" tree="$3" out rc files
   if ! jq -e '.tree[] | select(.path == "DISCLAIMER.md")' "$tree" >/dev/null; then
@@ -116,7 +139,8 @@ check_disclaimer() {
     return
   fi
   files=$(grep -oE "\] sync-disclaimer: $repo/[^ ]+ is out of date" <<<"$out" \
-    | sed -E "s/.*: $repo\/([^ ]+) is out of date/\1/" | sort -u | jq -Rsc 'split("\n") | map(select(. != ""))')
+    | sed -E "s/.*: $repo\/([^ ]+) is out of date/\1/" | sort -u \
+    | jq -Rsc --arg pkg "$PKG_SKILL_LABEL" 'split("\n") | map(select(. != "") | if . == "SKILL.md" and $pkg != "" then $pkg else . end)')
   if [ "$files" = "[]" ]; then
     log_error "$repo: sync-disclaimer.sh --check failed without naming a file: $out"
     ERRORS=$((ERRORS + 1))
@@ -125,28 +149,35 @@ check_disclaimer() {
 }
 
 # check_package <repo> <branch> <tree-file> <name> — prints one package result.
+# With PKG_SOURCES_SET=true, the paths in PKG_SOURCES (the repo's
+# skill_package_sources, already filtered to paths that exist) are the
+# package's sources; otherwise they are found by mapping entries to repo paths.
 check_package() {
   local repo="$1" branch="$2" tree="$3" name="$4"
   local pkg="$WORK/$1/pkg/$4"
-  local entries comps prefix p d pkg_date content_date="" newest="" status
-  fetch_entry "$repo" "$tree" "$name" "$pkg"
+  local entries comps=() prefix p d pkg_date content_date="" newest="" status
+  [ -e "$pkg" ] || fetch_entry "$repo" "$tree" "$name" "$pkg"
   if ! entries=$(list_package "$pkg") || [ -z "$entries" ]; then
     log_warn "$repo/$name is neither a zip nor a tarball; cannot list its contents"
     jq -nc --arg f "$name" '{file: $f, status: "unreadable"}'
     return
   fi
-  entries=$(sed -E 's#^\./##' <<<"$entries" | grep -v '^$' || true)
-  # Drop one top-level folder that wraps everything, unless the repo has it too.
-  prefix=$(awk -F/ '{print $1}' <<<"$entries" | sort -u)
-  if [ "$(wc -l <<<"$prefix")" -eq 1 ] && grep -q / <<<"$entries" \
-     && ! jq -e --arg n "$prefix" '.tree[] | select(.path == $n)' "$tree" >/dev/null; then
-    entries=$(sed -E "s#^$prefix/##" <<<"$entries" | grep -v '^$' || true)
+  if [ "$PKG_SOURCES_SET" = true ]; then
+    comps=("${PKG_SOURCES[@]}")
+  else
+    entries=$(sed -E 's#^\./##' <<<"$entries" | grep -v '^$' || true)
+    # Drop one top-level folder that wraps everything, unless the repo has it too.
+    prefix=$(awk -F/ '{print $1}' <<<"$entries" | sort -u)
+    if [ "$(wc -l <<<"$prefix")" -eq 1 ] && grep -q / <<<"$entries" \
+       && ! jq -e --arg n "$prefix" '.tree[] | select(.path == $n)' "$tree" >/dev/null; then
+      entries=$(sed -E "s#^$prefix/##" <<<"$entries" | grep -v '^$' || true)
+    fi
+    # Top-level paths the package carries that also exist in the repo.
+    mapfile -t comps < <(awk -F/ '{print $1}' <<<"$entries" | sort -u \
+      | while read -r c; do
+          [ "$c" != "$name" ] && jq -e --arg n "$c" '.tree[] | select(.path == $n)' "$tree" >/dev/null && echo "$c"
+        done || true)
   fi
-  # Top-level paths the package carries that also exist in the repo.
-  mapfile -t comps < <(awk -F/ '{print $1}' <<<"$entries" | sort -u \
-    | while read -r c; do
-        [ "$c" != "$name" ] && jq -e --arg n "$c" '.tree[] | select(.path == $n)' "$tree" >/dev/null && echo "$c"
-      done || true)
   pkg_date=$(last_commit "$repo" "$branch" "$name")
   for p in "${comps[@]}"; do
     d=$(last_commit "$repo" "$branch" "$p")
@@ -167,8 +198,9 @@ check_package() {
 # Paths whose changes go into a skill's install zip. A skill-latest release
 # built before the newest commit touching any of them is stale. Some repos
 # build the zip from skill/ (access-to-experts) or from a root *.skill package
-# (access-to-services); those count as sources too.
-INSTALL_SOURCES=(SKILL.md references templates modules skill)
+# (access-to-services); those count as sources too. locales/ holds translated
+# skill files that ship in the zip (access-to-peace: locales/es/).
+INSTALL_SOURCES=(SKILL.md references templates modules skill locales)
 
 # check_install <repo> <branch> <tree-file> <install_zip> — prints one result:
 #   fresh | stale (both dates) | n/a (none of the source paths exist) |
@@ -218,6 +250,22 @@ check_install() {
     '{status: $s, asset: $a, release_date: $rd, content_date: $cd, newest_path: $np}'
 }
 
+# path_exists <repo> <tree-file> <path> — true when path (a file or folder,
+# possibly nested) exists on the default branch. Walks one tree per level.
+path_exists() {
+  local repo="$1" tree="$2" p="$3" head sha sub
+  head="${p%%/*}"
+  if [ "$head" = "$p" ]; then
+    jq -e --arg n "$p" '.tree[] | select(.path == $n)' "$tree" >/dev/null
+    return
+  fi
+  sha=$(jq -r --arg n "$head" '.tree[] | select(.path == $n and .type == "tree") | .sha' "$tree")
+  [ -n "$sha" ] || return 1
+  sub="$WORK/$repo/tree-$sha.json"
+  [ -f "$sub" ] || api "repos/$OWNER/$repo/git/trees/$sha" > "$sub" || return 1
+  path_exists "$repo" "$sub" "${p#*/}"
+}
+
 # has_build_script <repo> <tree-file> — true when scripts/build-skill.sh exists.
 has_build_script() {
   local sha
@@ -262,6 +310,27 @@ for REPO in "${REPOS[@]}"; do
     fetch_entry "$REPO" "$WORK/$REPO/skill-tree.json" SKILL.md "$DIR/skill/SKILL.md" || true
   fi
 
+  mapfile -t SKILLS < <(jq -r '.tree[] | select(.type == "blob" and (.path | endswith(".skill"))) | .path' "$TREE")
+
+  # No SKILL.md on disk, but a package: check the SKILL.md inside it.
+  PKG_SKILL_LABEL=""
+  if [ ! -e "$DIR/SKILL.md" ] && [ ! -e "$DIR/skill/SKILL.md" ]; then
+    for S in "${SKILLS[@]}"; do
+      PKG="$WORK/$REPO/pkg/$S"
+      fetch_entry "$REPO" "$TREE" "$S" "$PKG" || { log_warn "$REPO: could not read $S"; continue; }
+      ENTRY=$(package_skill_md "$PKG" || true)
+      [ -n "$ENTRY" ] || continue
+      if extract_package_entry "$PKG" "$ENTRY" > "$DIR/SKILL.md"; then
+        PKG_SKILL_LABEL="$S:${ENTRY#./}"
+        log_info "$REPO: no SKILL.md in the repo; checking $PKG_SKILL_LABEL"
+      else
+        log_warn "$REPO: could not extract $ENTRY from $S"
+        rm -f "$DIR/SKILL.md"
+      fi
+      break
+    done
+  fi
+
   DISC=$(check_disclaimer "$REPO" "$DIR" "$TREE")
   STATUS=$(jq -r '.disclaimer' <<<"$DISC")
   log_action "disclaimer" "$REPO" "$STATUS" "$(jq -r '.drifted_files | join(", ")' <<<"$DISC")"
@@ -269,7 +338,19 @@ for REPO in "${REPOS[@]}"; do
 
   PKGS="[]"
   BUILD=false
-  mapfile -t SKILLS < <(jq -r '.tree[] | select(.type == "blob" and (.path | endswith(".skill"))) | .path' "$TREE")
+  # skill_package_sources: the repo paths that feed its packages, when set.
+  PKG_SOURCES=()
+  PKG_SOURCES_SET=false
+  if [ "${#SKILLS[@]}" -gt 0 ] && jq -e --arg r "$REPO" 'any(.repos[]; type == "object" and .name == $r and has("skill_package_sources"))' "$REPOS_FILE" >/dev/null; then
+    PKG_SOURCES_SET=true
+    while IFS= read -r SRC; do
+      if path_exists "$REPO" "$TREE" "$SRC"; then
+        PKG_SOURCES+=("$SRC")
+      else
+        log_warn "$REPO: skill_package_sources lists $SRC, which is not in the repo; fix repos.json"
+      fi
+    done < <(jq -r --arg r "$REPO" '.repos[] | select(type == "object" and .name == $r) | .skill_package_sources[]' "$REPOS_FILE")
+  fi
   for S in "${SKILLS[@]}"; do
     P=$(check_package "$REPO" "$BRANCH" "$TREE" "$S")
     PKGS=$(jq -c --argjson p "$P" '. + [$p]' <<<"$PKGS")
@@ -336,6 +417,8 @@ render_report() {
       (if .disclaimer == "drifted" or .disclaimer == "missing" then
         "- Disclaimer \(.disclaimer) (\(.drifted_files | join(", "))). From the hub checkout:\n  ```bash\n  gh repo clone \($owner)/\(.repo) ../\(.repo)\n  .github/scripts/sync-disclaimer.sh \(.repo) ../\(.repo)\n  ```\n  Then open a PR in \(.repo)."
        else empty end),
+      (.drifted_files[] | select(contains(".skill:")) |
+        "- `\(.)` lives inside a package, which sync-disclaimer.sh cannot reach: extract that SKILL.md, stamp it, put it back and rebuild the package, then open a PR in \($root.repo)."),
       (.packages[] | select(.status == "stale") |
         "- `\(.file)` is stale: last packaged \(.package_date[0:10]), but `\(.newest_path)` changed \(.content_date[0:10]). Rebuild it from the current sources" +
         (if $root.build_script then " (`./scripts/build-skill.sh \(.file)` in \($root.repo))" else "" end) +

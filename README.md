@@ -9,13 +9,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Live Site](https://img.shields.io/badge/Live_Site-GitHub_Pages-222?style=for-the-badge&logo=github&logoColor=white)](https://dougdevitre.org/)
 <!-- BEGIN GENERATED:badges -->
-[![Projects](https://img.shields.io/badge/Projects-18-5B7A3A?style=for-the-badge)](https://dougdevitre.org/#pillars)
-[![Pillars](https://img.shields.io/badge/Pillars-15-2D5A7B?style=for-the-badge)](https://dougdevitre.org/#pillars)
+[![Projects](https://img.shields.io/badge/Projects-18-5B7A3A?style=for-the-badge)](https://dougdevitre.org/about.html#pillars)
+[![Pillars](https://img.shields.io/badge/Pillars-15-2D5A7B?style=for-the-badge)](https://dougdevitre.org/about.html#pillars)
 <!-- END GENERATED:badges -->
 
 **A growing collection of open-source projects organized around the pillars of human access — built for practitioners, advocates, and the people they serve.**
 
-[**View the Live Site**](https://dougdevitre.org/) | [**Browse Projects**](https://dougdevitre.org/#pillars) | [**How It Works**](https://dougdevitre.org/#how-it-works)
+[**View the Live Site**](https://dougdevitre.org/) | [**Browse Projects**](https://dougdevitre.org/about.html#pillars) | [**How It Works**](https://dougdevitre.org/about.html#how-it-works)
 
 </div>
 

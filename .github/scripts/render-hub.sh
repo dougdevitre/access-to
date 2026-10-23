@@ -141,8 +141,12 @@ README_JQ_DEFS='
   def title: .title // ("Access to " + (.pillar[:1] | ascii_upcase) + .pillar[1:]);
   def pillar_name: (.pillar[:1] | ascii_upcase) + .pillar[1:];
   def repo_url($owner): "https://github.com/" + $owner + "/" + .name;
+  # Same rule as the site cards: a private beta says so and is invite-only;
+  # any other private status is "Coming soon" (tests/card-labels.test.js).
+  def private_label: if status_key == "beta" then "Private beta" else "Coming soon" end;
+  def private_note: if status_key == "beta" then "private beta, invite-only" else "coming soon" end;
   def badge_label:
-    if is_public | not then "Coming soon"
+    if is_public | not then private_label
     else {"live":"Live","pre-pilot":"Pre-pilot","beta":"Beta","skill":"Active","spec":"In design"}[status_key] end;
   def badge_color:
     if is_public | not then "6B6B6B"
@@ -160,7 +164,7 @@ EOF
 # Ecosystem diagram: hub -> projects grouped by maturity
 jq -r "$README_JQ_DEFS"'
   def node_id: .name | gsub("-"; "_");
-  def node: "        " + node_id + "[\"<b>" + .name + "</b><br/>" + title + (if is_public then "" else "<br/><i>coming soon</i>" end) + "\"]";
+  def node: "        " + node_id + "[\"<b>" + .name + "</b><br/>" + title + (if is_public then "" else "<br/><i>" + private_note + "</i>" end) + "\"]";
   def group($id; $label; $items):
     if ($items | length) == 0 then empty
     else ("    subgraph " + $id + " [\"" + $label + "\"]"), "        direction TB", ($items[] | node), "    end", ("    HUB --> " + $id)
@@ -188,7 +192,7 @@ jq -r "$README_JQ_DEFS"'
     ( [$p[] | .pillar] | reduce .[] as $x ([]; if index($x) then . else . + [$x] end) | .[] ) as $pillar
     | [$p[] | select(.pillar == $pillar)] as $items
     | "| **" + ($items[0] | pillar_name) + "** | "
-      + ([$items[] | if is_public then "[" + title + "](" + repo_url($owner) + ")" else title + " _(coming soon)_" end] | join(" · "))
+      + ([$items[] | if is_public then "[" + title + "](" + repo_url($owner) + ")" else title + " _(" + private_note + ")_" end] | join(" · "))
       + " |"
 ' "$REPOS_FILE" > "$WORK_DIR/readme_pillars"
 
@@ -203,7 +207,8 @@ jq -r "$README_JQ_DEFS"'
       | ((if is_public then "[" + .name + "](" + repo_url($owner) + ")" else .name end)
          + (if .live_url then " · [live ↗](" + .live_url + ")" else "" end)) as $proj
       | "| " + $proj + " | " + pillar_name + " | " + ($scopes[.scope] // .scope) + " | " + (.description | md_cell)
-        + " | ![" + badge_label + "](https://img.shields.io/badge/-" + (badge_label | shield_text) + "-" + badge_color + "?style=flat-square) |")
+        + " | ![" + badge_label + "](https://img.shields.io/badge/-" + (badge_label | shield_text) + "-" + badge_color + "?style=flat-square)"
+        + (if (is_public | not) and status_key == "beta" then " Invite-only for now." else "" end) + " |")
 ' "$REPOS_FILE" > "$WORK_DIR/readme_directory"
 
 # Impact at a glance

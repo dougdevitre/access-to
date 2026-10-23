@@ -126,8 +126,8 @@ flowchart LR
         direction TB
         access_to_civics["<b>access-to-civics</b><br/>Access to Civics"]
         access_to_crew["<b>access-to-crew</b><br/>Block Crew"]
-        access_to_care["<b>access-to-care</b><br/>Care Compass<br/><i>coming soon</i>"]
-        access_to_freedom["<b>access-to-freedom</b><br/>Access to Freedom<br/><i>coming soon</i>"]
+        access_to_care["<b>access-to-care</b><br/>Care Compass<br/><i>private beta, invite-only</i>"]
+        access_to_freedom["<b>access-to-freedom</b><br/>Access to Freedom<br/><i>private beta, invite-only</i>"]
     end
     HUB --> BETA
     subgraph SKILLS ["Claude Skills"]
@@ -184,8 +184,8 @@ flowchart LR
 | **Justice** | [Access to Justice](https://github.com/dougdevitre/access-to-justice) |
 | **Civics** | [Access to Civics](https://github.com/dougdevitre/access-to-civics) |
 | **Community** | [Block Crew](https://github.com/dougdevitre/access-to-crew) |
-| **Care** | Care Compass _(coming soon)_ · [Access for Seniors](https://github.com/dougdevitre/access-for-seniors) |
-| **Mobility** | Access to Freedom _(coming soon)_ |
+| **Care** | Care Compass _(private beta, invite-only)_ · [Access for Seniors](https://github.com/dougdevitre/access-for-seniors) |
+| **Mobility** | Access to Freedom _(private beta, invite-only)_ |
 | **Housing** | [Access to Housing](https://github.com/dougdevitre/access-to-housing) |
 | **Jobs** | [Access to Jobs](https://github.com/dougdevitre/access-to-jobs) · [Access to HR](https://github.com/dougdevitre/access-to-hr) |
 | **Health** | [Access to Health](https://github.com/dougdevitre/access-to-health) |
@@ -208,8 +208,8 @@ flowchart LR
 | [access-to-justice](https://github.com/dougdevitre/access-to-justice) · [live ↗](https://dougdevitre.github.io/access-to-justice/) | Justice | Missouri | Civic transparency framework for Missouri family courts: 72 governance-protected metrics, an OSCA binder, and an interactive metric catalog | ![Pre-pilot](https://img.shields.io/badge/-Pre--pilot-3E4C6B?style=flat-square) |
 | [access-to-civics](https://github.com/dougdevitre/access-to-civics) | Civics | Nationwide | Charter: a civic education game for ages 8-14 built on the primary text of all 50 U.S. state constitutions | ![Beta](https://img.shields.io/badge/-Beta-8A5A44?style=flat-square) |
 | [access-to-crew](https://github.com/dougdevitre/access-to-crew) | Community | Missouri | St. Louis civic volunteering backend that turns 311 complaints into cleanup sessions, gated by a Tier-0 volunteer-safety classifier | ![Beta](https://img.shields.io/badge/-Beta-8A5A44?style=flat-square) |
-| access-to-care | Care | Nationwide | Helps a family go from no conversation to a living care plan, designed to be readable by a 10-year-old and a senior with low vision | ![Coming soon](https://img.shields.io/badge/-Coming_soon-6B6B6B?style=flat-square) |
-| access-to-freedom | Mobility | Global | Calm, trauma-informed navigator for people planning to move abroad, from first thought to a concrete 12-month plan | ![Coming soon](https://img.shields.io/badge/-Coming_soon-6B6B6B?style=flat-square) |
+| access-to-care | Care | Nationwide | Helps a family go from no conversation to a living care plan, designed to be readable by a 10-year-old and a senior with low vision | ![Private beta](https://img.shields.io/badge/-Private_beta-6B6B6B?style=flat-square) Invite-only for now. |
+| access-to-freedom | Mobility | Global | Calm, trauma-informed navigator for people planning to move abroad, from first thought to a concrete 12-month plan | ![Private beta](https://img.shields.io/badge/-Private_beta-6B6B6B?style=flat-square) Invite-only for now. |
 | [access-to-housing](https://github.com/dougdevitre/access-to-housing) | Housing | Nationwide | PropTech intelligence, market analysis, Fair Housing compliance | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
 | [access-to-jobs](https://github.com/dougdevitre/access-to-jobs) | Jobs | Missouri | WIOA navigation, job matching across 114 Missouri counties | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
 | [access-to-health](https://github.com/dougdevitre/access-to-health) | Health | Nationwide | Healthcare navigation, benefits enrollment, Medicaid/Medicare | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
@@ -220,7 +220,7 @@ flowchart LR
 | [access-to-peace](https://github.com/dougdevitre/access-to-peace) | Peace | Nationwide | Trauma-informed conflict resolution, mediation, co-parenting de-escalation, and restorative practice navigation | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
 | access-to-energy | Energy | Missouri | Energy as civic duty: routes residents to conservation, production, and utility-assistance programs across all 114 Missouri counties | ![Coming soon](https://img.shields.io/badge/-Coming_soon-6B6B6B?style=flat-square) |
 | [access-for-seniors](https://github.com/dougdevitre/access-for-seniors) | Care | Nationwide | Senior connection and aging-services navigation: early isolation detection, family connection, and benefits routing | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
-| [access-to-experts](https://github.com/dougdevitre/access-to-experts) | Business | Global | Platform spec for packaging vetted practitioner methodology into guided, executable playbooks | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
+| [access-to-experts](https://github.com/dougdevitre/access-to-experts) | Business | Global | Helps experts write, validate and peer-review playbooks that package their methodology as guided steps | ![Active](https://img.shields.io/badge/-Active-5B7A3A?style=flat-square) |
 | [access-to-hr](https://github.com/dougdevitre/access-to-hr) | Jobs | Nationwide | Human resources navigation: employment rights, workplace protections, and HR process guidance | ![In design](https://img.shields.io/badge/-In_design-6B6B6B?style=flat-square) |
 <!-- END GENERATED:directory -->
 

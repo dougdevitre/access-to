@@ -79,3 +79,39 @@ describe('private project cards', () => {
     });
   });
 });
+
+/**
+ * README.md is generated from the same registry, so it follows the same rule:
+ * a private beta reads "Private beta" with an invite-only note, any other
+ * private status reads "Coming soon". It used to say "coming soon" for every
+ * private repo, including the private betas.
+ */
+describe('README private project labels', () => {
+  const readme = read('README.md');
+  const lines = readme.split('\n');
+  const titleOf = (r) => r.title || `Access to ${r.pillar[0].toUpperCase()}${r.pillar.slice(1)}`;
+  const note = (r) => (r.status === 'beta' ? 'private beta, invite-only' : 'coming soon');
+
+  describe.each(priv.map((r) => [r.name, r]))('%s', (_, r) => {
+    test(`diagram node says "${note(r)}"`, () => {
+      const node = lines.filter((l) => l.includes(`<b>${r.name}</b>`));
+      expect(node).toHaveLength(1);
+      expect(node[0]).toContain(`<i>${note(r)}</i>`);
+    });
+
+    test(`pillars row says "${note(r)}"`, () => {
+      const row = lines.find((l) => l.startsWith('| **') && l.includes(`${titleOf(r)} _(`));
+      expect(row).toBeDefined();
+      expect(row).toContain(`${titleOf(r)} _(${note(r)})_`);
+    });
+
+    test(`directory badge is "${expected(r)}"${r.status === 'beta' ? ' with an invite-only note' : ''}`, () => {
+      const row = lines.find((l) => l.startsWith(`| ${r.name} |`));
+      expect(row).toBeDefined();
+      const badges = [...row.matchAll(/!\[([^\]]+)\]\(https:\/\/img\.shields\.io/g)].map((m) => m[1]);
+      expect(badges).toEqual([expected(r)]);
+      if (r.status === 'beta') expect(row).toMatch(/invite-only/i);
+      else expect(row).not.toMatch(/invite-only/i);
+    });
+  });
+});

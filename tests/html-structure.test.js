@@ -16,6 +16,8 @@ const HTML_PAGES = [
   'services.html',
   'jobs.html',
   'business.html',
+  'seniors.html',
+  'experts.html',
   '404.html',
 ];
 
@@ -134,7 +136,7 @@ describe('HTML document structure', () => {
   });
 
   describe('pillar pages (excluding index and 404)', () => {
-    const pillarPages = ['health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html'];
+    const pillarPages = ['health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html', 'seniors.html', 'experts.html'];
 
     pillarPages.forEach((page) => {
       describe(page, () => {
@@ -163,10 +165,10 @@ describe('HTML document structure', () => {
           expect($('.project-card').length).toBeGreaterThanOrEqual(1);
         });
 
-        test('has cross-links section with all 7 pillar links', () => {
+        test('has cross-links section with all 9 pillar links', () => {
           const crossLinks = $('.cross-links-grid');
           expect(crossLinks.length).toBe(1);
-          expect(crossLinks.find('a').length).toBe(7);
+          expect(crossLinks.find('a').length).toBe(9);
         });
 
         test('has a donate section', () => {

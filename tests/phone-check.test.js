@@ -14,7 +14,7 @@ const { JSDOM } = require('jsdom');
 
 const ROOT = path.join(__dirname, '..');
 const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf-8');
-const PILLAR_PAGES = ['health', 'education', 'safety', 'housing', 'services', 'jobs', 'business'].map((p) => `${p}.html`);
+const PILLAR_PAGES = ['health', 'education', 'safety', 'housing', 'services', 'jobs', 'business', 'seniors', 'experts'].map((p) => `${p}.html`);
 const HUB_PAGES = ['about.html', ...PILLAR_PAGES, '404.html'];
 const ALL_PAGES = ['index.html', ...HUB_PAGES];
 

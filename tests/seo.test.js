@@ -61,6 +61,18 @@ const SEO_PAGES = [
     expectedTitle: 'Access to Business',
     hasJsonLd: true,
   },
+  {
+    file: 'seniors.html',
+    expectedUrl: 'https://dougdevitre.org/seniors.html',
+    expectedTitle: 'Access for Seniors',
+    hasJsonLd: true,
+  },
+  {
+    file: 'experts.html',
+    expectedUrl: 'https://dougdevitre.org/experts.html',
+    expectedTitle: 'Access to Experts',
+    hasJsonLd: true,
+  },
 ];
 
 function load(file) {
@@ -163,7 +175,7 @@ describe('SEO meta tags', () => {
   });
 
   describe('robots meta tag', () => {
-    const indexablePages = ['index.html', 'about.html', 'health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html'];
+    const indexablePages = ['index.html', 'about.html', 'health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html', 'seniors.html', 'experts.html'];
 
     indexablePages.forEach((page) => {
       test(`${page} has robots "index, follow"`, () => {

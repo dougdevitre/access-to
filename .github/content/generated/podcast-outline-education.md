@@ -1,6 +1,6 @@
 # Education — Podcast Episode Outline (20-30 min)
 
-> Generated from repos.json + content.json | 2026-10-23
+> Generated from repos.json + content.json | 2026-10-24
 
 ## Episode Title
 

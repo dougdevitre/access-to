@@ -1,6 +1,6 @@
 # Housing — Video Script (2-3 min)
 
-> Generated from repos.json + content.json | 2026-10-23
+> Generated from repos.json + content.json | 2026-10-24
 
 ## HOOK (0:00 - 0:15)
 

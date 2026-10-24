@@ -1,6 +1,6 @@
 # Education — Infographic Data
 
-> Generated from repos.json + content.json | 2026-10-23
+> Generated from repos.json + content.json | 2026-10-24
 
 ## Header
 

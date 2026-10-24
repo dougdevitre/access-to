@@ -14,3 +14,9 @@
 # action on about.html returns 404 to a GET. That may just be how the endpoint
 # answers GETs, or the audience may be gone; a human needs to submit the form.
 ^https://us16\.list-manage\.com/subscribe/post\?u=62137ae349&id=090aae7d15
+
+# Venmo donate link. venmo.com/u/dougdevitre opens Doug's profile in a browser
+# (he confirmed it on his phone 2026-10-24), but Venmo answers automated
+# checkers with 404, so lychee can't verify it. If the button ever breaks,
+# check it by hand in a browser.
+^https://venmo\.com/u/dougdevitre$

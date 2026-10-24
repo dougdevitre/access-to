@@ -1,0 +1,61 @@
+{
+  "$comment": "Phrase lists for .github/scripts/crisis-conformance.sh, which scans every repo's SKILL.md (read-only) for the crisis and scope rules every Access To skill must carry. Phrase matching is case-insensitive and literal (no regex). Every phrase check reads SKILL.md with the shared disclaimer block blanked out, so the stamped notice never satisfies a rule. required_numbers_outside_notice: when true (the default), a number found only inside the notice is reported as 'notice only', a finding; set it to false to let the notice count. missouri_labels are whole-word, case-sensitive. Edit the wording here; the script does not need to change. Keep phrases specific to an instruction: loose ones such as \"your state\" (\"replace Missouri data with your state's\") or \"in Spanish\" (\"brochure available in Spanish\") pass skills that have no rule at all.",
+  "disclaimer_markers": {
+    "begin": "<!-- BEGIN DISCLAIMER:",
+    "end": "<!-- END DISCLAIMER -->"
+  },
+  "required_numbers": [
+    "911",
+    "988"
+  ],
+  "required_numbers_outside_notice": true,
+  "location_phrases": [
+    "what state",
+    "which state",
+    "ask the state",
+    "ask for the state",
+    "state you live in",
+    "state you are in",
+    "state you're in",
+    "outside Missouri",
+    "outside of Missouri",
+    "not in Missouri",
+    "Missouri only",
+    "Missouri-only",
+    "other states",
+    "another state",
+    "non-Missouri"
+  ],
+  "language_phrases": [
+    "language the person writes in",
+    "language the user writes in",
+    "language the person uses",
+    "language the user uses",
+    "person's language",
+    "user's language",
+    "resident's language",
+    "same language",
+    "respond in their language",
+    "reply in their language",
+    "in their language",
+    "respond in Spanish",
+    "reply in Spanish",
+    "responds in Spanish",
+    "en español",
+    "en espanol",
+    "communicates in Spanish",
+    "writes in Spanish"
+  ],
+  "missouri_area_codes": [
+    "314",
+    "573",
+    "636",
+    "660",
+    "816"
+  ],
+  "missouri_labels": [
+    "Missouri",
+    "MO",
+    "St. Louis"
+  ]
+}

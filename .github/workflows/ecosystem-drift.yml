@@ -7,9 +7,13 @@ name: Ecosystem Drift
 #   - is every install zip complete: one folder named after the skill, every
 #     path SKILL.md references inside it, the disclaimer stamped, frontmatter
 #     within the claude.ai limits? (ecosystem-zip-check.sh)
+#   - does every SKILL.md carry the crisis and scope rules: the disclaimer
+#     block, 911 and 988 in its own text, a location check, a language rule,
+#     a Missouri label on every Missouri-area-code number?
+#     (crisis-conformance.sh; phrases in .github/config/crisis-conformance.json)
 # It keeps ONE issue, "Ecosystem drift (monthly check)", open while anything is
-# drifted, stale or incomplete (listing the fix for each) and closes it once
-# clean; both reports go into that issue.
+# drifted, stale, incomplete or non-conforming (listing the fix for each) and
+# closes it once clean; all three reports go into that issue.
 # It does not run on pull requests: its result depends on other repos.
 #
 # Token. GITHUB_TOKEN can read the public repos but not the private ones
@@ -73,14 +77,25 @@ jobs:
           .github/scripts/ecosystem-zip-check.sh --report "$RUNNER_TEMP/zip.md"
           echo "rc=$?" >> "$GITHUB_OUTPUT"
 
+      - name: Scan every SKILL.md for crisis conformance
+        id: crisis
+        env:
+          GH_TOKEN: ${{ secrets.ECOSYSTEM_READ_TOKEN || github.token }}
+        run: |
+          set +e
+          .github/scripts/crisis-conformance.sh --report "$RUNNER_TEMP/crisis.md"
+          echo "rc=$?" >> "$GITHUB_OUTPUT"
+
       - name: Open, update or close the tracking issue
         env:
           GH_TOKEN: ${{ github.token }}
           RC: ${{ steps.drift.outputs.rc }}
           ZIP_RC: ${{ steps.zip.outputs.rc }}
+          CRISIS_RC: ${{ steps.crisis.outputs.rc }}
         run: |
           REPORT="$RUNNER_TEMP/drift.md"
           ZIP_REPORT="$RUNNER_TEMP/zip.md"
+          CRISIS_REPORT="$RUNNER_TEMP/crisis.md"
           if [ ! -s "$REPORT" ]; then
             echo "::error::The drift check stopped before writing its report (exit $RC); see the step above."
             exit 1
@@ -89,13 +104,19 @@ jobs:
             echo "::error::The zip check stopped before writing its report (exit $ZIP_RC); see the step above."
             exit 1
           fi
+          if [ ! -s "$CRISIS_REPORT" ]; then
+            echo "::error::The crisis conformance scan stopped before writing its report (exit $CRISIS_RC); see the step above."
+            exit 1
+          fi
           # Each report opens with <!-- <check> findings=N errors=N skipped=N -->;
-          # the issue is one body with both, counted together.
+          # the issue is one body with all three, counted together.
           count() { sed -nE "s/.*$1=([0-9]+).*/\1/p" <<<"$(head -1 "$2")"; }
-          FINDINGS=$(( $(count findings "$REPORT") + $(count findings "$ZIP_REPORT") ))
-          ERRORS=$(( $(count errors "$REPORT") + $(count errors "$ZIP_REPORT") ))
-          printf '\n' >> "$REPORT"
-          tail -n +2 "$ZIP_REPORT" >> "$REPORT"
+          FINDINGS=$(( $(count findings "$REPORT") + $(count findings "$ZIP_REPORT") + $(count findings "$CRISIS_REPORT") ))
+          ERRORS=$(( $(count errors "$REPORT") + $(count errors "$ZIP_REPORT") + $(count errors "$CRISIS_REPORT") ))
+          for EXTRA in "$ZIP_REPORT" "$CRISIS_REPORT"; do
+            printf '\n' >> "$REPORT"
+            tail -n +2 "$EXTRA" >> "$REPORT"
+          done
           RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           printf '\n_Run: %s_\n' "$RUN_URL" >> "$REPORT"
 
@@ -115,5 +136,5 @@ jobs:
             echo "Everything is clean; closed issue #$NUMBER"
           fi
 
-          # The run itself stays red while anything is drifted, stale, incomplete or unreadable.
-          if [ "$RC" -ne 0 ] || [ "$ZIP_RC" -ne 0 ]; then exit 1; fi
+          # The run itself stays red while anything is drifted, stale, incomplete, non-conforming or unreadable.
+          if [ "$RC" -ne 0 ] || [ "$ZIP_RC" -ne 0 ] || [ "$CRISIS_RC" -ne 0 ]; then exit 1; fi

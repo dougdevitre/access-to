@@ -16,6 +16,8 @@ const ALL_PAGES = [
   'services.html',
   'jobs.html',
   'business.html',
+  'seniors.html',
+  'experts.html',
   '404.html',
 ];
 
@@ -134,7 +136,7 @@ describe('Accessibility', () => {
   });
 
   describe('heading hierarchy', () => {
-    const pillarPages = ['health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html'];
+    const pillarPages = ['health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html', 'seniors.html', 'experts.html'];
 
     pillarPages.forEach((page) => {
       test(`${page} has exactly one <h1>`, () => {

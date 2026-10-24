@@ -206,7 +206,7 @@ flowchart LR
 |:--------|:-------|:------|:-------------|:-------|
 | [access-to-food](https://github.com/dougdevitre/access-to-food) · [live ↗](https://food.cotrackpro.com) | Food | Missouri | St. Louis food access platform: pantry map, distribution events, SNAP guidance, an AI assistant, and volunteer tools | ![Live](https://img.shields.io/badge/-Live-2E7D32?style=flat-square) |
 | [access-to-justice](https://github.com/dougdevitre/access-to-justice) · [live ↗](https://dougdevitre.github.io/access-to-justice/) | Justice | Missouri | Civic transparency framework for Missouri family courts: 72 governance-protected metrics, an OSCA binder, and an interactive metric catalog | ![Pre-pilot](https://img.shields.io/badge/-Pre--pilot-3E4C6B?style=flat-square) |
-| [access-to-civics](https://github.com/dougdevitre/access-to-civics) | Civics | Nationwide | Charter: a civic education game for ages 8-14 built on the primary text of all 50 U.S. state constitutions | ![Beta](https://img.shields.io/badge/-Beta-8A5A44?style=flat-square) |
+| [access-to-civics](https://github.com/dougdevitre/access-to-civics) · [live ↗](https://civics.dougdevitre.org) | Civics | Nationwide | Charter: a civic education game for ages 8-14 built on the primary text of all 50 U.S. state constitutions | ![Beta](https://img.shields.io/badge/-Beta-8A5A44?style=flat-square) |
 | [access-to-crew](https://github.com/dougdevitre/access-to-crew) | Community | Missouri | St. Louis civic volunteering backend that turns 311 complaints into cleanup sessions, gated by a Tier-0 volunteer-safety classifier | ![Beta](https://img.shields.io/badge/-Beta-8A5A44?style=flat-square) |
 | access-to-care | Care | Nationwide | Helps a family go from no conversation to a living care plan, designed to be readable by a 10-year-old and a senior with low vision | ![Private beta](https://img.shields.io/badge/-Private_beta-6B6B6B?style=flat-square) Invite-only for now. |
 | access-to-freedom | Mobility | Global | Calm, trauma-informed navigator for people planning to move abroad, from first thought to a concrete 12-month plan | ![Private beta](https://img.shields.io/badge/-Private_beta-6B6B6B?style=flat-square) Invite-only for now. |
@@ -269,7 +269,7 @@ flowchart TB
     subgraph HUB ["access-to (Hub Site)"]
         direction LR
         LP["Landing Page<br/><i>index.html</i>"]
-        PP["Pillar Pages<br/><i>health, education, safety, housing,<br/>services, jobs, business</i>"]
+        PP["Pillar Pages<br/><i>health, education, safety, housing,<br/>services, jobs, business, seniors, experts</i>"]
         LP --> PP
     end
 

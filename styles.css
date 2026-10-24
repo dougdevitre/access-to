@@ -19,6 +19,8 @@
   --color-accent-services: #6B5B8A;
   --color-accent-education: #4A7C59;
   --color-accent-safety: #B85C38;
+  /* Seniors page (access-for-seniors' registry color): 6.42:1 on --color-bg. */
+  --color-accent-seniors: #7A4E6B;
   /* Health's accent is 3.9:1 on white: fine for bars and icons, too light for
      text. Text uses this darker shade: 5.57:1 on --color-card-bg. */
   --color-accent-health-text: #B5403F;
@@ -61,6 +63,7 @@
   --color-accent-services: #A07CC4;
   --color-accent-education: #7AAF82;
   --color-accent-safety: #D4845A;
+  --color-accent-seniors: #C08AB0;      /* 6.59:1 on --color-bg, 6.1:1 on --color-card-bg */
   --color-accent-health-text: #E88A8C;   /* 6.86:1 on --color-card-bg */
   --color-accent-primary: #5A8AAB;
   --color-btn-hover: #C9C9C4;
@@ -978,6 +981,16 @@ footer a:hover { color: var(--color-text); }
   margin-bottom: 2rem;
 }
 
+/* Crisis line under a pillar hero (copied verbatim from the project's repo). */
+.pillar-hero .pillar-safety {
+  max-width: 640px;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--color-accent-safety);
+  background: var(--color-card-bg);
+  color: var(--color-text);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
 /* Problem / approach section */
 .pillar-context {
   max-width: var(--max-width);
@@ -1534,6 +1547,8 @@ footer a:hover { color: var(--color-text); }
 .cross-link-card[data-pillar="services"]::before   { background: var(--color-accent-services); }
 .cross-link-card[data-pillar="jobs"]::before       { background: var(--color-accent-jobs); }
 .cross-link-card[data-pillar="business"]::before   { background: var(--color-accent-business); }
+.cross-link-card[data-pillar="seniors"]::before    { background: var(--color-accent-seniors); }
+.cross-link-card[data-pillar="experts"]::before    { background: var(--color-accent-business); }
 
 .cross-link-card .cl-arrow {
   margin-left: auto;

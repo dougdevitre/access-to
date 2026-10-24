@@ -73,6 +73,12 @@ const SEO_PAGES = [
     expectedTitle: 'Access to Experts',
     hasJsonLd: true,
   },
+  {
+    file: 'peace.html',
+    expectedUrl: 'https://dougdevitre.org/peace.html',
+    expectedTitle: 'Access to Peace',
+    hasJsonLd: true,
+  },
 ];
 
 function load(file) {
@@ -175,7 +181,7 @@ describe('SEO meta tags', () => {
   });
 
   describe('robots meta tag', () => {
-    const indexablePages = ['index.html', 'about.html', 'health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html', 'seniors.html', 'experts.html'];
+    const indexablePages = ['index.html', 'about.html', 'health.html', 'education.html', 'safety.html', 'housing.html', 'services.html', 'jobs.html', 'business.html', 'seniors.html', 'experts.html', 'peace.html'];
 
     indexablePages.forEach((page) => {
       test(`${page} has robots "index, follow"`, () => {

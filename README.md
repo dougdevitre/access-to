@@ -269,7 +269,7 @@ flowchart TB
     subgraph HUB ["access-to (Hub Site)"]
         direction LR
         LP["Landing Page<br/><i>index.html</i>"]
-        PP["Pillar Pages<br/><i>health, education, safety, housing,<br/>services, jobs, business, seniors, experts</i>"]
+        PP["Pillar Pages<br/><i>health, education, safety, housing,<br/>services, jobs, business, seniors,<br/>experts, peace</i>"]
         LP --> PP
     end
 

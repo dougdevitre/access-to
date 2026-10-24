@@ -6,7 +6,7 @@ const cheerio = require('cheerio');
 
 const ROOT = path.join(__dirname, '..');
 
-const PILLARS = ['health', 'education', 'safety', 'housing', 'services', 'jobs', 'business', 'seniors', 'experts'];
+const PILLARS = ['health', 'education', 'safety', 'housing', 'services', 'jobs', 'business', 'seniors', 'experts', 'peace'];
 const PILLAR_PAGES = PILLARS.map((p) => `${p}.html`);
 
 function load(file) {
@@ -151,9 +151,9 @@ describe('Navigation', () => {
         let $;
         beforeAll(() => { $ = load(page); });
 
-        test('cross-links grid has 9 items (one per pillar page)', () => {
+        test('cross-links grid has 10 items (one per pillar page)', () => {
           const grid = $('.cross-links-grid');
-          expect(grid.find('a').length).toBe(9);
+          expect(grid.find('a').length).toBe(10);
         });
 
         PILLARS.forEach((pillar) => {
@@ -187,7 +187,7 @@ describe('Navigation', () => {
         let $;
         beforeAll(() => { $ = load(page); });
 
-        test('footer contains links to all 9 pillar pages', () => {
+        test('footer contains links to all 10 pillar pages', () => {
           PILLARS.forEach((pillar) => {
             const link = $(`footer a[href="${pillar}.html"]`);
             expect(link.length).toBeGreaterThanOrEqual(1);

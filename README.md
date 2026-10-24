@@ -506,7 +506,7 @@ graph TD
 **These tools are free and open source. Building them isn't.**
 
 [![Donate Any Amount](https://img.shields.io/badge/Donate_Any_Amount-Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/14AcN5gBJ6rRfm07Kz2cg0c)
-[![Fund via Venmo](https://img.shields.io/badge/Venmo-008CFF?style=for-the-badge&logo=venmo&logoColor=white)](https://venmo.com/dougdevitre)
+[![Fund via Venmo](https://img.shields.io/badge/Venmo-008CFF?style=for-the-badge&logo=venmo&logoColor=white)](https://venmo.com/u/dougdevitre)
 
 </div>
 

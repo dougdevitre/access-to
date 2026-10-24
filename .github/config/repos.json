@@ -220,6 +220,7 @@
       "status": "skill",
       "visibility": "public",
       "install_zip": "access-to-peace.zip",
+      "page": "peace.html",
       "connects_to": ["access-to-safety", "access-to-justice"],
       "tagline": "Calmer conversations when the stakes are high",
       "color": "5B7A8A",

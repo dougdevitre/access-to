@@ -5,10 +5,6 @@
 # the hub's CNAME was deleted 2026-04-07).
 ^https?://(www\.)?dougdevitre\.org
 
-# BROKEN — needs a human (found 2026-10-18). Returns 404 to the link checker
-# (the Venmo button on about.html, the pillar pages and README.md). Could not
-# confirm a working profile URL (venmo.com blocks automated fetches).
-^https://venmo\.com/dougdevitre
 
 # BROKEN — needs a human (found 2026-10-18). The Mailchimp signup form's POST
 # action on about.html returns 404 to a GET. That may just be how the endpoint
